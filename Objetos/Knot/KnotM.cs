@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace CalculoTre.Objetos
+{
+    public partial class Knot
+    {
+        //Cria o botão para ser desenhado
+        public void Desenhar()
+        {
+            //Cria o botão
+            botao = new Button();
+
+            //Aplica-lhe um nome
+            botao.Name = $"B{id}";
+
+            //Coloca seu fundo preto, letra branca e escreve uma letra
+            botao.BackColor = System.Drawing.Color.Black;
+            botao.ForeColor = Color.White;
+
+            //botao.Text = nome;
+            botao.Text = id.ToString();
+
+            //Define o tamanho do botão
+            botao.Height = tamanho;
+            botao.Width = tamanho;
+
+            //Define a posição do botão e retira sua borda
+            var dv = tamanho / 2;
+            botao.Location = new System.Drawing.Point(posX - dv, posY - dv);
+            botao.FlatAppearance.BorderSize = 0;
+
+            //Se o botão for apertado
+            botao.MouseDown += (s, e) =>
+            {
+                Triggers.JuntarApoios = true;
+                Joint.Apoio = this;
+
+                //Se o primeiro clique aindã não foi dado
+                if (!Triggers.PrimeiroClique)
+                {
+                    Joint.PrimeiroClique(Joint.sender, Joint.e);
+                }
+                 else
+                {
+                    Joint.SegundoClique(Joint.sender, Joint.e);
+                }
+            };
+
+            tela.Controls.Add(botao);
+        }
+
+        public void ApagarBotao()
+        {
+            tela.Controls.Remove(botao);
+        }
+
+        //A dita caixa de dialogo
+        private void CaixaDeDialogo()
+        {
+            //Em progresso...
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+
+            DialogResult result = MessageBox.Show($"Deseja juntar apoios?", $"Apoio {nome}", buttons);
+
+            if (result == DialogResult.Yes)
+            {
+
+            }
+
+        }
+    }
+}

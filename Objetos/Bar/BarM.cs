@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace CalculoTre.Objetos
+{
+    public partial class Bar
+    {
+        //Sobrecarrega o método ToString, apenas para facilitar na hora de ler a varíavel
+        public override string ToString()
+        {
+            return $"{ID}";
+        }
+
+        //Desenha a linha entre os dois pontos
+        public void DrawLine(Panel painel)
+        {
+            //Cria uma caneta preta
+            Pen blackPen = new Pen(Color.Black);
+            blackPen.Width = 1;
+
+            //Desenha a linha usando as coordenadas de cada nó
+            using (Graphics g = painel.CreateGraphics())
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.DrawLine(blackPen, knots[0].Ponto, knots[1].Ponto);
+            }
+
+        }
+
+        //Cria o botão em cada ponta da linha
+        public void Pontuar()
+        {
+            knots[0].Desenhar();
+            knots[1].Desenhar();
+        }
+    }
+}
