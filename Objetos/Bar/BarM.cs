@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalculoTre.Objetos._0Fake;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace CalculoTre.Objetos
         //Sobrecarrega o método ToString, apenas para facilitar na hora de ler a varíavel
         public override string ToString()
         {
-            return $"{ID}";
+            return $"Barra {ID}";
         }
 
         //Desenha a linha entre os dois pontos
@@ -29,14 +30,43 @@ namespace CalculoTre.Objetos
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 g.DrawLine(blackPen, knots[0].Ponto, knots[1].Ponto);
             }
+        }
 
+        public void DrawLineRelative(Panel painel)
+        {
+            //Cria uma caneta preta
+            Pen blackPen = new Pen(Color.Black);
+            blackPen.Width = 1;
+
+            float xa = (float)(painel.Width) / (float)(Joint.deTela.Width);
+            float ya = (float)(painel.Height) / (float)(Joint.deTela.Height);
+
+            Point X = new Point(Convert.ToInt16(knots[0].X * xa), Convert.ToInt16(knots[0].Y * ya));
+            Point Y = new Point(Convert.ToInt16(knots[1].X * xa), Convert.ToInt16(knots[1].Y * ya));
+
+            FakeKnot.pontos[0] = X;
+            FakeKnot.pontos[1] = Y;
+
+            //Desenha a linha usando as coordenadas de cada nó
+            using (Graphics g = painel.CreateGraphics())
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.DrawLine(blackPen, X, Y);
+            }
         }
 
         //Cria o botão em cada ponta da linha
-        public void Pontuar()
+        public void Pontuar(Panel tela, bool Relative = false)
         {
-            knots[0].Desenhar();
-            knots[1].Desenhar();
+            if (Relative)
+                foreach (var knot in knots)
+                {
+                    FakeKnot noFalso = new FakeKnot(knot);
+                    noFalso.Desenhar(tela);
+                }
+            else
+                foreach (var knot in knots)
+                    knot.Desenhar(tela);
         }
     }
 }

@@ -11,7 +11,9 @@ namespace CalculoTre.Objetos
     {
         public static Panel deTela;
         public static Knot[] tempKnot = new Knot[2];
+
         public static Dictionary<string, Bar> barras = new Dictionary<string, Bar>();
+        public static Dictionary<byte, Knot> nos = new Dictionary<byte, Knot>();
 
         public static object sender;
         public static MouseEventArgs e;
@@ -30,46 +32,65 @@ namespace CalculoTre.Objetos
             }
             else
             {
-                tempKnot[0] = new Knot(deTela, "A", e.Location.X, e.Location.Y);
+                tempKnot[0] = new Knot(deTela, e.Location.X, e.Location.Y);
             }
 
             Triggers.PrimeiroClique = true;
 
-            tempKnot[0].Desenhar();
+            tempKnot[0].Desenhar(deTela);
 
             deTela.MouseDown += SegundoClique;
         }
 
         public static void SegundoClique(object sender, MouseEventArgs e)
         {
-            if (Triggers.JuntarApoios)
+            if (e.Button == MouseButtons.Left)
             {
-                tempKnot[1] = Apoio;
-                Triggers.JuntarApoios = false;
+                if (Triggers.JuntarApoios)
+                {
+                    Triggers.JuntarApoios = false;
+                    if (Apoio == tempKnot[0])
+                        return;
+
+                    tempKnot[1] = Apoio;
+                }
+                else
+                {
+                    tempKnot[1] = new Knot(deTela, e.Location.X, e.Location.Y);
+                }
+                tempKnot[1].Desenhar(deTela);
+
+                Bar barra = new Bar(tempKnot[0], tempKnot[1]);
+                
+                barras.Add(barra.ID, barra);
+
+                foreach (var no in tempKnot)
+                {
+                    try
+                    {
+                        nos.Add(no.ID, no);
+                    } catch { }
+                }
+
+                Array.Clear(tempKnot, 0, tempKnot.Length);
+
+                Esquematizar();
+
+                deTela.MouseDown -= SegundoClique;
+                Triggers.PrimeiroClique = false;
+
+                Triggers.AtualizarObjeto(Data.deTipo, Data.deObjeto);
             }
-            else
-            {
-                tempKnot[1] = new Knot(deTela, "B", e.Location.X, e.Location.Y);
-            }
-            tempKnot[1].Desenhar();
-
-            Bar barra = new Bar(tempKnot[0], tempKnot[1]);
-            barras.Add(barra.ID, barra);
-
-            Array.Clear(tempKnot, 0, tempKnot.Length);
-
-            Esquematizar();
-
-            deTela.MouseDown -= SegundoClique;
-            Triggers.PrimeiroClique = false;
         }
+
+        
 
         public static void Esquematizar()
         {
             foreach (var barra in barras.Values)
             {
                 barra.DrawLine(deTela);
-                barra.Pontuar();
+                barra.Pontuar(deTela);
             }
         }
     }

@@ -14,7 +14,6 @@ namespace CalculoTre.Objetos
     public partial class Knot
     {
         static byte quantidade;
-        static Panel tela;
 
         protected byte id;
         private string nome;
@@ -26,12 +25,10 @@ namespace CalculoTre.Objetos
         private double forçaX;
         private double forçaY;
 
-        public Knot(Panel deTela, string identidade, int cordX, int cordY)
+        public Knot(Panel deTela, int cordX, int cordY)
         {
             id = quantidade++;
-            nome = identidade;
-
-            tela = deTela;
+            nome = id.ToString();
 
             posX = cordX;
             posY = cordY;

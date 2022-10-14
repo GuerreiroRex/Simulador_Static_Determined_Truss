@@ -1,6 +1,6 @@
 ﻿namespace CalculoTre
 {
-    partial class Form1
+    partial class deSimular
     {
         /// <summary>
         /// Required designer variable.
@@ -30,6 +30,9 @@
         {
             this.deLimpar = new System.Windows.Forms.Button();
             this.deTela = new System.Windows.Forms.Panel();
+            this.deTipo = new System.Windows.Forms.ComboBox();
+            this.deObjeto = new System.Windows.Forms.ComboBox();
+            this.deProp = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // deLimpar
@@ -54,15 +57,47 @@
             this.deTela.TabIndex = 1;
             this.deTela.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CliquePainel);
             // 
-            // Form1
+            // deTipo
+            // 
+            this.deTipo.FormattingEnabled = true;
+            this.deTipo.Location = new System.Drawing.Point(12, 79);
+            this.deTipo.Name = "deTipo";
+            this.deTipo.Size = new System.Drawing.Size(112, 21);
+            this.deTipo.TabIndex = 0;
+            this.deTipo.SelectedIndexChanged += new System.EventHandler(this.AtualizarListaObjetos);
+            // 
+            // deObjeto
+            // 
+            this.deObjeto.FormattingEnabled = true;
+            this.deObjeto.Location = new System.Drawing.Point(12, 106);
+            this.deObjeto.Name = "deObjeto";
+            this.deObjeto.Size = new System.Drawing.Size(112, 21);
+            this.deObjeto.TabIndex = 2;
+            this.deObjeto.Click += new System.EventHandler(this.AtualizarListaObjetos);
+            // 
+            // deProp
+            // 
+            this.deProp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deProp.Location = new System.Drawing.Point(12, 133);
+            this.deProp.Name = "deProp";
+            this.deProp.Size = new System.Drawing.Size(112, 61);
+            this.deProp.TabIndex = 3;
+            this.deProp.Text = "Propriedades";
+            this.deProp.UseVisualStyleBackColor = true;
+            this.deProp.Click += new System.EventHandler(this.deProp_Click);
+            // 
+            // deSimular
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.deProp);
+            this.Controls.Add(this.deObjeto);
+            this.Controls.Add(this.deTipo);
             this.Controls.Add(this.deTela);
             this.Controls.Add(this.deLimpar);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "deSimular";
+            this.Text = "Simulação de Treliça";
             this.ResumeLayout(false);
 
         }
@@ -71,6 +106,9 @@
 
         private System.Windows.Forms.Button deLimpar;
         private System.Windows.Forms.Panel deTela;
+        private System.Windows.Forms.ComboBox deTipo;
+        private System.Windows.Forms.ComboBox deObjeto;
+        private System.Windows.Forms.Button deProp;
     }
 }
 

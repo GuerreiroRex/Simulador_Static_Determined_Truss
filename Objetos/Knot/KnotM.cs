@@ -10,8 +10,13 @@ namespace CalculoTre.Objetos
 {
     public partial class Knot
     {
+        public override string ToString()
+        {
+            return $"Apoio ({nome})";
+        }
+
         //Cria o botão para ser desenhado
-        public void Desenhar()
+        public void Desenhar(Panel tela)
         {
             //Cria o botão
             botao = new Button();
@@ -33,6 +38,8 @@ namespace CalculoTre.Objetos
             //Define a posição do botão e retira sua borda
             var dv = tamanho / 2;
             botao.Location = new System.Drawing.Point(posX - dv, posY - dv);
+
+
             botao.FlatAppearance.BorderSize = 0;
 
             //Se o botão for apertado
@@ -55,24 +62,17 @@ namespace CalculoTre.Objetos
             tela.Controls.Add(botao);
         }
 
-        public void ApagarBotao()
+        public void ApagarBotao(Panel tela)
         {
             tela.Controls.Remove(botao);
         }
 
-        //A dita caixa de dialogo
-        private void CaixaDeDialogo()
+        public static void Reiniciar()
         {
-            //Em progresso...
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            Joint.barras.Clear();
+            Joint.nos.Clear();
 
-            DialogResult result = MessageBox.Show($"Deseja juntar apoios?", $"Apoio {nome}", buttons);
-
-            if (result == DialogResult.Yes)
-            {
-
-            }
-
+            quantidade = 0;
         }
     }
 }
