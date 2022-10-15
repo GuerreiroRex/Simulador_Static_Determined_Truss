@@ -69,17 +69,6 @@ namespace CalculoTre
             EventArgs d = new EventArgs();
             AtualizarListaObjetos(sender, d);
         }
-
-        public void LimparTela()
-        {
-            deTela.Controls.Clear();
-            using (Graphics g = deTela.CreateGraphics())
-            {
-                g.Clear(Color.White);
-            }
-
-            Knot.Reiniciar();
-        }
         #endregion
 
         public void AtualizarListaObjetos(object sender, EventArgs e)

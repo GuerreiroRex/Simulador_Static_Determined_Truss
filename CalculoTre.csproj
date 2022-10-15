@@ -59,6 +59,7 @@
     <Compile Include="Objetos\Fake\FakeKnot.cs" />
     <Compile Include="Objetos\Bar\Bar.cs" />
     <Compile Include="Objetos\Bar\BarM.cs" />
+    <Compile Include="Objetos\Grid.cs" />
     <Compile Include="Objetos\Joint.cs" />
     <Compile Include="Objetos\Knot\Knot.cs" />
     <Compile Include="Objetos\Knot\KnotM.cs" />

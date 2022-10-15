@@ -21,7 +21,7 @@ namespace CalculoTre.Objetos
         public void DrawLine(Panel painel)
         {
             //Cria uma caneta preta
-            Pen blackPen = new Pen(Color.Black);
+            Pen blackPen = new Pen(Color.Blue);
             blackPen.Width = 1;
 
             //Desenha a linha usando as coordenadas de cada nó
@@ -35,7 +35,7 @@ namespace CalculoTre.Objetos
         public void DrawLineRelative(Panel painel)
         {
             //Cria uma caneta preta
-            Pen blackPen = new Pen(Color.Black);
+            Pen blackPen = new Pen(Color.Blue);
             blackPen.Width = 1;
 
             float xa = (float)(painel.Width) / (float)(Joint.deTela.Width);
