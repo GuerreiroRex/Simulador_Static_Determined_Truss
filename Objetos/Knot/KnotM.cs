@@ -39,20 +39,22 @@ namespace CalculoTre.Objetos
             var dv = tamanho / 2;
             botao.Location = new System.Drawing.Point(posX - dv, posY - dv);
 
+            botao.AutoSize = true;
+            botao.AutoSizeMode = AutoSizeMode.GrowOnly;
 
             botao.FlatAppearance.BorderSize = 0;
 
             //Se o botão for apertado
             botao.MouseDown += (s, e) =>
             {
-                Triggers.JuntarApoios = true;
-                Joint.Apoio = this;
-                   
-
+                
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
-                        
+
+                        Triggers.JuntarApoios = true;
+                        Joint.Apoio = this;
+
                         //Se o primeiro clique aindã não foi dado
                         if (!Triggers.PrimeiroClique)
                             Joint.PrimeiroClique(Joint.sender, Joint.e);
@@ -63,11 +65,19 @@ namespace CalculoTre.Objetos
 
                     case MouseButtons.Right:
 
-                        tela.Controls.Remove(Botao);
+                        tela.MouseDown -= Joint.SegundoClique;
+
+
+                        Dictionary<string, Bar> dictBarraTemp = new Dictionary<string, Bar>();
 
                         foreach (var barra in Joint.barras)
                             if (barra.Value.knots.Contains(this))
-                                Joint.barras.Remove(barra.Key);
+                                dictBarraTemp.Add(barra.Key, barra.Value);
+
+                        foreach (var barra in dictBarraTemp)
+                            Joint.barras.Remove(barra.Key);
+
+                        Grid.RedesenharTela(tela);
 
                         break;
                 }

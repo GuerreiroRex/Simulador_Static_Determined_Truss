@@ -44,6 +44,9 @@ namespace CalculoTre.Objetos
 
         public static void SegundoClique(object sender, MouseEventArgs e)
         {
+            if (!DentroDoQuadro(sender, e))
+                return;
+
             if (e.Button == MouseButtons.Left)
             {
                 if (Triggers.JuntarApoios)
@@ -64,13 +67,7 @@ namespace CalculoTre.Objetos
                 
                 barras.Add(barra.ID, barra);
 
-                foreach (var no in tempKnot)
-                {
-                    try
-                    {
-                        nos.Add(no.ID, no);
-                    } catch { }
-                }
+                AtualizarNos();
 
                 Array.Clear(tempKnot, 0, tempKnot.Length);
 
@@ -83,7 +80,34 @@ namespace CalculoTre.Objetos
             }
         }
 
-        
+        public static void AtualizarNos()
+        {
+            List<Knot> tempNos = new List<Knot>();
+            nos.Clear();
+
+            foreach (var barra in barras.Values)
+            {
+                if (!tempNos.Contains(barra.knots[0]))
+                {
+                    nos.Add(barra.knots[0].ID, barra.knots[0]);
+                    tempNos.Add(barra.knots[0]);
+                }
+                if (!tempNos.Contains(barra.knots[1]))
+                {
+                    nos.Add(barra.knots[1].ID, barra.knots[1]);
+                    tempNos.Add(barra.knots[1]);
+                }
+            }
+        }
+
+        public static bool DentroDoQuadro(object sender, MouseEventArgs e)
+        {
+            if (e.X >= Knot.Tamanho / 2 && e.X < deTela.Width - Knot.Tamanho / 2 &&
+                    e.Y >= Knot.Tamanho / 2 && e.Y < deTela.Height - Knot.Tamanho / 2)
+                return true;
+            else
+                return false;
+        }
 
         public static void Esquematizar()
         {

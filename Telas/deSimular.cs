@@ -63,18 +63,28 @@ namespace CalculoTre
         }
 
         private void CliquePainel(object sender, MouseEventArgs e)
-        {            
-            if (e.Button == MouseButtons.Left)
+        {
+            if (!Joint.DentroDoQuadro(sender, e))
+                return;
+
+            switch (e.Button)
             {
-                Joint.PrimeiroClique(sender, e);
+                case MouseButtons.Left:
+                    Joint.PrimeiroClique(sender, e);
+                    break;
+
+                case MouseButtons.Right:
+                    deTela.MouseDown -= Joint.SegundoClique;
+                    break;
             }
 
             EventArgs d = new EventArgs();
             AtualizarListaObjetos(sender, d);
-        }
-        #endregion
 
-        public void AtualizarListaObjetos(object sender, EventArgs e)
+        }
+            #endregion
+
+            public void AtualizarListaObjetos(object sender, EventArgs e)
         {
             Triggers.AtualizarObjeto(deTipo, deObjeto);
         }

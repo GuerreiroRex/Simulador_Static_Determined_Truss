@@ -122,6 +122,8 @@
             this.Controls.Add(this.deVertical);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "deQuantidadeGrade";
             this.Text = "deQuantidadeGrade";
             ((System.ComponentModel.ISupportInitialize)(this.deVertical)).EndInit();

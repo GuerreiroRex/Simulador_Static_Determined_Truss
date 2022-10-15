@@ -14,7 +14,7 @@ namespace CalculoTre.Objetos
     {
         public static async void Desenhar(Panel tela, int[] resolucao)
         {
-            await Task.Delay(500);
+            await Task.Delay(100);
             //Cria uma caneta preta
             Pen caneta = new Pen(Color.Black);
             caneta.Width = (float)1.5;
@@ -31,11 +31,8 @@ namespace CalculoTre.Objetos
             int corteX = 0;
             int corteY = 0;
 
-            if (resolucao[0] != 0)
-                 corteX = (tela.Width - 2 * a) / resolucao[0];
-
-            if (resolucao[1] != 0)
-                corteY = (tela.Height - 2 * a) / resolucao[1];
+            corteX = (tela.Width - 2 * a) / resolucao[0];
+            corteY = (tela.Height - 2 * a) / resolucao[1];
 
             using (Graphics g = tela.CreateGraphics())
             {
@@ -62,6 +59,21 @@ namespace CalculoTre.Objetos
             {
                 g.Clear(Color.White);
             }
+            Desenhar(tela, Data.Resolucao);
+        }
+
+        public static void RedesenharTela(Panel tela)
+        {
+            tela.Controls.Clear();
+            using (Graphics g = tela.CreateGraphics())
+            {
+                g.Clear(Color.White);
+            }
+
+            Joint.AtualizarNos();
+            Joint.Esquematizar();
+            Desenhar(tela, Data.Resolucao);
+            Triggers.AtualizarObjeto(Data.deTipo, Data.deObjeto);
         }
     }
 }
