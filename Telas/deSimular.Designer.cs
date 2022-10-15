@@ -33,12 +33,13 @@
             this.deTipo = new System.Windows.Forms.ComboBox();
             this.deObjeto = new System.Windows.Forms.ComboBox();
             this.deProp = new System.Windows.Forms.Button();
+            this.deConfigurarTela = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // deLimpar
             // 
             this.deLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.deLimpar.Location = new System.Drawing.Point(12, 12);
+            this.deLimpar.Location = new System.Drawing.Point(18, 38);
             this.deLimpar.Name = "deLimpar";
             this.deLimpar.Size = new System.Drawing.Size(112, 61);
             this.deLimpar.TabIndex = 0;
@@ -50,17 +51,16 @@
             // 
             this.deTela.BackColor = System.Drawing.Color.White;
             this.deTela.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.deTela.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.deTela.Location = new System.Drawing.Point(130, 12);
+            this.deTela.Location = new System.Drawing.Point(136, 38);
             this.deTela.Name = "deTela";
-            this.deTela.Size = new System.Drawing.Size(658, 426);
+            this.deTela.Size = new System.Drawing.Size(700, 400);
             this.deTela.TabIndex = 1;
             this.deTela.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CliquePainel);
             // 
             // deTipo
             // 
             this.deTipo.FormattingEnabled = true;
-            this.deTipo.Location = new System.Drawing.Point(12, 79);
+            this.deTipo.Location = new System.Drawing.Point(18, 105);
             this.deTipo.Name = "deTipo";
             this.deTipo.Size = new System.Drawing.Size(112, 21);
             this.deTipo.TabIndex = 0;
@@ -69,7 +69,7 @@
             // deObjeto
             // 
             this.deObjeto.FormattingEnabled = true;
-            this.deObjeto.Location = new System.Drawing.Point(12, 106);
+            this.deObjeto.Location = new System.Drawing.Point(18, 132);
             this.deObjeto.Name = "deObjeto";
             this.deObjeto.Size = new System.Drawing.Size(112, 21);
             this.deObjeto.TabIndex = 2;
@@ -78,7 +78,7 @@
             // deProp
             // 
             this.deProp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.deProp.Location = new System.Drawing.Point(12, 133);
+            this.deProp.Location = new System.Drawing.Point(18, 159);
             this.deProp.Name = "deProp";
             this.deProp.Size = new System.Drawing.Size(112, 61);
             this.deProp.TabIndex = 3;
@@ -86,11 +86,22 @@
             this.deProp.UseVisualStyleBackColor = true;
             this.deProp.Click += new System.EventHandler(this.deProp_Click);
             // 
+            // deConfigurarTela
+            // 
+            this.deConfigurarTela.Location = new System.Drawing.Point(681, 9);
+            this.deConfigurarTela.Name = "deConfigurarTela";
+            this.deConfigurarTela.Size = new System.Drawing.Size(154, 29);
+            this.deConfigurarTela.TabIndex = 4;
+            this.deConfigurarTela.Text = "Configurações de Tela";
+            this.deConfigurarTela.UseVisualStyleBackColor = true;
+            this.deConfigurarTela.Click += new System.EventHandler(this.deConfigurarTela_Click);
+            // 
             // deSimular
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(848, 450);
+            this.Controls.Add(this.deConfigurarTela);
             this.Controls.Add(this.deProp);
             this.Controls.Add(this.deObjeto);
             this.Controls.Add(this.deTipo);
@@ -109,6 +120,7 @@
         private System.Windows.Forms.ComboBox deTipo;
         private System.Windows.Forms.ComboBox deObjeto;
         private System.Windows.Forms.Button deProp;
+        private System.Windows.Forms.Button deConfigurarTela;
     }
 }
 

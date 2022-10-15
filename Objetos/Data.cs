@@ -11,5 +11,6 @@ namespace CalculoTre.Objetos
     {
         public static ComboBox deTipo;
         public static ComboBox deObjeto;
+        public static int[] Resolucao = new int[2] { 1, 1 };
     }
 }

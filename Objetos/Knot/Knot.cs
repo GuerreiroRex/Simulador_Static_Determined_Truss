@@ -18,7 +18,7 @@ namespace CalculoTre.Objetos
         protected byte id;
         private string nome;
         private Button botao;
-        private const int tamanho = 25;
+        private const int tamanho = 24; //Preferível que seja divisível por 2
 
         private int posX;
         private int posY;
@@ -79,6 +79,11 @@ namespace CalculoTre.Objetos
         public Point Ponto
         {
             get => new Point(X, Y);
+        }
+
+        public static int Tamanho
+        {
+            get => tamanho;
         }
         #endregion
     }

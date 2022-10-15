@@ -1,6 +1,6 @@
 ﻿namespace CalculoTre
 {
-    partial class propriedadesBarra
+    partial class dePropriedades
     {
         /// <summary>
         /// Required designer variable.

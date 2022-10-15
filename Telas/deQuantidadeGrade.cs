@@ -1,0 +1,32 @@
+﻿using CalculoTre.Objetos;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace CalculoTre.Telas
+{
+    public partial class deQuantidadeGrade : Form
+    {
+        public deQuantidadeGrade()
+        {
+            InitializeComponent();
+
+            deHorizontal.Value = Data.Resolucao[0];
+            deVertical.Value = Data.Resolucao[1];
+        }
+
+        private void deConfirmar_Click(object sender, EventArgs e)
+        {
+            Data.Resolucao[0] = (int)deHorizontal.Value;
+            Data.Resolucao[1] = (int)deVertical.Value;
+
+            this.Close();
+        }
+    }
+}

@@ -47,15 +47,29 @@ namespace CalculoTre.Objetos
             {
                 Triggers.JuntarApoios = true;
                 Joint.Apoio = this;
+                   
 
-                //Se o primeiro clique aindã não foi dado
-                if (!Triggers.PrimeiroClique)
+                switch (e.Button)
                 {
-                    Joint.PrimeiroClique(Joint.sender, Joint.e);
-                }
-                 else
-                {
-                    Joint.SegundoClique(Joint.sender, Joint.e);
+                    case MouseButtons.Left:
+                        
+                        //Se o primeiro clique aindã não foi dado
+                        if (!Triggers.PrimeiroClique)
+                            Joint.PrimeiroClique(Joint.sender, Joint.e);
+                        else
+                            Joint.SegundoClique(Joint.sender, Joint.e);
+
+                        break;
+
+                    case MouseButtons.Right:
+
+                        tela.Controls.Remove(Botao);
+
+                        foreach (var barra in Joint.barras)
+                            if (barra.Value.knots.Contains(this))
+                                Joint.barras.Remove(barra.Key);
+
+                        break;
                 }
             };
 

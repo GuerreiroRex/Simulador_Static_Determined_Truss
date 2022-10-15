@@ -1,4 +1,5 @@
 ﻿using CalculoTre.Objetos;
+using CalculoTre.Telas;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,12 +46,14 @@ namespace CalculoTre
             deTipo.DataSource = new BindingSource(comboSource, null);
             deTipo.DisplayMember = "Value";
             deTipo.ValueMember = "Key";
+
+            Grid.Desenhar(deTela, Data.Resolucao);
         }
 
         #region Tela de desenho
         private void BtLimp(object sender, EventArgs e)
         {
-            LimparTela();
+            Grid.LimparTela(deTela);
         }
 
         private void JointAtualizar(object sender, MouseEventArgs e)
@@ -78,20 +81,27 @@ namespace CalculoTre
 
         private void deProp_Click(object sender, EventArgs e)
         {
-            propriedadesBarra dePropBarra;
+            dePropriedades dePropBarra;
             switch (deTipo.SelectedIndex)
             {
                 case 0:
                     var barraTemp = ((KeyValuePair<byte, Knot>)deObjeto.SelectedItem).Value;
-                    dePropBarra = new propriedadesBarra(barraTemp);
+                    dePropBarra = new dePropriedades(barraTemp);
                     dePropBarra.ShowDialog();
                     break;
                 case 1:
                     var apoioTemp = ((KeyValuePair<string, Bar>)deObjeto.SelectedItem).Value;
-                    dePropBarra = new propriedadesBarra(apoioTemp);
+                    dePropBarra = new dePropriedades(apoioTemp);
                     dePropBarra.ShowDialog();
                     break;
             }
+        }
+
+        private void deConfigurarTela_Click(object sender, EventArgs e)
+        {
+            deQuantidadeGrade grade = new deQuantidadeGrade();
+            grade.ShowDialog();
+            Grid.Desenhar(deTela, Data.Resolucao);
         }
     }
 }

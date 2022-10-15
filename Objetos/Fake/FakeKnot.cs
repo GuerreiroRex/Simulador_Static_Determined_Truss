@@ -12,7 +12,6 @@ namespace CalculoTre.Objetos._0Fake
     public class FakeKnot
     {
         private Button botao;
-        private const int tamanho = 25;
         private byte id;
 
         public static Point[] pontos = new Point[2];
@@ -37,11 +36,11 @@ namespace CalculoTre.Objetos._0Fake
             botao.Text = id.ToString();
 
             //Define o tamanho do botão
-            botao.Height = tamanho;
-            botao.Width = tamanho;
+            botao.Height = Knot.Tamanho;
+            botao.Width = Knot.Tamanho;
 
             //Define a posição do botão e retira sua borda
-            int dv = tamanho / 2;
+            int dv = Knot.Tamanho / 2;
 
             botao.Location = new Point((pontos[conta].X - dv), (pontos[conta].Y - dv));
             conta++;

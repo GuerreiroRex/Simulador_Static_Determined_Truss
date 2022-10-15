@@ -11,12 +11,12 @@ using System.Windows.Forms;
 
 namespace CalculoTre
 {
-    public partial class propriedadesBarra : Form
+    public partial class dePropriedades : Form
     {
         private static Bar barraEscolhida;
         private static Knot noEscolhido;
 
-        public propriedadesBarra(object item)
+        public dePropriedades(object item)
         {
             InitializeComponent();
 

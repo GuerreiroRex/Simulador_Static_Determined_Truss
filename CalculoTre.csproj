@@ -49,10 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="deSimular.cs">
+    <Compile Include="Telas\deQuantidadeGrade.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="deSimular.Designer.cs">
+    <Compile Include="Telas\deQuantidadeGrade.Designer.cs">
+      <DependentUpon>deQuantidadeGrade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Telas\deSimular.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Telas\deSimular.Designer.cs">
       <DependentUpon>deSimular.cs</DependentUpon>
     </Compile>
     <Compile Include="Objetos\Data.cs" />
@@ -66,13 +72,16 @@
     <Compile Include="Objetos\Triggers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="propriedadesBarra.cs">
+    <Compile Include="Telas\dePropriedades.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="propriedadesBarra.Designer.cs">
-      <DependentUpon>propriedadesBarra.cs</DependentUpon>
+    <Compile Include="Telas\dePropriedades.Designer.cs">
+      <DependentUpon>dePropriedades.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="deSimular.resx">
+    <EmbeddedResource Include="Telas\deQuantidadeGrade.resx">
+      <DependentUpon>deQuantidadeGrade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Telas\deSimular.resx">
       <DependentUpon>deSimular.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -84,8 +93,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="propriedadesBarra.resx">
-      <DependentUpon>propriedadesBarra.cs</DependentUpon>
+    <EmbeddedResource Include="Telas\dePropriedades.resx">
+      <DependentUpon>dePropriedades.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
