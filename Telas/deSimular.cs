@@ -111,7 +111,7 @@ namespace CalculoTre
         {
             deQuantidadeGrade grade = new deQuantidadeGrade();
             grade.ShowDialog();
-            Grid.Desenhar(deTela, Data.Resolucao);
+            Grid.RedesenharTela(deTela);
         }
     }
 }

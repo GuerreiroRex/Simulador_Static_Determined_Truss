@@ -37,12 +37,11 @@ namespace CalculoTre.Objetos
 
             //Define a posição do botão e retira sua borda
             var dv = tamanho / 2;
+            botao.FlatAppearance.BorderSize = 0;
             botao.Location = new System.Drawing.Point(posX - dv, posY - dv);
 
             botao.AutoSize = true;
             botao.AutoSizeMode = AutoSizeMode.GrowOnly;
-
-            botao.FlatAppearance.BorderSize = 0;
 
             //Se o botão for apertado
             botao.MouseDown += (s, e) =>
@@ -86,11 +85,7 @@ namespace CalculoTre.Objetos
             tela.Controls.Add(botao);
         }
 
-        public void ApagarBotao(Panel tela)
-        {
-            tela.Controls.Remove(botao);
-        }
-
+        //Apaga todas as informações armazenadas de nós e barras
         public static void Reiniciar()
         {
             Joint.barras.Clear();

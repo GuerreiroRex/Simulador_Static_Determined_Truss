@@ -26,6 +26,9 @@ namespace CalculoTre.Telas
             Data.Resolucao[0] = (int)deHorizontal.Value;
             Data.Resolucao[1] = (int)deVertical.Value;
 
+            Data.EscalaVertical = (int)deValorVertical.Value;
+            Data.EscalaHorizontal = (int)deValorHorizontal.Value;
+
             this.Close();
         }
     }

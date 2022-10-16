@@ -9,11 +9,14 @@ namespace CalculoTre.Objetos
 {
     internal static class Triggers
     {
+        //Classe que guarda alguns gatilhos para outras ações
         public static bool PrimeiroClique = false;
         public static bool JuntarApoios = false;
 
+        //Ativa quando tiver que atualizar os objetos
         public static void AtualizarObjeto(ComboBox deTipo, ComboBox deObjeto)
         {
+            //Dependendo do tipo selecionado no indice, adiciona cada dicionário em um combo box
             switch (deTipo.SelectedIndex)
             {
                 case 0:
@@ -34,7 +37,5 @@ namespace CalculoTre.Objetos
                     break;
             }
         }
-
-        //public static event EventHandler Foo;
     }
 }

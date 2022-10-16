@@ -21,26 +21,29 @@ namespace CalculoTre.Objetos
         public void DrawLine(Panel painel)
         {
             //Cria uma caneta preta
-            Pen blackPen = new Pen(Color.Blue);
-            blackPen.Width = 1;
+            Pen caneta = new Pen(Color.Blue);
+            caneta.Width = 1;
 
             //Desenha a linha usando as coordenadas de cada nó
             using (Graphics g = painel.CreateGraphics())
             {
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                g.DrawLine(blackPen, knots[0].Ponto, knots[1].Ponto);
+                g.DrawLine(caneta, knots[0].Ponto, knots[1].Ponto);
             }
         }
 
+        //Desenha a linha com uam relação de tela reduzida
         public void DrawLineRelative(Panel painel)
         {
             //Cria uma caneta preta
-            Pen blackPen = new Pen(Color.Blue);
-            blackPen.Width = 1;
+            Pen caneta = new Pen(Color.Blue);
+            caneta.Width = 1;
 
+            //Variaveis de relação
             float xa = (float)(painel.Width) / (float)(Joint.deTela.Width);
             float ya = (float)(painel.Height) / (float)(Joint.deTela.Height);
 
+            //Os novos pontos com as posições relativas calculadas
             Point X = new Point(Convert.ToInt16(knots[0].X * xa), Convert.ToInt16(knots[0].Y * ya));
             Point Y = new Point(Convert.ToInt16(knots[1].X * xa), Convert.ToInt16(knots[1].Y * ya));
 
@@ -51,7 +54,7 @@ namespace CalculoTre.Objetos
             using (Graphics g = painel.CreateGraphics())
             {
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                g.DrawLine(blackPen, X, Y);
+                g.DrawLine(caneta, X, Y);
             }
         }
 

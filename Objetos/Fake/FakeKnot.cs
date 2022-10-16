@@ -30,6 +30,7 @@ namespace CalculoTre.Objetos._0Fake
 
             //Coloca seu fundo preto, letra branca e escreve uma letra
             botao.BackColor = System.Drawing.Color.Black;
+            botao.FlatAppearance.BorderSize = 0;
             botao.ForeColor = Color.White;
 
             //botao.Text = nome;
@@ -41,14 +42,11 @@ namespace CalculoTre.Objetos._0Fake
 
             //Define a posição do botão e retira sua borda
             int dv = Knot.Tamanho / 2;
-
             botao.Location = new Point((pontos[conta].X - dv), (pontos[conta].Y - dv));
             conta++;
 
             if (conta > 1)
                 conta = 0;
-
-            botao.FlatAppearance.BorderSize = 0;
 
             tela.Controls.Add(botao);
         }
