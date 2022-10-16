@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objetos\Grid\Grid.cs" />
     <Compile Include="Telas\deQuantidadeGrade.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,7 +66,7 @@
     <Compile Include="Objetos\Fake\FakeKnot.cs" />
     <Compile Include="Objetos\Bar\Bar.cs" />
     <Compile Include="Objetos\Bar\BarM.cs" />
-    <Compile Include="Objetos\Grid.cs" />
+    <Compile Include="Objetos\Grid\GridM.cs" />
     <Compile Include="Objetos\Joint.cs" />
     <Compile Include="Objetos\Knot\Knot.cs" />
     <Compile Include="Objetos\Knot\KnotM.cs" />

@@ -121,8 +121,8 @@ namespace CalculoTre.Objetos
         //Verifica se o clique foi dentro do quadro
         public static bool DentroDoQuadro(object sender, MouseEventArgs e)
         {
-            if (e.X >= Knot.Tamanho / 2 && e.X < deTela.Width - Knot.Tamanho / 2 &&
-                    e.Y >= Knot.Tamanho / 2 && e.Y < deTela.Height - Knot.Tamanho / 2)
+            if (e.X >= Grid.a && e.X < Grid.c &&
+                    e.Y >= Grid.a && e.Y < Grid.b)
                 return true;
             else
                 return false;

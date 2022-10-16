@@ -47,7 +47,8 @@ namespace CalculoTre
             deTipo.DisplayMember = "Value";
             deTipo.ValueMember = "Key";
 
-            Grid.Desenhar(deTela, Data.Resolucao);
+            Grid.AtualizarValoresGrid(deTela);
+            Grid.Desenhar();
         }
 
         #region Tela de desenho
@@ -84,7 +85,7 @@ namespace CalculoTre
         }
             #endregion
 
-            public void AtualizarListaObjetos(object sender, EventArgs e)
+        public void AtualizarListaObjetos(object sender, EventArgs e)
         {
             Triggers.AtualizarObjeto(deTipo, deObjeto);
         }

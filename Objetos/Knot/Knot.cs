@@ -22,6 +22,9 @@ namespace CalculoTre.Objetos
 
         private int posX;
         private int posY;
+        private int valorX;
+        private int valorY;
+
         private double forçaX;
         private double forçaY;
 
@@ -32,6 +35,9 @@ namespace CalculoTre.Objetos
 
             posX = cordX;
             posY = cordY;
+
+            valorX = Grid.PosParaValorX(cordX);
+            valorY = Grid.PosParaValorX(cordY);
         }
 
         #region Variaveis

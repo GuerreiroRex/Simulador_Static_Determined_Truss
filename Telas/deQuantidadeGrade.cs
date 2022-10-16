@@ -19,6 +19,9 @@ namespace CalculoTre.Telas
 
             deHorizontal.Value = Data.Resolucao[0];
             deVertical.Value = Data.Resolucao[1];
+
+            deValorHorizontal.Value = Data.EscalaHorizontal;
+            deValorVertical.Value = Data.EscalaVertical;
         }
 
         private void deConfirmar_Click(object sender, EventArgs e)
