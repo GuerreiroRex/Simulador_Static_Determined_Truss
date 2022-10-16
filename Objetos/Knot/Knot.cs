@@ -37,7 +37,7 @@ namespace CalculoTre.Objetos
             posY = cordY;
 
             valorX = Grid.PosParaValorX(cordX);
-            valorY = Grid.PosParaValorX(cordY);
+            valorY = Grid.PosParaValorY(cordY);
         }
 
         #region Variaveis
@@ -90,6 +90,20 @@ namespace CalculoTre.Objetos
         public static int Tamanho
         {
             get => tamanho;
+        }
+
+        public int ValorX
+        {
+            get => valorX;
+
+            set => valorX = value;
+        }
+
+        public int ValorY
+        {
+            get => valorY;
+
+            set => valorY = value;
         }
         #endregion
     }

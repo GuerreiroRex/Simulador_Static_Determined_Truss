@@ -34,20 +34,43 @@ namespace CalculoTre
             }
         }
 
+        #region Barras
         private void Barras()
         {
             deTitulo.Text = barraEscolhida.ToString();
             DesenharBarra(barraEscolhida);
         }
+        #endregion
 
+        #region Apoios
         private void Apoios()
         {
             deTitulo.Text = noEscolhido.ToString();
 
+            deValorX.Value = noEscolhido.ValorX;
+            deValorY.Value = noEscolhido.ValorY;
+
             foreach (var barra in Joint.barras.Values)
                 if (barra.knots.Contains(noEscolhido))
                     DesenharBarra(barra);
+
+            ApoiosValor();
         }
+
+        private void ApoiosValor()
+        {
+            Label valorX = new Label();
+            valorX.Text = $"Valor em X:\t{noEscolhido.ValorX}";
+            valorX.Location = new Point(0, 30);
+
+            Label valorY = new Label();
+            valorY.Text = $"Valor em Y:\t{noEscolhido.ValorY}";
+            valorY.Location = new Point(0, 60);
+
+            deMenu.Controls.Add(valorX);
+            deMenu.Controls.Add(valorY);
+        }
+        #endregion
 
         private async void DesenharBarra(Bar atual)
         {
@@ -58,6 +81,10 @@ namespace CalculoTre
 
         private void deFechar_Click(object sender, EventArgs e)
         {
+            noEscolhido.ValorX = (int)deValorX.Value;
+            noEscolhido.ValorY = (int)deValorY.Value;
+
+            noEscolhido.Reposicionar();
             this.Close();
         }
     }

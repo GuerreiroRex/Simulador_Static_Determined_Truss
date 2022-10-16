@@ -20,24 +20,27 @@ namespace CalculoTre.Objetos
 
         public static int ValorParaPosX(int valor)
         {
-            return (valor * (c - a) / Data.EscalaHorizontal) + a;
+            double temp = (double)valor * tela.Width / (double)Data.EscalaHorizontal + a / 2;
+            return (int)temp;
         }
 
         public static int ValorParaPosY(int valor)
         {
-            return ((Data.EscalaVertical - valor) * (b - a) / Data.EscalaVertical) + a;
+            double temp = (double)(Data.EscalaVertical - valor) * tela.Height / (double)Data.EscalaVertical + a / 2;
+            return (int)temp;
         }
 
         public static int PosParaValorX(int pos)
         {
-            //Imprecisso?
-            return pos * Data.EscalaHorizontal / (c - a);
+            double temp = (double)(pos - a / 2) * Data.EscalaHorizontal / (double)tela.Width;
+            return (int)temp;
         }
 
         public static int PosParaValorY(int pos)
         {
+            double temp = (double)(tela.Height - (pos - a / 2)) * (double)Data.EscalaVertical / (double)tela.Height;
             //Imprecisso?
-            return ((b - a) - pos) * Data.EscalaVertical / (b - a);
+            return (int)temp;
         }
     }
 }

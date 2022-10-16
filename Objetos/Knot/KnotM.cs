@@ -38,7 +38,7 @@ namespace CalculoTre.Objetos
             //Define a posição do botão e retira sua borda
             var dv = tamanho / 2;
             botao.FlatAppearance.BorderSize = 0;
-            botao.Location = new System.Drawing.Point(posX - dv, posY - dv);
+            botao.Location = new System.Drawing.Point(Ponto.X - dv, Ponto.Y - dv);
 
             botao.AutoSize = true;
             botao.AutoSizeMode = AutoSizeMode.GrowOnly;
@@ -46,7 +46,12 @@ namespace CalculoTre.Objetos
             //Se o botão for apertado
             botao.MouseDown += (s, e) =>
             {
-                
+                MessageBox.Show(
+                    $"Posicão \t\tX{posX} Y{posY}" +
+                    $"\nValor \t\tX{valorX} Y{valorY}" +
+                    $"\nValor calc \tX{Grid.PosParaValorX(posX)} Y{Grid.PosParaValorY(posY)}" +
+                    $"\nPosicão calc \tX{Grid.ValorParaPosX(Grid.PosParaValorX(posX))} Y{Grid.ValorParaPosY(Grid.PosParaValorY(posY))}");
+
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
@@ -92,6 +97,12 @@ namespace CalculoTre.Objetos
             Joint.nos.Clear();
 
             quantidade = 0;
+        }
+
+        public void Reposicionar()
+        {
+            posX = Grid.ValorParaPosX(valorX);
+            posY = Grid.ValorParaPosY(valorY);
         }
     }
 }

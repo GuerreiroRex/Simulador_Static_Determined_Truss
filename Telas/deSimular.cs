@@ -17,7 +17,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CalculoTre
 {
@@ -92,6 +91,9 @@ namespace CalculoTre
 
         private void deProp_Click(object sender, EventArgs e)
         {
+            if (deObjeto.SelectedItem == null)
+                return;
+
             dePropriedades dePropBarra;
             switch (deTipo.SelectedIndex)
             {
@@ -106,6 +108,8 @@ namespace CalculoTre
                     dePropBarra.ShowDialog();
                     break;
             }
+
+            Grid.RedesenharTela(deTela);
         }
 
         private void deConfigurarTela_Click(object sender, EventArgs e)
@@ -113,6 +117,15 @@ namespace CalculoTre
             deQuantidadeGrade grade = new deQuantidadeGrade();
             grade.ShowDialog();
             Grid.RedesenharTela(deTela);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            Button lb = new Button();
+            lb.Location = new Point(10, 10);
+            lb.Text = "O";
+
+            deTela.Controls.Add(lb);
         }
     }
 }

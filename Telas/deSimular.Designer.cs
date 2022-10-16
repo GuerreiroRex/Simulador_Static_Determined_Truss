@@ -34,6 +34,7 @@
             this.deObjeto = new System.Windows.Forms.ComboBox();
             this.deProp = new System.Windows.Forms.Button();
             this.deConfigurarTela = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // deLimpar
@@ -96,11 +97,22 @@
             this.deConfigurarTela.UseVisualStyleBackColor = true;
             this.deConfigurarTela.Click += new System.EventHandler(this.deConfigurarTela_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(46, 270);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "label1";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // deSimular
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(848, 450);
+            this.ClientSize = new System.Drawing.Size(901, 450);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.deConfigurarTela);
             this.Controls.Add(this.deProp);
             this.Controls.Add(this.deObjeto);
@@ -110,6 +122,7 @@
             this.Name = "deSimular";
             this.Text = "Simulação de Treliça";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -121,6 +134,7 @@
         private System.Windows.Forms.ComboBox deObjeto;
         private System.Windows.Forms.Button deProp;
         private System.Windows.Forms.Button deConfigurarTela;
+        private System.Windows.Forms.Label label1;
     }
 }
 

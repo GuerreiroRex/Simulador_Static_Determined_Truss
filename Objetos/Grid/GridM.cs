@@ -23,8 +23,8 @@ namespace CalculoTre.Objetos
             b = tela.Height - a;
             c = tela.Width - a;
 
-            corteX = (tela.Width - 2 * a) / Data.Resolucao[0];
-            corteY = (tela.Height - 2 * a) / Data.Resolucao[1];
+            corteX = (c - a) / Data.Resolucao[0];
+            corteY = (b - a) / Data.Resolucao[1];
         }
 
         
@@ -130,8 +130,9 @@ namespace CalculoTre.Objetos
 
             Joint.AtualizarNos();
             Joint.Esquematizar();
-            Desenhar();
             Triggers.AtualizarObjeto(Data.deTipo, Data.deObjeto);
+
+            Desenhar();
         }
     }
 }
