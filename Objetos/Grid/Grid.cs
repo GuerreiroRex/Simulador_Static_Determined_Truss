@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,32 +16,31 @@ namespace CalculoTre.Objetos
         public static int b;
         public static int c;
 
-        public static int corteX;
-        public static int corteY;
+        public static double corteX;
+        public static double corteY;
 
         public static int ValorParaPosX(int valor)
         {
-            double temp = (double)valor * tela.Width / (double)Data.EscalaHorizontal + a / 2;
-            return (int)temp;
+            double ajuste = (double)(tela.Width - 2 * a) / (double)tela.Width * (double)tela.Width * valor / Data.EscalaHorizontal;
+            return (int)(ajuste + a);
         }
 
         public static int ValorParaPosY(int valor)
         {
-            double temp = (double)(Data.EscalaVertical - valor) * tela.Height / (double)Data.EscalaVertical + a / 2;
-            return (int)temp;
+            double ajuste = (double)(tela.Height - 2 * a) / (double)tela.Height * (double)tela.Height * (Data.EscalaVertical - valor) / Data.EscalaVertical;
+            return (int)(ajuste + a);
         }
 
         public static int PosParaValorX(int pos)
         {
-            double temp = (double)(pos - a / 2) * Data.EscalaHorizontal / (double)tela.Width;
-            return (int)temp;
+            double valor = (double)(pos - a) * Data.EscalaHorizontal / (tela.Width - 2 * a);
+            return (int)valor;
         }
 
         public static int PosParaValorY(int pos)
         {
-            double temp = (double)(tela.Height - (pos - a / 2)) * (double)Data.EscalaVertical / (double)tela.Height;
-            //Imprecisso?
-            return (int)temp;
+            double valor = (double)((tela.Height - pos) - a) * Data.EscalaVertical / (tela.Height - 2 * a);
+            return (int)valor;
         }
     }
 }

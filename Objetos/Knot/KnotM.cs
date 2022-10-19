@@ -46,12 +46,6 @@ namespace CalculoTre.Objetos
             //Se o botão for apertado
             botao.MouseDown += (s, e) =>
             {
-                MessageBox.Show(
-                    $"Posicão \t\tX{posX} Y{posY}" +
-                    $"\nValor \t\tX{valorX} Y{valorY}" +
-                    $"\nValor calc \tX{Grid.PosParaValorX(posX)} Y{Grid.PosParaValorY(posY)}" +
-                    $"\nPosicão calc \tX{Grid.ValorParaPosX(Grid.PosParaValorX(posX))} Y{Grid.ValorParaPosY(Grid.PosParaValorY(posY))}");
-
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
@@ -103,6 +97,15 @@ namespace CalculoTre.Objetos
         {
             posX = Grid.ValorParaPosX(valorX);
             posY = Grid.ValorParaPosY(valorY);
+        }
+
+        public static void Reposicionar(Dictionary<byte, Knot> nos)
+        {
+            foreach (Knot no in nos.Values)
+            {
+                no.posX = Grid.ValorParaPosX(no.valorX);
+                no.posY = Grid.ValorParaPosY(no.valorY);
+            }
         }
     }
 }

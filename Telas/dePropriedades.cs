@@ -20,6 +20,9 @@ namespace CalculoTre
         {
             InitializeComponent();
 
+            deValorX.Maximum = int.MaxValue;
+            deValorY.Maximum = int.MaxValue;
+
             switch (item.GetType().Name)
             {
                 case "Bar":

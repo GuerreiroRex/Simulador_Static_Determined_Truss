@@ -11,7 +11,7 @@ namespace CalculoTre.Objetos
     {
         //Informações para serem guardadas dentre formularios
         public static Panel deTela;
-        public static Knot[] tempKnot = new Knot[2];
+        private static Knot[] tempKnot = new Knot[2];
 
         public static Dictionary<string, Bar> barras = new Dictionary<string, Bar>();
         public static Dictionary<byte, Knot> nos = new Dictionary<byte, Knot>();

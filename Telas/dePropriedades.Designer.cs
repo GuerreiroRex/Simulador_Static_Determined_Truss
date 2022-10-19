@@ -80,6 +80,11 @@
             // deValorX
             // 
             this.deValorX.Location = new System.Drawing.Point(12, 231);
+            this.deValorX.Maximum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.deValorX.Name = "deValorX";
             this.deValorX.Size = new System.Drawing.Size(90, 20);
             this.deValorX.TabIndex = 0;

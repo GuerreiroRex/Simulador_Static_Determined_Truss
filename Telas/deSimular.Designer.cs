@@ -34,7 +34,6 @@
             this.deObjeto = new System.Windows.Forms.ComboBox();
             this.deProp = new System.Windows.Forms.Button();
             this.deConfigurarTela = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // deLimpar
@@ -54,7 +53,7 @@
             this.deTela.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.deTela.Location = new System.Drawing.Point(136, 38);
             this.deTela.Name = "deTela";
-            this.deTela.Size = new System.Drawing.Size(700, 400);
+            this.deTela.Size = new System.Drawing.Size(748, 448);
             this.deTela.TabIndex = 1;
             this.deTela.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CliquePainel);
             // 
@@ -97,22 +96,11 @@
             this.deConfigurarTela.UseVisualStyleBackColor = true;
             this.deConfigurarTela.Click += new System.EventHandler(this.deConfigurarTela_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(46, 270);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
             // deSimular
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(901, 450);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(901, 501);
             this.Controls.Add(this.deConfigurarTela);
             this.Controls.Add(this.deProp);
             this.Controls.Add(this.deObjeto);
@@ -121,8 +109,8 @@
             this.Controls.Add(this.deLimpar);
             this.Name = "deSimular";
             this.Text = "Simulação de Treliça";
+            this.SizeChanged += new System.EventHandler(this.deSimular_SizeChanged);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -134,7 +122,6 @@
         private System.Windows.Forms.ComboBox deObjeto;
         private System.Windows.Forms.Button deProp;
         private System.Windows.Forms.Button deConfigurarTela;
-        private System.Windows.Forms.Label label1;
     }
 }
 

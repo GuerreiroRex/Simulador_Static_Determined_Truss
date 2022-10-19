@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -13,6 +14,8 @@ namespace CalculoTre.Objetos
 {
     public static partial class Grid
     {
+        public static List<int> valoresTempX = new List<int>();
+
         public static void AtualizarValoresGrid(Panel atela = null)
         {
             //Calcula as bordas do quarto
@@ -23,11 +26,9 @@ namespace CalculoTre.Objetos
             b = tela.Height - a;
             c = tela.Width - a;
 
-            corteX = (c - a) / Data.Resolucao[0];
-            corteY = (b - a) / Data.Resolucao[1];
+            corteX = (double)(c - a) / Data.Resolucao[0];
+            corteY = (double)(b - a) / Data.Resolucao[1];
         }
-
-        
 
         //Desenha o quadro e seus quadriculados na tela.
         public static async void Desenhar()
@@ -44,6 +45,7 @@ namespace CalculoTre.Objetos
             Point inferiorEsquerdo  = new Point(a, b);
             Point inferiorDireito   = new Point(c, b);
 
+
             //Cria o gráfico para desenhar na  tela
             using (Graphics g = tela.CreateGraphics())
             {
@@ -57,10 +59,10 @@ namespace CalculoTre.Objetos
 
                 //Posiciona as linahs dos quadriculados
                 for (int i = 1; i < Data.Resolucao[0]; i++)
-                    g.DrawLine(caneta, a + corteX * i, a, a + corteX * i, b);
+                    g.DrawLine(caneta, ValorParaPosX((i * Data.EscalaHorizontal / Data.Resolucao[0])), a, (int)(a + corteX * i), b);
 
                 for (int i = 1; i < Data.Resolucao[1]; i++)
-                    g.DrawLine(caneta, a, a + corteY * i, c, a + corteY * i);
+                    g.DrawLine(caneta, a, (int)(a + corteY * i), c, (int)(a + corteY * i));
 
                 Letreiro();
             }
@@ -68,6 +70,29 @@ namespace CalculoTre.Objetos
 
         public static void Letreiro()
         {
+            #region Codigo de suporte
+            /* Marcar coordenadas X no grafico
+            foreach (int valor in valoresTempX)
+            {
+                //Horizontal
+                #region talvez uma classe a parte
+                Label marca = new Label();
+
+                marca.AutoSize = false;
+                marca.Height = a;
+                marca.Width = a;
+                marca.Font = new Font("Arial", 6);
+                #endregion
+
+                marca.TextAlign = ContentAlignment.TopCenter;
+                marca.Text = (valor).ToString();
+                marca.Location = new Point(valor - a / 2, tela.Height - a / 2 + 1);
+
+                tela.Controls.Add(marca);
+            }
+            */
+            #endregion
+
             for (int i = 0; i <= Data.Resolucao[0]; i++)
             {
                 //Horizontal
@@ -82,7 +107,7 @@ namespace CalculoTre.Objetos
 
                 marca.TextAlign = ContentAlignment.TopCenter;
                 marca.Text = (i * Data.EscalaHorizontal / Data.Resolucao[0]).ToString();
-                marca.Location = new Point(corteX * i + a /2, tela.Height - a + 1);
+                marca.Location = new Point((int)(corteX * i + a /2), tela.Height - a + 1);
 
                 tela.Controls.Add(marca);
             }
@@ -100,7 +125,7 @@ namespace CalculoTre.Objetos
 
                 marca.TextAlign = ContentAlignment.MiddleRight;
                 marca.Text = ((Data.Resolucao[1] - i) * Data.EscalaVertical / Data.Resolucao[1]).ToString();
-                marca.Location = new Point(0, corteY * i + a - marca.Height / 2);
+                marca.Location = new Point(0, (int)(corteY * i + a - marca.Height / 2));
 
                 tela.Controls.Add(marca);
             }
@@ -129,6 +154,8 @@ namespace CalculoTre.Objetos
             }
 
             Joint.AtualizarNos();
+            Knot.Reposicionar(Joint.nos);
+
             Joint.Esquematizar();
             Triggers.AtualizarObjeto(Data.deTipo, Data.deObjeto);
 

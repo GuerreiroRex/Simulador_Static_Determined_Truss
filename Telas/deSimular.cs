@@ -26,13 +26,12 @@ namespace CalculoTre
         public deSimular()
         {
             InitializeComponent();
+            Dimensionar();
             Inicializar();
         }
 
         public void Inicializar()
         {
-            Joint.deTela = deTela;
-
             Data.deTipo = deTipo;
             Data.deObjeto = deObjeto;
 
@@ -121,11 +120,31 @@ namespace CalculoTre
 
         private void label1_Click(object sender, EventArgs e)
         {
-            Button lb = new Button();
-            lb.Location = new Point(10, 10);
-            lb.Text = "O";
+            for (int i = 0; i < 5; i++)
+            {
+                Button lb = new Button();
 
-            deTela.Controls.Add(lb);
+                lb.Location = new Point(i * 70 + Grid.a, i * 70 + Grid.a);
+                lb.Width = 10;
+                lb.Text = "O";
+
+                deTela.Controls.Add(lb);
+            }
+            
+        }
+
+        private void deSimular_SizeChanged(object sender, EventArgs e)
+        {
+            Dimensionar();
+
+            Grid.RedesenharTela(deTela);
+        }
+
+        private void Dimensionar()
+        {
+            deTela.Width = (this.Size.Width - 15) - deTela.Location.X;
+            deTela.Height = (this.Size.Height - 40) - deTela.Location.Y;
+            Joint.deTela = deTela;
         }
     }
 }
