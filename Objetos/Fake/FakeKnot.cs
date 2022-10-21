@@ -23,7 +23,7 @@ namespace CalculoTre.Objetos._0Fake
             id = no.ID;
         }
 
-        public void Desenhar(Panel tela)
+        public void Desenhar(Tela tela)
         {
             //Cria o botão
             botao = new Button();
@@ -48,7 +48,7 @@ namespace CalculoTre.Objetos._0Fake
             if (conta > 1)
                 conta = 0;
 
-            tela.Controls.Add(botao);
+            tela.Painel.Controls.Add(botao);
         }
     }
 }

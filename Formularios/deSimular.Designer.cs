@@ -45,7 +45,7 @@
             this.deLimpar.TabIndex = 0;
             this.deLimpar.Text = "Limpar";
             this.deLimpar.UseVisualStyleBackColor = true;
-            this.deLimpar.Click += new System.EventHandler(this.BtLimp);
+            this.deLimpar.Click += new System.EventHandler(this.deLimpar_Click);
             // 
             // deTela
             // 

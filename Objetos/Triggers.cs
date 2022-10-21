@@ -20,18 +20,18 @@ namespace CalculoTre.Objetos
             switch (deTipo.SelectedIndex)
             {
                 case 0:
-                    if (Joint.nos.Count <= 0)
+                    if (Data.nos.Count <= 0)
                         break;
 
-                    deObjeto.DataSource = new BindingSource(Joint.nos, null);
+                    deObjeto.DataSource = new BindingSource(Data.nos, null);
                     deObjeto.DisplayMember = "Value";
                     deObjeto.ValueMember = "Key";
                     break;
                 case 1:
-                    if (Joint.barras.Count <= 0)
+                    if (Data.barras.Count <= 0)
                         break;
 
-                    deObjeto.DataSource = new BindingSource(Joint.barras, null);
+                    deObjeto.DataSource = new BindingSource(Data.barras, null);
                     deObjeto.DisplayMember = "Value";
                     deObjeto.ValueMember = "Key";
                     break;

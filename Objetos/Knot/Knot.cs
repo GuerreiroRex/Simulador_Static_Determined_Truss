@@ -13,98 +13,44 @@ namespace CalculoTre.Objetos
 {
     public partial class Knot
     {
-        static byte quantidade;
+        private static byte quantidade;
 
-        protected byte id;
-        private string nome;
-        private Button botao;
-        private const int tamanho = 24; //Preferível que seja divisível por 2
+        public byte id;
+        public string nome;
 
-        private int posX;
-        private int posY;
-        private int valorX;
-        private int valorY;
+        public Button botao;
+        public static int tamanho = 24;
 
-        private double forçaX;
-        private double forçaY;
+        public int valorX;
+        public int valorY;
 
-        public Knot(Panel deTela, int cordX, int cordY)
+        public double forçaX;
+        public double forçaY;
+
+        public Knot()
         {
-            id = quantidade++;
+            id = Quantidade++;
             nome = id.ToString();
-
-            posX = cordX;
-            posY = cordY;
-
-            valorX = Grid.PosParaValorX(cordX);
-            valorY = Grid.PosParaValorY(cordY);
         }
-
-        #region Variaveis
-        public int X
+        public void AtualizarValores(Tela tela, int coordX, int coordY)
         {
-            get => posX; 
-            
-            set
-            {
-                if (value > 0)
-                    posX = value;
-                else
-                    throw new Exception("Coordenada invalida.");
-            }
+            valorX = tela.PosParaValorX(coordX);
+            valorY = tela.PosParaValorY(coordY);
         }
 
-        public int Y
-        {
-            get => posY;
+        #region Propriedades
 
-            set
-            {
-                if (value > 0)
-                    posY = value;
-                else
-                    throw new Exception("Coordenada invalida.");
-            }
-        }
+        public byte ID { get => id; }
 
-        public Button Botao
-        {
-            get => botao;
-        }
+        public string Nome { get => nome; set => nome = value; }    
 
-        public string Nome
-        {
-            get => nome;
-        }
+        public static int Tamanho { get => tamanho; set => tamanho = value; }
 
-        public byte ID
-        {
-            get => id;
-        }
+        public int ValorX { get => valorX; set => valorX = value; }
 
-        public Point Ponto
-        {
-            get => new Point(X, Y);
-        }
+        public int ValorY { get => valorY; set => valorY = value; }
 
-        public static int Tamanho
-        {
-            get => tamanho;
-        }
-
-        public int ValorX
-        {
-            get => valorX;
-
-            set => valorX = value;
-        }
-
-        public int ValorY
-        {
-            get => valorY;
-
-            set => valorY = value;
-        }
+        public static byte Quantidade { get => quantidade; set => quantidade = value; }
         #endregion
     }
 }

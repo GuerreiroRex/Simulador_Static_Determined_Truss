@@ -16,9 +16,14 @@ namespace CalculoTre
         private static Bar barraEscolhida;
         private static Knot noEscolhido;
 
+        Tela telaPropriedades;
+
         public dePropriedades(object item)
         {
             InitializeComponent();
+
+            telaPropriedades = new Tela(deProjecao);
+            telaPropriedades.Redesenhar();
 
             deValorX.Maximum = int.MaxValue;
             deValorY.Maximum = int.MaxValue;
@@ -53,7 +58,7 @@ namespace CalculoTre
             deValorX.Value = noEscolhido.ValorX;
             deValorY.Value = noEscolhido.ValorY;
 
-            foreach (var barra in Joint.barras.Values)
+            foreach (var barra in Data.barras.Values)
                 if (barra.knots.Contains(noEscolhido))
                     DesenharBarra(barra);
 
@@ -78,8 +83,8 @@ namespace CalculoTre
         private async void DesenharBarra(Bar atual)
         {
             await Task.Delay(500);
-            atual.DrawLineRelative(deProjecao);
-            atual.Pontuar(deProjecao, true);
+            //atual.DrawLineRelative(telaPropriedades);
+            //atual.Pontuar(telaPropriedades, true);
         }
 
         private void deFechar_Click(object sender, EventArgs e)
@@ -87,7 +92,7 @@ namespace CalculoTre
             noEscolhido.ValorX = (int)deValorX.Value;
             noEscolhido.ValorY = (int)deValorY.Value;
 
-            noEscolhido.Reposicionar();
+            //noEscolhido.Reposicionar();
             this.Close();
         }
     }

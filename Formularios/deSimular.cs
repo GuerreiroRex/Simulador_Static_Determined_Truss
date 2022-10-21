@@ -22,20 +22,33 @@ namespace CalculoTre
 {
     public partial class deSimular : Form
     {
+        private Tela telaPrincipal;
 
         public deSimular()
         {
             InitializeComponent();
-            Dimensionar();
             Inicializar();
+
+            this.Shown += telaPrincipal.Desenhar;
         }
 
         public void Inicializar()
+        {
+            PrepararComboBoxes();
+            DimensionarPainel();
+            telaPrincipal = new Tela(deTela);
+            Data.telas.Add(0, telaPrincipal);
+
+            telaPrincipal.AtualizarDados();
+        }   
+
+        private void PrepararComboBoxes()
         {
             Data.deTipo = deTipo;
             Data.deObjeto = deObjeto;
 
             deTipo.Items.Clear();
+            deObjeto.Items.Clear();
 
             Dictionary<byte, string> comboSource = new Dictionary<byte, string>();
             comboSource.Add(0, "Apoios");
@@ -44,26 +57,17 @@ namespace CalculoTre
             deTipo.DataSource = new BindingSource(comboSource, null);
             deTipo.DisplayMember = "Value";
             deTipo.ValueMember = "Key";
-
-            Grid.AtualizarValoresGrid(deTela);
-            Grid.Desenhar();
         }
 
-        #region Tela de desenho
-        private void BtLimp(object sender, EventArgs e)
+        private void DimensionarPainel()
         {
-            Grid.LimparTela(deTela);
-        }
-
-        private void JointAtualizar(object sender, MouseEventArgs e)
-        {
-            Joint.sender = sender;
-            Joint.e = e;
+            deTela.Width = (this.Size.Width - 15) - deTela.Location.X;
+            deTela.Height = (this.Size.Height - 40) - deTela.Location.Y;
         }
 
         private void CliquePainel(object sender, MouseEventArgs e)
         {
-            if (!Joint.DentroDoQuadro(sender, e))
+            if (!telaPrincipal.DentroDoQuadro(sender, e))
                 return;
 
             switch (e.Button)
@@ -77,11 +81,8 @@ namespace CalculoTre
                     break;
             }
 
-            EventArgs d = new EventArgs();
-            AtualizarListaObjetos(sender, d);
-
+            AtualizarListaObjetos(sender, new EventArgs());
         }
-            #endregion
 
         public void AtualizarListaObjetos(object sender, EventArgs e)
         {
@@ -108,43 +109,27 @@ namespace CalculoTre
                     break;
             }
 
-            Grid.RedesenharTela(deTela);
+            telaPrincipal.Redesenhar();
         }
 
         private void deConfigurarTela_Click(object sender, EventArgs e)
         {
             deQuantidadeGrade grade = new deQuantidadeGrade();
             grade.ShowDialog();
-            Grid.RedesenharTela(deTela);
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                Button lb = new Button();
-
-                lb.Location = new Point(i * 70 + Grid.a, i * 70 + Grid.a);
-                lb.Width = 10;
-                lb.Text = "O";
-
-                deTela.Controls.Add(lb);
-            }
-            
+            telaPrincipal.Redesenhar();
         }
 
         private void deSimular_SizeChanged(object sender, EventArgs e)
         {
-            Dimensionar();
+            DimensionarPainel();
 
-            Grid.RedesenharTela(deTela);
+            telaPrincipal.Redesenhar();
         }
 
-        private void Dimensionar()
+        private void deLimpar_Click(object sender, EventArgs e)
         {
-            deTela.Width = (this.Size.Width - 15) - deTela.Location.X;
-            deTela.Height = (this.Size.Height - 40) - deTela.Location.Y;
-            Joint.deTela = deTela;
+            Data.Reiniciar();
+            telaPrincipal.Redesenhar();
         }
     }
 }

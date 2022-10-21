@@ -49,40 +49,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Objetos\Grid\Grid.cs" />
-    <Compile Include="Telas\deQuantidadeGrade.cs">
+    <Compile Include="Objetos\Tela\Tela.cs" />
+    <Compile Include="Formularios\deQuantidadeGrade.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Telas\deQuantidadeGrade.Designer.cs">
+    <Compile Include="Formularios\deQuantidadeGrade.Designer.cs">
       <DependentUpon>deQuantidadeGrade.cs</DependentUpon>
     </Compile>
-    <Compile Include="Telas\deSimular.cs">
+    <Compile Include="Formularios\deSimular.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Telas\deSimular.Designer.cs">
+    <Compile Include="Formularios\deSimular.Designer.cs">
       <DependentUpon>deSimular.cs</DependentUpon>
     </Compile>
     <Compile Include="Objetos\Data.cs" />
     <Compile Include="Objetos\Fake\FakeKnot.cs" />
     <Compile Include="Objetos\Bar\Bar.cs" />
     <Compile Include="Objetos\Bar\BarM.cs" />
-    <Compile Include="Objetos\Grid\GridM.cs" />
     <Compile Include="Objetos\Joint.cs" />
     <Compile Include="Objetos\Knot\Knot.cs" />
     <Compile Include="Objetos\Knot\KnotM.cs" />
+    <Compile Include="Objetos\Tela\Tela_Metodos.cs" />
     <Compile Include="Objetos\Triggers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Telas\dePropriedades.cs">
+    <Compile Include="Formularios\dePropriedades.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Telas\dePropriedades.Designer.cs">
+    <Compile Include="Formularios\dePropriedades.Designer.cs">
       <DependentUpon>dePropriedades.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Telas\deQuantidadeGrade.resx">
+    <EmbeddedResource Include="Formularios\deQuantidadeGrade.resx">
       <DependentUpon>deQuantidadeGrade.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Telas\deSimular.resx">
+    <EmbeddedResource Include="Formularios\deSimular.resx">
       <DependentUpon>deSimular.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -94,7 +94,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Telas\dePropriedades.resx">
+    <EmbeddedResource Include="Formularios\dePropriedades.resx">
       <DependentUpon>dePropriedades.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
