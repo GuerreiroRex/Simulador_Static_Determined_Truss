@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objetos\Configuração_Propriedades\ConfigBarra.cs" />
+    <Compile Include="Objetos\Configuração_Propriedades\ConfigBase.cs" />
     <Compile Include="Objetos\Tela\Tela.cs" />
     <Compile Include="Formularios\deQuantidadeGrade.cs">
       <SubType>Form</SubType>
@@ -63,12 +65,11 @@
       <DependentUpon>deSimular.cs</DependentUpon>
     </Compile>
     <Compile Include="Objetos\Data.cs" />
-    <Compile Include="Objetos\Fake\FakeKnot.cs" />
     <Compile Include="Objetos\Bar\Bar.cs" />
-    <Compile Include="Objetos\Bar\BarM.cs" />
+    <Compile Include="Objetos\Bar\Bar_Metodos.cs" />
     <Compile Include="Objetos\Joint.cs" />
     <Compile Include="Objetos\Knot\Knot.cs" />
-    <Compile Include="Objetos\Knot\KnotM.cs" />
+    <Compile Include="Objetos\Knot\Knot_Metodos.cs" />
     <Compile Include="Objetos\Tela\Tela_Metodos.cs" />
     <Compile Include="Objetos\Triggers.cs" />
     <Compile Include="Program.cs" />
@@ -110,5 +111,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

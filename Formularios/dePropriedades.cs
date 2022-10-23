@@ -1,10 +1,12 @@
 ﻿using CalculoTre.Objetos;
+using CalculoTre.Objetos.Configuração_Propriedades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,8 +15,9 @@ namespace CalculoTre
 {
     public partial class dePropriedades : Form
     {
-        private static Bar barraEscolhida;
-        private static Knot noEscolhido;
+        private Bar     barraEscolhida;
+        private Knot    noEscolhido;
+        private Type    Escolhido;
 
         Tela telaPropriedades;
 
@@ -22,13 +25,14 @@ namespace CalculoTre
         {
             InitializeComponent();
 
+            this.Shown += RedesenharTela;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+
             telaPropriedades = new Tela(deProjecao);
-            telaPropriedades.Redesenhar();
 
-            deValorX.Maximum = int.MaxValue;
-            deValorY.Maximum = int.MaxValue;
+            Escolhido = item.GetType();
 
-            switch (item.GetType().Name)
+            switch (Escolhido.Name)
             {
                 case "Bar":
                     barraEscolhida = item as Bar;
@@ -45,55 +49,43 @@ namespace CalculoTre
         #region Barras
         private void Barras()
         {
-            deTitulo.Text = barraEscolhida.ToString();
-            DesenharBarra(barraEscolhida);
+            //deTitulo.Text = barraEscolhida.ToString();
+            
+            telaPropriedades.Painel.Controls.Clear();
+
+            //telaPropriedades.Esquematizar(barraEscolhida);
         }
         #endregion
 
         #region Apoios
         private void Apoios()
         {
-            deTitulo.Text = noEscolhido.ToString();
+            ConfigBarra configBarra = new ConfigBarra(noEscolhido, this);
 
-            deValorX.Value = noEscolhido.ValorX;
-            deValorY.Value = noEscolhido.ValorY;
-
-            foreach (var barra in Data.barras.Values)
-                if (barra.knots.Contains(noEscolhido))
-                    DesenharBarra(barra);
-
-            ApoiosValor();
-        }
-
-        private void ApoiosValor()
-        {
-            Label valorX = new Label();
-            valorX.Text = $"Valor em X:\t{noEscolhido.ValorX}";
-            valorX.Location = new Point(0, 30);
-
-            Label valorY = new Label();
-            valorY.Text = $"Valor em Y:\t{noEscolhido.ValorY}";
-            valorY.Location = new Point(0, 60);
-
-            deMenu.Controls.Add(valorX);
-            deMenu.Controls.Add(valorY);
+            
         }
         #endregion
 
         private async void DesenharBarra(Bar atual)
         {
             await Task.Delay(500);
-            //atual.DrawLineRelative(telaPropriedades);
-            //atual.Pontuar(telaPropriedades, true);
+            telaPropriedades.Redesenhar();
         }
 
         private void deFechar_Click(object sender, EventArgs e)
         {
-            noEscolhido.ValorX = (int)deValorX.Value;
-            noEscolhido.ValorY = (int)deValorY.Value;
-
             //noEscolhido.Reposicionar();
             this.Close();
+        }
+
+        private async void RedesenharTela(object sender, EventArgs e)
+        {
+            while (true)
+            {
+                await Task.Delay(100);
+                telaPropriedades.Desenhar(sender, e);
+                telaPropriedades.Esquematizar(false);
+            }
         }
     }
 }

@@ -61,8 +61,8 @@ namespace CalculoTre
 
         private void DimensionarPainel()
         {
-            deTela.Width = (this.Size.Width - 15) - deTela.Location.X;
-            deTela.Height = (this.Size.Height - 40) - deTela.Location.Y;
+            deTela.Width = this.Size.Width - deTela.Location.X - 28;
+            deTela.Height = (this.Size.Height) - deTela.Location.Y - 51;
         }
 
         private void CliquePainel(object sender, MouseEventArgs e)
@@ -94,18 +94,18 @@ namespace CalculoTre
             if (deObjeto.SelectedItem == null)
                 return;
 
-            dePropriedades dePropBarra;
+            dePropriedades dePropriedades;
             switch (deTipo.SelectedIndex)
             {
                 case 0:
-                    var barraTemp = ((KeyValuePair<byte, Knot>)deObjeto.SelectedItem).Value;
-                    dePropBarra = new dePropriedades(barraTemp);
-                    dePropBarra.ShowDialog();
+                    var apoioTemp = ((KeyValuePair<byte, Knot>)deObjeto.SelectedItem).Value;
+                    dePropriedades = new dePropriedades(apoioTemp);
+                    dePropriedades.ShowDialog();
                     break;
                 case 1:
-                    var apoioTemp = ((KeyValuePair<string, Bar>)deObjeto.SelectedItem).Value;
-                    dePropBarra = new dePropriedades(apoioTemp);
-                    dePropBarra.ShowDialog();
+                    var barraTemp = ((KeyValuePair<string, Bar>)deObjeto.SelectedItem).Value;
+                    dePropriedades = new dePropriedades(barraTemp);
+                    dePropriedades.ShowDialog();
                     break;
             }
 

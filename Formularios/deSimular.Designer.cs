@@ -51,9 +51,10 @@
             // 
             this.deTela.BackColor = System.Drawing.Color.White;
             this.deTela.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.deTela.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.deTela.Location = new System.Drawing.Point(136, 38);
             this.deTela.Name = "deTela";
-            this.deTela.Size = new System.Drawing.Size(748, 448);
+            this.deTela.Size = new System.Drawing.Size(753, 451);
             this.deTela.TabIndex = 1;
             this.deTela.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CliquePainel);
             // 
@@ -88,7 +89,8 @@
             // 
             // deConfigurarTela
             // 
-            this.deConfigurarTela.Location = new System.Drawing.Point(681, 9);
+            this.deConfigurarTela.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deConfigurarTela.Location = new System.Drawing.Point(735, 3);
             this.deConfigurarTela.Name = "deConfigurarTela";
             this.deConfigurarTela.Size = new System.Drawing.Size(154, 29);
             this.deConfigurarTela.TabIndex = 4;

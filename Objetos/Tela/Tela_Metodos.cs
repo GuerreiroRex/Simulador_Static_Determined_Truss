@@ -12,8 +12,9 @@ namespace CalculoTre.Objetos
 {
     public partial class Tela
     {
-        public void Desenhar()
+        public async void Desenhar()
         {
+            await Task.Yield();
             AtualizarDados();
 
             #region Dados
@@ -53,9 +54,6 @@ namespace CalculoTre.Objetos
                 */
 
                 Letreiro();
-
-                Esquematizar();
-
             }
         }
 
@@ -84,6 +82,13 @@ namespace CalculoTre.Objetos
                 g.DrawLine(caneta, superiorEsquerdo, inferiorEsquerdo);
                 g.DrawLine(caneta, inferiorEsquerdo, inferiorDireito);
                 g.DrawLine(caneta, inferiorDireito, superiorDireito);
+
+                for (int i = 1; i < Data.Resolucao[0]; i++)
+                    g.DrawLine(caneta, ValorParaPosX(i * Data.EscalaHorizontal / Data.Resolucao[0]), a, ValorParaPosX(i * Data.EscalaHorizontal / Data.Resolucao[0]), b);
+
+                //Posiciona as linahs em Y dos quadriculados
+                for (int i = 1; i < Data.Resolucao[1]; i++)
+                    g.DrawLine(caneta, a, ValorParaPosY(i * Data.EscalaVertical / Data.Resolucao[1]), c, ValorParaPosY(i * Data.EscalaVertical / Data.Resolucao[1]));
 
                 Letreiro();
             }
@@ -154,7 +159,7 @@ namespace CalculoTre.Objetos
             }
         }
 
-        public void Redesenhar()
+        public void Redesenhar(bool limpar = true)
         {
             Limpar();
 
@@ -178,15 +183,29 @@ namespace CalculoTre.Objetos
         public void Esquematizar(Bar barra)
         {
             barra.DrawLine(this);
+            Pontuar(barra.knots[0]);
+            Pontuar(barra.knots[1]);
         }
 
-        public void Esquematizar(bool limpeza = false)
+        public void Esquematizar(bool gatilho = true)
         {
-            foreach (var barra in Data.barras.Values)
+            if (gatilho)
             {
-                barra.DrawLine(this);
-                Pontuar(barra.knots[0]);
-                Pontuar(barra.knots[1]);
+                foreach (var barra in Data.barras.Values)
+                {
+                    barra.DrawLine(this);
+                    Pontuar(barra.knots[0]);
+                    Pontuar(barra.knots[1]);
+                }
+            }
+            else
+            {
+                foreach (var barra in Data.barras.Values)
+                {
+                    barra.DrawLine(this);
+                    Pontuar(barra.knots[0], true);
+                    Pontuar(barra.knots[1], true);
+                }
             }
         }
 
@@ -258,13 +277,35 @@ namespace CalculoTre.Objetos
             tela.Controls.Add(no.botao);
         }
 
+        public void Pontuar(Knot no, bool gatilho)
+        {
+            //Cria o botão
+            Button botao = new Button();
 
+            //Aplica-lhe um nome
+            botao.Name = $"B{no.ID}";
 
+            //Coloca seu fundo preto, letra branca e escreve uma letra
+            botao.BackColor = System.Drawing.Color.Black;
+            botao.ForeColor = Color.White;
 
+            //botao.Text = nome;
+            botao.Text = no.id.ToString();
 
+            //Define o tamanho do botão
+            botao.Height = Knot.tamanho;
+            botao.Width = Knot.tamanho;
 
+            //Define a posição do botão e retira sua borda
+            var dv = Knot.tamanho / 2;
+            botao.FlatAppearance.BorderSize = 0;
+            botao.Location = new System.Drawing.Point(ValorParaPosX(no.valorX) - dv, ValorParaPosY(no.valorY) - dv);
 
+            botao.AutoSize = true;
+            botao.AutoSizeMode = AutoSizeMode.GrowOnly;
 
+            tela.Controls.Add(botao);
+        }
 
         public void Limpar()
         {

@@ -38,6 +38,11 @@ namespace CalculoTre.Objetos
             valorY = tela.PosParaValorY(coordY);
         }
 
+        public Knot Copiar()
+        {
+            return this;
+        }
+
         #region Propriedades
 
         public byte ID { get => id; }
