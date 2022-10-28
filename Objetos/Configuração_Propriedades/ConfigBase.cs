@@ -15,7 +15,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
         protected const int altura = 260;
         protected Knot noEscolhido;
 
-        public ConfigBase (Knot no)
+        public ConfigBase (Tela tela, Knot no)
         {
             noEscolhido = no;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -33,7 +34,7 @@ namespace CalculoTre.Objetos
             using (Graphics g = tela.CreateGraphics())
             {
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
+                
                 //Desenha cada linha da borda do quadro
                 g.DrawLine(caneta, superiorEsquerdo, superiorDireito);
                 g.DrawLine(caneta, superiorEsquerdo, inferiorEsquerdo);
@@ -96,76 +97,60 @@ namespace CalculoTre.Objetos
 
         private void Letreiro()
         {
-            #region Codigo de suporte
-            /* Marcar coordenadas X no grafico
-            foreach (int valor in valoresTempX)
+            using (Graphics g = tela.CreateGraphics())
             {
-                //Horizontal
-                #region talvez uma classe a parte
-                Label marca = new Label();
+                int tamanhoFonte = 6;
+                Font fonte = new Font("Arial", tamanhoFonte);
 
-                marca.AutoSize = false;
-                marca.Height = a;
-                marca.Width = a;
-                marca.Font = new Font("Arial", 6);
-                #endregion
+                //for (int i = 0; i <= Data.Resolucao[0]; i++)
+                for (int i = Data.Resolucao[0]; i > 0; i--)
+                {
+                    string temp = (i * Data.EscalaHorizontal / Data.Resolucao[0]).ToString();
+                    
+                    int size = g.MeasureString(temp, fonte).ToSize().Width;
 
-                marca.TextAlign = ContentAlignment.TopCenter;
-                marca.Text = (valor).ToString();
-                marca.Location = new Point(valor - a / 2, tela.Height - a / 2 + 1);
+                    g.DrawString(   temp,
+                                    fonte,
+                                    new SolidBrush(Color.Black),
+                                    new Point((int)(unidade_CorteX * i + a - size / 2), Painel.Height - tamanhoFonte * 2));
 
-                tela.Controls.Add(marca);
-            }
-            */
-            #endregion
+                }
 
-            //Letreiros em X
-            for (int i = 0; i <= Data.Resolucao[0]; i++)
-            {
-                #region talvez uma classe a parte
-                Label marca = new Label();
+                for (int i = 0; i < Data.Resolucao[1]; i++)
+                {
+                    g.DrawString(   ((Data.Resolucao[1] - i) * Data.EscalaVertical / Data.Resolucao[1]).ToString(),
+                                     new Font("Arial", 6),
+                                     new SolidBrush(Color.Black),
+                                     new Point(0, (int)unidade_CorteY * i + a));
+                }
 
-                marca.AutoSize = false;
-                marca.Height = a;
-                marca.Width = a;
-                marca.Font = new Font("Arial", 6);
-                #endregion
-
-                marca.TextAlign = ContentAlignment.TopCenter;
-                marca.Text = (i * Data.EscalaHorizontal / Data.Resolucao[0]).ToString();
-
-                marca.Location = new Point((int)(unidade_CorteX * i + a / 2), Painel.Height - a + 1);
-
-                tela.Controls.Add(marca);
-            }
-
-            //Letreiros em Y
-            for (int i = 0; i < Data.Resolucao[1]; i++)
-            {
-                #region talvez uma classe a parte
-                Label marca = new Label();
-
-                marca.AutoSize = false;
-                marca.Height = a;
-                marca.Width = a;
-                marca.Font = new Font("Arial", 6);
-                #endregion
-
-                marca.TextAlign = ContentAlignment.MiddleRight;
-                marca.Text = ((Data.Resolucao[1] - i) * Data.EscalaVertical / Data.Resolucao[1]).ToString();
-                marca.Location = new Point(0, (int)(unidade_CorteY * i + a - marca.Height / 2));
-
-                tela.Controls.Add(marca);
+                g.DrawString("0", fonte, new SolidBrush(Color.Black), new Point(0, tela.Height - tamanhoFonte * 2));
             }
         }
 
-        public void Redesenhar(bool limpar = true)
+        public void Redesenhar()
         {
             Limpar();
 
             Joint.AtualizarNos();
 
-            Triggers.AtualizarObjeto(Data.deTipo, Data.deObjeto);
+            Trigger.AtualizarObjeto(Data.deTipo, Data.deObjeto);
+
+            Desenhar();
+            Esquematizar();
+        }
+
+        public void Redesenhar(object sender, EventArgs e)
+        {
+            using (Graphics g = tela.CreateGraphics())
+            {
+                g.Clear(Color.White);
+                tela.Controls.Clear();
+            }
+
+            Joint.AtualizarNos();
+
+            Trigger.AtualizarObjeto(Data.deTipo, Data.deObjeto);
 
             Desenhar();
             Esquematizar();
@@ -209,6 +194,18 @@ namespace CalculoTre.Objetos
             }
         }
 
+        public void Esquematizar(Knot no, bool gatilho = false)
+        {
+            var temp = Data.barras.Values.Where (x => x.knots.Contains(no)).ToList();
+
+            foreach (Bar barra in temp)
+            {
+                barra.DrawLine(this);
+                Pontuar(barra.knots[0]);
+                Pontuar(barra.knots[1]);
+            }
+        }
+
         public void Pontuar(Knot no)
         {
             //Cria o botão
@@ -243,11 +240,11 @@ namespace CalculoTre.Objetos
                 {
                     case MouseButtons.Left:
 
-                        Triggers.JuntarApoios = true;
+                        Trigger.JuntarApoios = true;
                         Joint.Apoio = no;
 
                         //Se o primeiro clique aindã não foi dado
-                        if (!Triggers.PrimeiroClique)
+                        if (!Trigger.PrimeiroClique)
                             Joint.PrimeiroClique(Joint.sender, Joint.e);
                         else
                             Joint.SegundoClique(Joint.sender, Joint.e);

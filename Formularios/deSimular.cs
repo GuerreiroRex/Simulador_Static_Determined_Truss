@@ -86,7 +86,7 @@ namespace CalculoTre
 
         public void AtualizarListaObjetos(object sender, EventArgs e)
         {
-            Triggers.AtualizarObjeto(deTipo, deObjeto);
+            Trigger.AtualizarObjeto(deTipo, deObjeto);
         }
 
         private void deProp_Click(object sender, EventArgs e)

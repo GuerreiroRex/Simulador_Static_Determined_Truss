@@ -17,7 +17,7 @@ namespace CalculoTre
     {
         private Bar     barraEscolhida;
         private Knot    noEscolhido;
-        private Type    Escolhido;
+        private Type    tipoEscolhido;
 
         Tela telaPropriedades;
 
@@ -25,14 +25,13 @@ namespace CalculoTre
         {
             InitializeComponent();
 
-            this.Shown += RedesenharTela;
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
 
             telaPropriedades = new Tela(deProjecao);
 
-            Escolhido = item.GetType();
+            tipoEscolhido = item.GetType();
 
-            switch (Escolhido.Name)
+            switch (tipoEscolhido.Name)
             {
                 case "Bar":
                     barraEscolhida = item as Bar;
@@ -44,6 +43,8 @@ namespace CalculoTre
                     Apoios();
                     break;
             }
+
+            Shown += telaPropriedades.Redesenhar;
         }
 
         #region Barras
@@ -60,31 +61,36 @@ namespace CalculoTre
         #region Apoios
         private void Apoios()
         {
-            ConfigBarra configBarra = new ConfigBarra(noEscolhido, this);
-
-            
+            ConfigBarra configBarra = new ConfigBarra(telaPropriedades, noEscolhido, this);
         }
         #endregion
 
         private async void DesenharBarra(Bar atual)
         {
-            await Task.Delay(500);
+            await Task.Yield();
             telaPropriedades.Redesenhar();
         }
 
         private void deFechar_Click(object sender, EventArgs e)
         {
-            //noEscolhido.Reposicionar();
             this.Close();
         }
 
         private async void RedesenharTela(object sender, EventArgs e)
         {
-            while (true)
+            await Task.Yield();
+
+            telaPropriedades.Limpar();
+            telaPropriedades.Desenhar(sender, e);
+
+            switch (tipoEscolhido.Name)
             {
-                await Task.Delay(100);
-                telaPropriedades.Desenhar(sender, e);
-                telaPropriedades.Esquematizar(false);
+                case "Bar":
+                    telaPropriedades.Esquematizar(barraEscolhida);
+                    break;
+                case "Knot":
+                    telaPropriedades.Esquematizar(noEscolhido);
+                    break;
             }
         }
     }

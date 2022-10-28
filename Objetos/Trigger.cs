@@ -7,11 +7,19 @@ using System.Windows.Forms;
 
 namespace CalculoTre.Objetos
 {
-    internal static class Triggers
+    internal static class Trigger
     {
         //Classe que guarda alguns gatilhos para outras ações
         public static bool PrimeiroClique = false;
         public static bool JuntarApoios = false;
+
+        public static event EventHandler DesenhoAlterado;
+
+        public static void ForçarRedesenho(EventArgs e)
+        {
+            if (DesenhoAlterado != null)
+                DesenhoAlterado(new object(), e);
+        }
 
         //Ativa quando tiver que atualizar os objetos
         public static void AtualizarObjeto(ComboBox deTipo, ComboBox deObjeto)

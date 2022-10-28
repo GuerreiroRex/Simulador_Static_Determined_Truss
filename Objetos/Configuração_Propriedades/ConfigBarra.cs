@@ -10,15 +10,17 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 {
     internal class ConfigBarra: ConfigBase
     {
-        public ConfigBarra(Knot noEscolhido, Form Formulario) :base(noEscolhido)
+        public ConfigBarra(Tela tela, Knot noEscolhido, Form Formulario) :base(tela, noEscolhido)
         {
             Formulario.Controls.Add(Controle);
 
-            PainelValores("Valor em X:", 'X');
-            PainelValores("Valor em Y:", 'Y');
+            Trigger.DesenhoAlterado += tela.Redesenhar;
+
+            PainelValores("Valor em X:", 'X', 0);
+            PainelValores("Valor em Y:", 'Y', 1);
         }
 
-        private void PainelValores(string texto, char tipo)
+        private void PainelValores(string texto, char tipo, int i)
         {
             Panel agrupado = new Panel();
             
@@ -28,20 +30,34 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             var letras = Letreiro(texto);
             agrupado.Controls.Add(letras);
 
-            var numeros = CriarValores(texto);
+            var numero = CriarValores(texto, i);
 
             switch (tipo)
             {
                 case 'X':
-                    numeros.Value = noEscolhido.ValorX;
+                    numero.Value = noEscolhido.ValorX;
+
+                    numero.ValueChanged += (s, e) =>
+                    {
+                        noEscolhido.valorX = (int)numero.Value;
+                        Trigger.ForçarRedesenho(e);
+                    };
                     break;
                 case 'Y':
-                    numeros.Value = noEscolhido.ValorY;
+                    numero.Value = noEscolhido.ValorY;
+
+                    numero.ValueChanged += (s, e) =>
+                    {
+                        //Data.nos[noEscolhido.id].valorY = (int)numero.Value;
+                        noEscolhido.valorY = (int)numero.Value;
+                        Trigger.ForçarRedesenho(e);
+
+                    };
                     break;
             }
 
             
-            agrupado.Controls.Add(numeros);
+            agrupado.Controls.Add(numero);
 
             agrupado.Padding = new Padding(0);
 
@@ -49,7 +65,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
         }
 
-        private NumericUpDown CriarValores(string Nome)
+        private NumericUpDown CriarValores(string Nome, int i)
         {
             NumericUpDown numero = new NumericUpDown();
             numero.Name = Nome;
@@ -62,6 +78,8 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
             numero.BorderStyle = BorderStyle.FixedSingle;
 
+            numero.TabIndex = i;
+            
             Controle.SetFlowBreak(numero, true);
 
             return numero;

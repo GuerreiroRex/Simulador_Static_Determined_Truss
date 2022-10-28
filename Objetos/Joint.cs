@@ -60,9 +60,9 @@ namespace CalculoTre.Objetos
             Joint.e = e;
 
             //Se o primeiro clique foi um botão use os dados dele
-            if (Triggers.JuntarApoios)
+            if (Trigger.JuntarApoios)
             {
-                Triggers.JuntarApoios = false;
+                Trigger.JuntarApoios = false;
                 tempKnot[0] = Apoio;
             }
             //ou usa as posições do Mouse
@@ -73,7 +73,7 @@ namespace CalculoTre.Objetos
             }
 
             //Diz que o primeiro clique foi feito
-            Triggers.PrimeiroClique = true;
+            Trigger.PrimeiroClique = true;
 
             Data.telas[0].Pontuar(tempKnot[0]);
 
@@ -91,12 +91,12 @@ namespace CalculoTre.Objetos
             if (e.Button == MouseButtons.Left)
             {
                 //Decide se vai usar um nó já existente ou um novo
-                if (Triggers.JuntarApoios)
+                if (Trigger.JuntarApoios)
                 {
                     if (Apoio == tempKnot[0])
                         return;
 
-                    Triggers.JuntarApoios = false;
+                    Trigger.JuntarApoios = false;
                     tempKnot[1] = Apoio;
                 }
                 else
@@ -118,10 +118,10 @@ namespace CalculoTre.Objetos
 
                 //Voltar para o estudo de esperar o primeiro clique
                 Data.telas[0].Painel.MouseDown -= SegundoClique;
-                Triggers.PrimeiroClique = false;
+                Trigger.PrimeiroClique = false;
 
                 //Atualiza os combobox
-                Triggers.AtualizarObjeto(Data.deTipo, Data.deObjeto);
+                Trigger.AtualizarObjeto(Data.deTipo, Data.deObjeto);
                 Data.telas[0].Esquematizar();
             }
         }
