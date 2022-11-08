@@ -19,7 +19,7 @@ namespace CalculoTre.Objetos.Pages
             tab = tabControl;
 
             Panel painel = new Panel();
-            painel.Size = new Size(300, 200);
+            painel.Size = new Size(450, 300);
             painel.BorderStyle = BorderStyle.FixedSingle;
 
             //painel.Visible = false;

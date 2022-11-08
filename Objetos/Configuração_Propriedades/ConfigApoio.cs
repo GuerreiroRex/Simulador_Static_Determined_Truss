@@ -21,23 +21,30 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
             Trigger.DesenhoAlterado += tela.Redesenhar;
 
-            PainelValoresPos("Posição em X:", 'X', 0);
-            PainelValoresPos("Posição em Y:", 'Y', 1);
-            PainelValoresForce("Força em X:", 'X', 2);
-            PainelValoresForce("Força em Y:", 'Y', 3);
+            PainelValoresPos("Posição em X:", 'X');
+            PainelValoresPos("Posição em Y:", 'Y');
+            PainelValoresForce();
         }
 
-        private void PainelValoresPos(string texto, char tipo, int i)
+        private FlowLayoutPanel Agrupar()
         {
-            Panel agrupado = new Panel();
-            
+            FlowLayoutPanel agrupado = new FlowLayoutPanel();
+
             agrupado.AutoSize = true;
             agrupado.BorderStyle = BorderStyle.FixedSingle;
+            agrupado.Margin = new Padding(0, 5, 0, 5);
+
+            return agrupado;
+        }
+
+        private void PainelValoresPos(string texto, char tipo)
+        {
+            FlowLayoutPanel agrupado = Agrupar();
 
             var letras = Letreiro(texto);
             agrupado.Controls.Add(letras);
 
-            var numero = CriarValores(letras, i);
+            var numero = CriarValores(letras);
 
             switch (tipo)
             {
@@ -74,19 +81,27 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
         }
 
-        private void PainelValoresForce(string texto, char tipo, int i)
+        private void PainelValoresForce()
         {
-            Panel agrupado = new Panel();
+            FlowLayoutPanel agrupado = Agrupar();
 
-            agrupado.AutoSize = true;
-            agrupado.BorderStyle = BorderStyle.FixedSingle;
+            Label textoVetor = Letreiro("Força");
+            agrupado.Controls.Add(textoVetor);
 
-            var letras = Letreiro(texto);
-            agrupado.Controls.Add(letras);
+            NumericUpDown vetor = CriarValores(textoVetor);
+            agrupado.Controls.Add(vetor);
 
-            var numero = CriarValores(letras, i);
-            numero.Maximum = int.MaxValue;
 
+            agrupado.SetFlowBreak(vetor, true);
+
+            Label textoAngulo = Letreiro("Angulo");
+            agrupado.Controls.Add(textoAngulo);
+            
+            NumericUpDown angulo = CriarValores(textoVetor);
+            agrupado.Controls.Add(angulo);
+            angulo.Maximum = 360;
+
+            /*
             switch (tipo)
             {
                 case 'X':
@@ -107,30 +122,23 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                     };
                     break;
             }
+            */
 
 
-            agrupado.Controls.Add(numero);
 
             agrupado.Padding = new Padding(0);
 
             Controle.Controls.Add(agrupado);
         }
 
-        private NumericUpDown CriarValores(Label letreiro, int i)
+        private NumericUpDown CriarValores(Label letreiro)
         {
             NumericUpDown numero = new NumericUpDown();
             numero.Name = letreiro.Text;
 
             numero.Width = largura - 10;
-            numero.Height = 24;
-
-            numero.Location = new Point(0, letreiro.Height + letreiro.Location.Y);
 
             numero.BorderStyle = BorderStyle.FixedSingle;
-
-            numero.TabIndex = i;
-            
-            Controle.SetFlowBreak(numero, true);
 
             return numero;
         }

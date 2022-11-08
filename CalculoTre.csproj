@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calculos\Calculos.cs" />
+    <Compile Include="Calculos\Force.cs" />
     <Compile Include="Objetos\Configuração_Propriedades\ConfigBarra.cs" />
     <Compile Include="Objetos\Configuração_Propriedades\ConfigApoio.cs" />
     <Compile Include="Objetos\Configuração_Propriedades\ConfigBase.cs" />

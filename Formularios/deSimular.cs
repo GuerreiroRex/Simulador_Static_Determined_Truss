@@ -1,4 +1,5 @@
-﻿using CalculoTre.Objetos;
+﻿using CalculoTre.Calculos;
+using CalculoTre.Objetos;
 using CalculoTre.Telas;
 using System;
 using System.Collections;

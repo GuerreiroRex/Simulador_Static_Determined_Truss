@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalculoTre.Calculos;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -24,8 +25,7 @@ namespace CalculoTre.Objetos
         public int valorX;
         public int valorY;
 
-        public double forçaX;
-        public double forçaY;
+        public List<Force> forcas = new List<Force>();
 
         public Knot()
         {
