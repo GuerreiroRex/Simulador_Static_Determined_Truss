@@ -58,8 +58,10 @@ namespace CalculoTre.Objetos
             }
         }
 
-        public void Desenhar(object sender, EventArgs args)
+        public async void Desenhar(object sender, EventArgs args)
         {
+            await Task.Yield();
+
             AtualizarDados();
             #region Dados
             //Cria uma caneta preta
@@ -128,8 +130,10 @@ namespace CalculoTre.Objetos
             }
         }
 
-        public void Redesenhar()
+        public async void Redesenhar()
         {
+            await Task.Yield();
+
             Limpar();
 
             Joint.AtualizarNos();

@@ -13,25 +13,19 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
         protected FlowLayoutPanel Controle;
         protected const int largura = 90;
         protected const int altura = 260;
-        protected Knot noEscolhido;
+        
+        protected Font fonte = new Font("Arial", 8);
 
-        public ConfigBase (Tela tela, Knot no)
+        public ConfigBase (Tela tela)
         {
-            noEscolhido = no;
+            Controle = new FlowLayoutPanel();
 
-            Controle = new FlowLayoutPanel ();
-            Controle.Location = new Point(10, 10);
+
+            Controle.Location = new Point(5, 10);
             Controle.Width = largura;
             Controle.Height = altura;
 
             Controle.Margin = new Padding(3);
-
-            Label Titulo = new Label();
-            Titulo.Width = Controle.Width;
-            Titulo.Location = new Point(0, 0);
-            Titulo.Text = noEscolhido.ToString();
-
-            Controle.Controls.Add(Titulo);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CalculoTre.Objetos;
 using CalculoTre.Objetos.Configuração_Propriedades;
+using CalculoTre.Objetos.Pages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,88 +11,102 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CalculoTre
 {
     public partial class dePropriedades : Form
     {
-        private Bar     barraEscolhida;
-        private Knot    noEscolhido;
+        //private Bar     barraEscolhida;
+        //private Knot    noEscolhido;
         private Type    tipoEscolhido;
 
-        Tela telaPropriedades;
+        private TabControl tab;
 
         public dePropriedades(object item)
         {
             InitializeComponent();
 
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            OrganizarTab();
 
-            telaPropriedades = new Tela(deProjecao);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
 
             tipoEscolhido = item.GetType();
 
             switch (tipoEscolhido.Name)
             {
                 case "Bar":
-                    barraEscolhida = item as Bar;
-                    Barras();
+                    TabBarras(item as Bar);
                     break;
 
                 case "Knot":
-                    noEscolhido = item as Knot;
-                    Apoios();
+                    TabApoios(item as Knot);
                     break;
             }
+        }
 
-            Shown += telaPropriedades.Redesenhar;
+        private void OrganizarTab()
+        {
+            tab = new TabControl();
+
+            tab.SizeMode = TabSizeMode.Fixed;
+            tab.ItemSize = new Size(80, 20);
+
+            tab.Width = this.Width - 15;
+            tab.Height = this.Height - tab.ItemSize.Height * 2;
         }
 
         #region Barras
-        private void Barras()
+        private void TabBarras(Bar barraEscolhida)
         {
-            //deTitulo.Text = barraEscolhida.ToString();
-            
-            telaPropriedades.Painel.Controls.Clear();
+            List<TabPage> lista = new List<TabPage>();
 
-            //telaPropriedades.Esquematizar(barraEscolhida);
+            PaginaBarra pagina = new PaginaBarra(tab, barraEscolhida);
+
+            /*
+            PaginaApoio paginaApoio;
+
+            foreach (Knot no in barraEscolhida.knots)
+                paginaApoio = new PaginaApoio(tab, no);
+            */
+
+            this.Controls.Add(tab);
+
+            this.Shown += pagina.Tela.Desenhar;
         }
         #endregion
 
         #region Apoios
-        private void Apoios()
+
+        private async void TelaApoio(TabPage page, Knot no)
         {
-            ConfigBarra configBarra = new ConfigBarra(telaPropriedades, noEscolhido, this);
+            await Task.Yield();
+
+            //Panel painel = Painel();
+
+            //painel.Location = new Point(page.Width - painel.Width, 0);
+
+            //Tela telaPropriedades = new Tela(painel);
+
+            //page.Controls.Add(telaPropriedades.Painel);
+
+            //ConfigApoio configApoio = new ConfigApoio(telaPropriedades, no, page);
+        }
+
+        private void TabApoios(Knot noEscolhido)
+        {
+            PaginaApoio pagina = new PaginaApoio(tab, noEscolhido);
+
+            PaginaBarra paginaBarra;
+
+            foreach (Bar barra in Data.barras.Values)
+                if (barra.knots.Contains(noEscolhido))
+                    paginaBarra = new PaginaBarra(tab, barra);
+
+            //TelaApoio(pagina.Valor, noEscolhido);
+
+            this.Controls.Add(tab);
         }
         #endregion
-
-        private async void DesenharBarra(Bar atual)
-        {
-            await Task.Yield();
-            telaPropriedades.Redesenhar();
-        }
-
-        private void deFechar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private async void RedesenharTela(object sender, EventArgs e)
-        {
-            await Task.Yield();
-
-            telaPropriedades.Limpar();
-            telaPropriedades.Desenhar(sender, e);
-
-            switch (tipoEscolhido.Name)
-            {
-                case "Bar":
-                    telaPropriedades.Esquematizar(barraEscolhida);
-                    break;
-                case "Knot":
-                    telaPropriedades.Esquematizar(noEscolhido);
-                    break;
-            }
-        }
     }
 }

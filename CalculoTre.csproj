@@ -69,8 +69,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calculos\Calculos.cs" />
     <Compile Include="Objetos\Configuração_Propriedades\ConfigBarra.cs" />
+    <Compile Include="Objetos\Configuração_Propriedades\ConfigApoio.cs" />
     <Compile Include="Objetos\Configuração_Propriedades\ConfigBase.cs" />
+    <Compile Include="Objetos\Pages\PaginaApoio.cs" />
+    <Compile Include="Objetos\Pages\PaginaBarras.cs" />
+    <Compile Include="Objetos\Pages\PaginaBase.cs" />
     <Compile Include="Objetos\Tela\Tela.cs" />
     <Compile Include="Formularios\deQuantidadeGrade.cs">
       <SubType>Form</SubType>
