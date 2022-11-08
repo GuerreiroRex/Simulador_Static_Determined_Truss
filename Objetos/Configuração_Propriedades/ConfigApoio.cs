@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -35,6 +36,31 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             agrupado.Margin = new Padding(0, 5, 0, 5);
 
             return agrupado;
+        }
+
+        private ComboBox Listar()
+        {
+            ComboBox lista = new ComboBox();
+
+            lista.Size = new Size(largura - 10, 24);
+
+            lista.Items.Add("Criar");
+
+            lista.SelectedIndexChanged += atualizarGrupo;
+
+            return lista;
+        }
+
+        private void atualizarGrupo(object sender, EventArgs e)
+        {
+            /*
+             * Continaur daqui
+             * 
+             */
+
+            
+
+            
         }
 
         private void PainelValoresPos(string texto, char tipo)
@@ -85,12 +111,15 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
         {
             FlowLayoutPanel agrupado = Agrupar();
 
+            ComboBox lista = Listar();
+            agrupado.Controls.Add(lista);
+
+            #region valores fixos
             Label textoVetor = Letreiro("Força");
             agrupado.Controls.Add(textoVetor);
 
             NumericUpDown vetor = CriarValores(textoVetor);
             agrupado.Controls.Add(vetor);
-
 
             agrupado.SetFlowBreak(vetor, true);
 
@@ -100,31 +129,18 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             NumericUpDown angulo = CriarValores(textoVetor);
             agrupado.Controls.Add(angulo);
             angulo.Maximum = 360;
+            #endregion
 
-            /*
-            switch (tipo)
+            if (lista.SelectedItem.ToString() == "Criar")
             {
-                case 'X':
-                    numero.Value = noEscolhido.ValorX;
+                Button adicionar = new Button();
 
-                    numero.ValueChanged += (s, e) =>
-                    {
-                        noEscolhido.forçaX = (int)numero.Value;
-                    };
-                    break;
-                case 'Y':
-                    numero.Value = noEscolhido.ValorY;
+                adicionar.Size = new Size(largura - 10, 24);
+                adicionar.Text = "Adicionar";
+                ///////////////////////////////////
 
-                    numero.ValueChanged += (s, e) =>
-                    {
-                        //Data.nos[noEscolhido.id].valorY = (int)numero.Value;
-                        noEscolhido.forçaY = (int)numero.Value;
-                    };
-                    break;
             }
-            */
-
-
+            //agrupado.Controls.Add(botao);
 
             agrupado.Padding = new Padding(0);
 
