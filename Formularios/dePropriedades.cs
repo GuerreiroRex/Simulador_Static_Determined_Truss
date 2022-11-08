@@ -63,49 +63,33 @@ namespace CalculoTre
 
             PaginaBarra pagina = new PaginaBarra(tab, barraEscolhida);
 
-            /*
             PaginaApoio paginaApoio;
 
             foreach (Knot no in barraEscolhida.knots)
                 paginaApoio = new PaginaApoio(tab, no);
-            */
 
             this.Controls.Add(tab);
-
-            this.Shown += pagina.Tela.Desenhar;
         }
         #endregion
 
         #region Apoios
-
-        private async void TelaApoio(TabPage page, Knot no)
-        {
-            await Task.Yield();
-
-            //Panel painel = Painel();
-
-            //painel.Location = new Point(page.Width - painel.Width, 0);
-
-            //Tela telaPropriedades = new Tela(painel);
-
-            //page.Controls.Add(telaPropriedades.Painel);
-
-            //ConfigApoio configApoio = new ConfigApoio(telaPropriedades, no, page);
-        }
-
         private void TabApoios(Knot noEscolhido)
         {
+            List<TabPage> lista = new List<TabPage>();
+
             PaginaApoio pagina = new PaginaApoio(tab, noEscolhido);
 
             PaginaBarra paginaBarra;
 
             foreach (Bar barra in Data.barras.Values)
+            {
                 if (barra.knots.Contains(noEscolhido))
                     paginaBarra = new PaginaBarra(tab, barra);
-
-            //TelaApoio(pagina.Valor, noEscolhido);
+            }
 
             this.Controls.Add(tab);
+
+            this.Shown += pagina.PrepararTela;
         }
         #endregion
     }

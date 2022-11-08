@@ -17,13 +17,27 @@ namespace CalculoTre.Objetos.Pages
         public PaginaBase (TabControl tabControl)
         {
             tab = tabControl;
-            
+
             Panel painel = new Panel();
-            painel.Name = "telaPagina";
             painel.Size = new Size(300, 200);
             painel.BorderStyle = BorderStyle.FixedSingle;
 
+            //painel.Visible = false;
+            painel.BackColor = Color.White;
+
             tela = new Tela(painel);
+
+            tab.Selected += PrepararTela;
+            //tab.Selected += tela.Redesenhar;
+        }
+
+        public virtual void PrepararTela(object sender, EventArgs e)
+        {
+            tela.Painel.Location = new Point(pagina.Width - tela.Painel.Width, 0);
+
+            pagina.Controls.Add(tela.Painel);
+
+            tela.Desenhar();
         }
 
         public TabPage Valor { get => pagina; }

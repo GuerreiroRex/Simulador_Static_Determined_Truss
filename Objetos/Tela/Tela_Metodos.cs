@@ -144,8 +144,10 @@ namespace CalculoTre.Objetos
             Esquematizar();
         }
 
-        public void Redesenhar(object sender, EventArgs e)
+        public async void Redesenhar(object sender, EventArgs e)
         {
+            await Task.Yield();
+
             using (Graphics g = tela.CreateGraphics())
             {
                 g.Clear(Color.White);
@@ -169,33 +171,33 @@ namespace CalculoTre.Objetos
         }
 
         //Desenha todas as barras e nós
-        public void Esquematizar(Bar barra)
-        {
-            barra.DrawLine(this);
-            Pontuar(barra.knots[0]);
-            Pontuar(barra.knots[1]);
-        }
-
         public void Esquematizar(bool gatilho = true)
         {
             if (gatilho)
             {
                 foreach (var barra in Data.barras.Values)
                 {
-                    barra.DrawLine(this);
-                    Pontuar(barra.knots[0]);
-                    Pontuar(barra.knots[1]);
+                    Tracejar(barra);
+                    Pontuar(barra.knots[0], gatilho);
+                    Pontuar(barra.knots[1], gatilho);
                 }
             }
             else
             {
                 foreach (var barra in Data.barras.Values)
                 {
-                    barra.DrawLine(this);
+                    Tracejar(barra);
                     Pontuar(barra.knots[0], true);
                     Pontuar(barra.knots[1], true);
                 }
             }
+        }
+
+        public void Esquematizar(Bar barra, bool gatilho = false)
+        {
+            Tracejar(barra);
+            Pontuar(barra.knots[0], gatilho);
+            Pontuar(barra.knots[1], gatilho);
         }
 
         public void Esquematizar(Knot no, bool gatilho = false)
@@ -204,13 +206,31 @@ namespace CalculoTre.Objetos
 
             foreach (Bar barra in temp)
             {
-                barra.DrawLine(this);
-                Pontuar(barra.knots[0]);
-                Pontuar(barra.knots[1]);
+                Pontuar(barra.knots[0], gatilho);
+                Pontuar(barra.knots[1], gatilho);
+                Tracejar(barra);
             }
         }
 
-        public void Pontuar(Knot no)
+        private async void Tracejar(Bar barra)
+        {
+            await Task.Yield();
+
+            Pen caneta = new Pen(Color.Blue);
+            caneta.Width = (float)2;
+
+            Point ponto1 = new Point(ValorParaPosX(barra.knots[0].ValorX), ValorParaPosY(barra.knots[0].ValorY));
+            Point ponto2 = new Point(ValorParaPosX(barra.knots[1].ValorX),ValorParaPosY(barra.knots[1].ValorY));
+
+            using (Graphics g = tela.CreateGraphics())
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.DrawLine(caneta, ponto1, ponto2);
+            }
+
+        }
+
+        public void Pontuar(Knot no, bool gatilho)
         {
             //Cria o botão
             no.botao = new Button();
@@ -237,75 +257,51 @@ namespace CalculoTre.Objetos
             no.botao.AutoSize = true;
             no.botao.AutoSizeMode = AutoSizeMode.GrowOnly;
 
-            //Se o botão for apertado
-            no.botao.MouseDown += (s, e) =>
+
+            if (gatilho)
             {
-                switch (e.Button)
+                //Se o botão for apertado
+                no.botao.MouseDown += (s, e) =>
                 {
-                    case MouseButtons.Left:
+                    switch (e.Button)
+                    {
+                        case MouseButtons.Left:
 
-                        Trigger.JuntarApoios = true;
-                        Joint.Apoio = no;
+                            Trigger.JuntarApoios = true;
+                            Joint.Apoio = no;
 
-                        //Se o primeiro clique aindã não foi dado
-                        if (!Trigger.PrimeiroClique)
-                            Joint.PrimeiroClique(Joint.sender, Joint.e);
-                        else
-                            Joint.SegundoClique(Joint.sender, Joint.e);
+                            //Se o primeiro clique aindã não foi dado
+                            if (!Trigger.PrimeiroClique)
+                                Joint.PrimeiroClique(Joint.sender, Joint.e);
+                            else
+                                Joint.SegundoClique(Joint.sender, Joint.e);
 
-                        break;
+                            break;
 
-                    case MouseButtons.Right:
+                        case MouseButtons.Right:
 
-                        tela.MouseDown -= Joint.SegundoClique;
+                            tela.MouseDown -= Joint.SegundoClique;
 
 
-                        Dictionary<string, Bar> dictBarraTemp = new Dictionary<string, Bar>();
+                            Dictionary<string, Bar> dictBarraTemp = new Dictionary<string, Bar>();
 
-                        foreach (var barra in Data.barras)
-                            if (barra.Value.knots.Contains(no))
-                                dictBarraTemp.Add(barra.Key, barra.Value);
+                            foreach (var barra in Data.barras)
+                                if (barra.Value.knots.Contains(no))
+                                    dictBarraTemp.Add(barra.Key, barra.Value);
 
-                        foreach (var barra in dictBarraTemp)
-                            Data.barras.Remove(barra.Key);
+                            foreach (var barra in dictBarraTemp)
+                                Data.barras.Remove(barra.Key);
 
-                        Redesenhar();
+                            Redesenhar();
 
-                        break;
-                }
-            };
+                            break;
+                    }
+                };
+            }
+            
+            
 
             tela.Controls.Add(no.botao);
-        }
-
-        public void Pontuar(Knot no, bool gatilho)
-        {
-            //Cria o botão
-            Button botao = new Button();
-
-            //Aplica-lhe um nome
-            botao.Name = $"B{no.ID}";
-
-            //Coloca seu fundo preto, letra branca e escreve uma letra
-            botao.BackColor = System.Drawing.Color.Black;
-            botao.ForeColor = Color.White;
-
-            //botao.Text = nome;
-            botao.Text = no.id.ToString();
-
-            //Define o tamanho do botão
-            botao.Height = Knot.tamanho;
-            botao.Width = Knot.tamanho;
-
-            //Define a posição do botão e retira sua borda
-            var dv = Knot.tamanho / 2;
-            botao.FlatAppearance.BorderSize = 0;
-            botao.Location = new System.Drawing.Point(ValorParaPosX(no.valorX) - dv, ValorParaPosY(no.valorY) - dv);
-
-            botao.AutoSize = true;
-            botao.AutoSizeMode = AutoSizeMode.GrowOnly;
-
-            tela.Controls.Add(botao);
         }
 
         public void Limpar()

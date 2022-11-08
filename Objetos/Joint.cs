@@ -75,7 +75,7 @@ namespace CalculoTre.Objetos
             //Diz que o primeiro clique foi feito
             Trigger.PrimeiroClique = true;
 
-            Data.telas[0].Pontuar(tempKnot[0]);
+            Data.telas[0].Pontuar(tempKnot[0], true);
 
             //Prepara o programa para receber o segundo clique
             Data.telas[0].Painel.MouseDown += SegundoClique;
@@ -105,7 +105,7 @@ namespace CalculoTre.Objetos
                     tempKnot[1].AtualizarValores(Data.telas[0], e.X, e.Y);
                 }                
 
-                Data.telas[0].Pontuar(tempKnot[1]);
+                Data.telas[0].Pontuar(tempKnot[1], true);
 
                 //Cria a barra com os dois nós coletados
                 Bar barra = new Bar(tempKnot[0], tempKnot[1]);

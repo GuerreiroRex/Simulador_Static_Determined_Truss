@@ -15,21 +15,5 @@ namespace CalculoTre.Objetos
         {
             return $"Barra {ID}";
         }
-
-        //Desenha a linha entre os dois pontos
-        public void DrawLine(Tela tela)
-        {
-            Pen caneta = new Pen(Color.Blue);
-            caneta.Width = (float)2;
-
-            Point ponto1 = new Point(tela.ValorParaPosX(knots[0].ValorX), tela.ValorParaPosY(knots[0].ValorY));
-            Point ponto2 = new Point(tela.ValorParaPosX(knots[1].ValorX), tela.ValorParaPosY(knots[1].ValorY));
-
-            using (Graphics g = tela.Painel.CreateGraphics())
-            {
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                g.DrawLine(caneta, ponto1, ponto2);
-            }
-        }
     }
 }

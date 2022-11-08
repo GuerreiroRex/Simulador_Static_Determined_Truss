@@ -12,26 +12,24 @@ namespace CalculoTre.Objetos.Pages
 {
     internal class PaginaBarra : PaginaBase
     {
-        public PaginaBarra(TabControl tab, Bar barraEscolhida) : base(tab)
-        {
-            pagina.Text = barraEscolhida.ToString();
-            
-            PrepararTela();
+        Bar barraEscolhida;
 
-            tab.Controls.Add(pagina);            
+        public PaginaBarra(TabControl tab, Bar barra) : base(tab)
+        {
+            barraEscolhida = barra; 
+
+            pagina.Text = barraEscolhida.ToString();
+
+            tab.Controls.Add(pagina);
+
+            PrepararTela(new object(), new EventArgs());
         }
 
-        public async void PrepararTela()
+        public override void PrepararTela(object sender, EventArgs e)
         {
-            await Task.Yield();
+            base.PrepararTela(sender, e);
 
-            tela.Painel.Location = new Point(pagina.Width - tela.Painel.Width, 0);
-
-            pagina.Controls.Add(tela.Painel);
-
-            ConfigBarra configBarra = new ConfigBarra(tela, pagina);
-
-            tela.Redesenhar();
+            tela.Esquematizar(barraEscolhida);
         }
     }
 }
