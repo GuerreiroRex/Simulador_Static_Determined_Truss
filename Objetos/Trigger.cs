@@ -14,7 +14,6 @@ namespace CalculoTre.Objetos
         public static bool JuntarApoios = false;
 
         public static event EventHandler DesenhoAlterado;
-
         public static void ForçarRedesenho(EventArgs e)
         {
             if (DesenhoAlterado != null)

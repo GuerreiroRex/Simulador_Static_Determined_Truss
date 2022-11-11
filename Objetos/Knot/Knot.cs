@@ -26,6 +26,16 @@ namespace CalculoTre.Objetos
         public int valorY;
 
         public List<Force> forcas = new List<Force>();
+        public List<Force> Forces { get => forcas; }
+
+
+        /* Travas representão os apoios em um nó
+         * 
+         * trava[0] representa as travas verticais
+         * 
+         * trava[1] representa as travas horizontais         * 
+         */
+        public bool[] travas = new bool[2];
 
         public Knot()
         {

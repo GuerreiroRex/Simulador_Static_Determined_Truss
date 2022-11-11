@@ -313,6 +313,5 @@ namespace CalculoTre.Objetos
             using (Graphics g = tela.CreateGraphics())
                 g.Clear(Color.White);
         }
-
     }
 }

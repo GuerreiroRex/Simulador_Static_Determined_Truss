@@ -74,6 +74,7 @@
     <Compile Include="Objetos\Configuração_Propriedades\ConfigBarra.cs" />
     <Compile Include="Objetos\Configuração_Propriedades\ConfigApoio.cs" />
     <Compile Include="Objetos\Configuração_Propriedades\ConfigBase.cs" />
+    <Compile Include="Objetos\Configuração_Propriedades\CreateForcePlaceholder.cs" />
     <Compile Include="Objetos\Pages\PaginaApoio.cs" />
     <Compile Include="Objetos\Pages\PaginaBarras.cs" />
     <Compile Include="Objetos\Pages\PaginaBase.cs" />

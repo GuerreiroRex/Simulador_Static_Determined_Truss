@@ -1,8 +1,10 @@
-﻿using System;
+﻿using CalculoTre.Calculos;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +34,8 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             FlowLayoutPanel agrupado = new FlowLayoutPanel();
 
             agrupado.AutoSize = true;
+            agrupado.Width = Controle.Width;
+
             agrupado.BorderStyle = BorderStyle.FixedSingle;
             agrupado.Margin = new Padding(0, 5, 0, 5);
 
@@ -44,23 +48,130 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
             lista.Size = new Size(largura - 10, 24);
 
-            lista.Items.Add("Criar");
+            lista.Items.Add(new CreateForcePlaceholder());
 
-            lista.SelectedIndexChanged += atualizarGrupo;
+            lista.SelectedIndexChanged += botoesLista;
 
             return lista;
         }
 
-        private void atualizarGrupo(object sender, EventArgs e)
+        private void atualizarLista(ComboBox lista, int i = 0)
         {
-            /*
-             * Continaur daqui
-             * 
-             */
+            lista.Items.Clear();
 
-            
+            foreach (Force force in noEscolhido.forcas)
+                lista.Items.Add(force);
 
+            lista.Items.Add(new CreateForcePlaceholder());
             
+            lista.SelectedIndex = i;
+        }
+
+        private void botoesLista(object sender, EventArgs e)
+        {
+            ComboBox lista = sender as ComboBox;
+
+            List<Button> botoes = new List<Button>();
+
+            foreach (object item in lista.Parent.Controls)
+                if (item is Button)
+                    botoes.Add(item as Button);
+
+            foreach (Button bot in botoes)
+                lista.Parent.Controls.Remove(bot);
+
+
+            if (lista.SelectedItem is CreateForcePlaceholder)
+            {
+                Button adicionar = new Button();
+
+                adicionar.Size = new Size(largura - 10, 24);
+                adicionar.Text = "Adicionar";
+
+                adicionar.Click += (sd, ev) =>
+                {
+                    
+                    double vetor = 0;
+                    double angulo = 0;
+
+                    foreach (object item in lista.Parent.Controls)
+                        if (item is NumericUpDown)
+                        {
+                            NumericUpDown numeric = item as NumericUpDown;
+                            switch (numeric.Name)
+                            {
+                                case "Vetor":
+                                    vetor = (double)numeric.Value;
+                                    break;
+                                case "Angulo":
+                                    angulo = (double)numeric.Value;
+                                    break;
+                            }                                
+                        }
+
+                    noEscolhido.forcas.Add(new Force(vetor, angulo));
+                    atualizarLista(lista);
+                };
+
+                lista.Parent.Controls.Add(adicionar);
+            } else
+            {
+                foreach (object item in lista.Parent.Controls)
+                    if (item is NumericUpDown)
+                    {
+                        NumericUpDown numeric = item as NumericUpDown;
+                        switch (numeric.Name)
+                        {
+                            case "Vetor":
+                                numeric.Value = (decimal)(lista.SelectedItem as Force).Vetor;
+                                break;
+                            case "Angulo":
+                                numeric.Value = (decimal)(lista.SelectedItem as Force).Angulo;
+                                break;
+                        }
+                    }
+
+                Button modificar = new Button();
+                modificar.Size = new Size(largura - 10, 24);
+                modificar.Text = "Modificar";
+
+                modificar.Click += (se, ev) =>
+                {
+                    int i = noEscolhido.forcas.IndexOf(lista.SelectedItem as Force);
+
+                    foreach (object item in lista.Parent.Controls)
+                        if (item is NumericUpDown)
+                        {
+                            NumericUpDown numeric = item as NumericUpDown;
+                            switch (numeric.Name)
+                            {
+                                case "Vetor":
+                                    noEscolhido.forcas[i].Vetor = (double)numeric.Value;
+                                    break;
+                                case "Angulo":
+                                    noEscolhido.forcas[i].Angulo = (double)numeric.Value;
+                                    break;
+                            }
+                        }
+
+                    
+
+                    atualizarLista(lista);
+                };
+
+                Button apagar = new Button();
+                apagar.Size = new Size(largura - 10, 24);
+                apagar.Text = "Remover";
+
+                apagar.Click += (se, ev) =>
+                {
+                    noEscolhido.forcas.Remove(lista.SelectedItem as Force);
+                    atualizarLista(lista);
+                };
+
+                lista.Parent.Controls.Add(modificar);
+                lista.Parent.Controls.Add(apagar);
+            }
         }
 
         private void PainelValoresPos(string texto, char tipo)
@@ -115,31 +226,25 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             agrupado.Controls.Add(lista);
 
             #region valores fixos
-            Label textoVetor = Letreiro("Força");
+            Label textoVetor = Letreiro("Vetor");
             agrupado.Controls.Add(textoVetor);
 
             NumericUpDown vetor = CriarValores(textoVetor);
             agrupado.Controls.Add(vetor);
+            vetor.Maximum = decimal.MaxValue;
+            vetor.ThousandsSeparator = true;
 
             agrupado.SetFlowBreak(vetor, true);
 
             Label textoAngulo = Letreiro("Angulo");
             agrupado.Controls.Add(textoAngulo);
             
-            NumericUpDown angulo = CriarValores(textoVetor);
+            NumericUpDown angulo = CriarValores(textoAngulo);
             agrupado.Controls.Add(angulo);
             angulo.Maximum = 360;
             #endregion
 
-            if (lista.SelectedItem.ToString() == "Criar")
-            {
-                Button adicionar = new Button();
-
-                adicionar.Size = new Size(largura - 10, 24);
-                adicionar.Text = "Adicionar";
-                ///////////////////////////////////
-
-            }
+            
             //agrupado.Controls.Add(botao);
 
             agrupado.Padding = new Padding(0);
@@ -151,6 +256,8 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
         {
             NumericUpDown numero = new NumericUpDown();
             numero.Name = letreiro.Text;
+
+            numero.TextAlign = HorizontalAlignment.Right;
 
             numero.Width = largura - 10;
 
