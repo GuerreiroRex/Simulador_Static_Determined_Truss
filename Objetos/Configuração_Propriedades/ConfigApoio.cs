@@ -21,6 +21,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             PainelValoresPos("Posição em X:", 'X');
             PainelValoresPos("Posição em Y:", 'Y');
             PainelValoresForce();
+            PainelApoios();
         }
 
         private void teste(Tela tela, object sender, EventArgs e)
@@ -45,7 +46,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             return agrupado;
         }
 
-        private ComboBox Listar()
+        private ComboBox ListarForces()
         {
             ComboBox lista = new ComboBox();
 
@@ -53,12 +54,23 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
             lista.Items.Add(new CreateForcePlaceholder());
 
-            lista.SelectedIndexChanged += botoesLista;
+            lista.SelectedIndexChanged += botoesListaForce;
 
             return lista;
         }
 
-        private void atualizarLista(ComboBox lista, int i = 0)
+        private ComboBox ListarApoios()
+        {
+            ComboBox lista = new ComboBox();
+
+            lista.Size = new Size(largura - 10, 24);
+
+            lista.SelectedIndexChanged += botoesApoios;
+
+            return lista;
+        }
+
+        private void atualizarListaForce(ComboBox lista, int i = 0)
         {
             lista.Items.Clear();
 
@@ -70,7 +82,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             lista.SelectedIndex = i;
         }
 
-        private void botoesLista(object sender, EventArgs e)
+        private void botoesListaForce(object sender, EventArgs e)
         {
             ComboBox lista = sender as ComboBox;
 
@@ -113,7 +125,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                         }
 
                     noEscolhido.forcas.Add(new Force(vetor, angulo));
-                    atualizarLista(lista);
+                    atualizarListaForce(lista);
                 };
 
                 lista.Parent.Controls.Add(adicionar);
@@ -160,7 +172,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
 
 
-                    atualizarLista(lista);
+                    atualizarListaForce(lista);
                 };
 
                 Button apagar = new Button();
@@ -170,7 +182,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                 apagar.Click += (se, ev) =>
                 {
                     noEscolhido.forcas.Remove(lista.SelectedItem as Force);
-                    atualizarLista(lista);
+                    atualizarListaForce(lista);
                 };
 
                 lista.Parent.Controls.Add(modificar);
@@ -178,6 +190,43 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
 
             }
+        }
+
+        private void botoesApoios(object sender, EventArgs e)
+        {
+            ComboBox lista = sender as ComboBox;
+            
+            switch (lista.SelectedItem)
+            {
+                case "Nenhum":
+                    noEscolhido.travas = new bool[2] { false, false };
+                    break;
+                case "Simples vertical":
+                    noEscolhido.travas = new bool[2] { true, false };
+                    break;
+                case "Simples horizontal":
+                    noEscolhido.travas = new bool[2] { false, true };
+                    break;
+                case "Duplo":
+                    noEscolhido.travas = new bool[2] { true, true };
+                    break;
+            }
+
+            botoesApoiosAtulizar(sender, e);
+        }
+
+        private void botoesApoiosAtulizar(object sender, EventArgs e)
+        {
+            ComboBox lista = sender as ComboBox;
+
+            if (noEscolhido.travas[0] && noEscolhido.travas[1])
+                lista.SelectedIndex = 3;
+            else if (!noEscolhido.travas[0] && noEscolhido.travas[1])
+                lista.SelectedIndex = 2;
+            else if (noEscolhido.travas[0] && !noEscolhido.travas[1])
+                lista.SelectedIndex = 1;
+            else if (!noEscolhido.travas[0] && !noEscolhido.travas[1])
+                lista.SelectedIndex = 0;
         }
 
         private void PainelValoresPos(string texto, char tipo)
@@ -228,7 +277,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
         {
             FlowLayoutPanel agrupado = Agrupar();
 
-            ComboBox lista = Listar();
+            ComboBox lista = ListarForces();
             agrupado.Controls.Add(lista);
 
             #region valores fixos
@@ -250,10 +299,31 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             angulo.Maximum = 360;
             #endregion
 
+            atualizarListaForce(lista);
 
             //agrupado.Controls.Add(botao);
 
             agrupado.Padding = new Padding(0);
+
+            Controle.Controls.Add(agrupado);
+        }
+
+        private void PainelApoios()
+        {
+            FlowLayoutPanel agrupado = Agrupar();
+
+            Label textoVetor = Letreiro("Apoio");
+            agrupado.Controls.Add(textoVetor);
+
+            ComboBox lista = ListarApoios();
+            agrupado.Controls.Add(lista);
+
+            lista.Items.Add("Nenhum");
+            lista.Items.Add("Simples vertical");
+            lista.Items.Add("Simples horizontal");
+            lista.Items.Add("Duplo");
+
+            botoesApoiosAtulizar(lista, new EventArgs());
 
             Controle.Controls.Add(agrupado);
         }

@@ -36,6 +36,7 @@
             this.deConfigurarTela = new System.Windows.Forms.Button();
             this.deSalvar = new System.Windows.Forms.Button();
             this.deCarregar = new System.Windows.Forms.Button();
+            this.deCalcular = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // deLimpar
@@ -122,11 +123,23 @@
             this.deCarregar.UseVisualStyleBackColor = true;
             this.deCarregar.Click += new System.EventHandler(this.deCarregar_Click);
             // 
+            // deCalcular
+            // 
+            this.deCalcular.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deCalcular.Location = new System.Drawing.Point(18, 226);
+            this.deCalcular.Name = "deCalcular";
+            this.deCalcular.Size = new System.Drawing.Size(112, 61);
+            this.deCalcular.TabIndex = 7;
+            this.deCalcular.Text = "Calcular";
+            this.deCalcular.UseVisualStyleBackColor = true;
+            this.deCalcular.Click += new System.EventHandler(this.deCalcular_Click);
+            // 
             // deSimular
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(901, 501);
+            this.Controls.Add(this.deCalcular);
             this.Controls.Add(this.deCarregar);
             this.Controls.Add(this.deSalvar);
             this.Controls.Add(this.deConfigurarTela);
@@ -152,6 +165,7 @@
         private System.Windows.Forms.Button deConfigurarTela;
         private System.Windows.Forms.Button deSalvar;
         private System.Windows.Forms.Button deCarregar;
+        private System.Windows.Forms.Button deCalcular;
     }
 }
 

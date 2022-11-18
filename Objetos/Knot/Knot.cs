@@ -1,5 +1,7 @@
 ﻿using CalculoTre.Calculos;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CalculoTre.Objetos
 {
@@ -16,7 +18,6 @@ namespace CalculoTre.Objetos
         public int valorY;
 
         public List<Force> forcas = new List<Force>();
-        public List<Force> Forces { get => forcas; }
 
 
         /* Travas representão os apoios em um nó
@@ -25,7 +26,7 @@ namespace CalculoTre.Objetos
          * 
          * trava[1] representa as travas horizontais         * 
          */
-        public bool[] travas = new bool[2];
+        public bool[] travas = new bool[2] { false, false };
 
         public Knot()
         {
@@ -56,6 +57,36 @@ namespace CalculoTre.Objetos
         public int ValorY { get => valorY; set => valorY = value; }
 
         public static byte Quantidade { get => quantidade; set => quantidade = value; }
+
+        public double ForceX
+        {
+            get
+            {
+                double valor = 0;
+
+                foreach (Force f in forcas)
+                {
+                    valor += f.ForcaX;
+                }
+
+                return valor;
+            }
+        }
+
+        public double ForceY
+        {
+            get
+            {
+                double valor = 0;
+
+                foreach (Force f in forcas)
+                {
+                    valor += f.ForcaY;
+                }
+
+                return valor;
+            }
+        }
         #endregion
     }
 }

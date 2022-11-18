@@ -1,4 +1,5 @@
-﻿using CalculoTre.Objetos;
+﻿using CalculoTre.Calculos;
+using CalculoTre.Objetos;
 using CalculoTre.Telas;
 using System;
 using System.Collections.Generic;
@@ -133,6 +134,11 @@ namespace CalculoTre
             Port.CarregarDados(arquivoBarras, ref Data.barras);
 
             telaPrincipal.Redesenhar(new object(), new EventArgs());
+        }
+
+        private void deCalcular_Click(object sender, EventArgs e)
+        {
+            Calcular.CalcReaction();
         }
     }
 }

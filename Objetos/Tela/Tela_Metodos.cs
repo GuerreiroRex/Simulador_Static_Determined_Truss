@@ -198,12 +198,9 @@ namespace CalculoTre.Objetos
 
         public void Esquematizar(Knot no, bool gatilho = false)
         {
-            var a = no.ID;
+            List<Bar> barras = Data.barras.Values.Where(x => x.knots.Contains(no)).ToList();
 
-            //Data.nos.Values.ToList().Where<Knot>(x => x.ID == barra.knots[0].ID).First();
-            var temp = Data.barras.Values.Where(x => x.knots.Where(y => y.ID == no.ID) != null).ToList();
-
-            foreach (Bar barra in temp)
+            foreach (Bar barra in barras)
             {
                 Pontuar(barra.knots[0], gatilho);
                 Pontuar(barra.knots[1], gatilho);

@@ -1,14 +1,19 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace CalculoTre.Calculos
 {
     public class Force
     {
-        protected double vetor;
-        protected double angulo;
+        private string nome;
 
-        protected double valorX;
-        protected double valorY;
+        public double vetor;
+        public double angulo;
+
+        public double valorX;
+        public double valorY;
+
+        public Force () { }
 
         public Force(double Newton, double Graus)
         {
@@ -41,7 +46,7 @@ namespace CalculoTre.Calculos
             return $"{Math.Round(vetor, 2)}N \t{angulo}º";
         }
 
-        public string Nome { get => ToString(); }
+        public string Nome { get => nome; set => nome = value; }    
 
         public double ForcaX { get => valorX; }
 
@@ -50,5 +55,7 @@ namespace CalculoTre.Calculos
         public double Vetor { get => vetor; set => vetor = value; }
 
         public double Angulo { get => angulo; set => angulo = value; }
+
+
     }
 }
