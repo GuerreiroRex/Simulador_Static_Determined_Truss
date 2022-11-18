@@ -1,23 +1,8 @@
-﻿using CalculoTre.Calculos;
-using CalculoTre.Objetos;
+﻿using CalculoTre.Objetos;
 using CalculoTre.Telas;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Channels;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace CalculoTre
 {
@@ -41,7 +26,7 @@ namespace CalculoTre
             Data.telas.Add(0, telaPrincipal);
 
             telaPrincipal.AtualizarDados();
-        }   
+        }
 
         private void PrepararComboBoxes()
         {
@@ -131,6 +116,23 @@ namespace CalculoTre
         {
             Data.Reiniciar();
             telaPrincipal.Redesenhar();
+        }
+
+        private void deSalvar_Click(object sender, EventArgs e)
+        {
+            string arquivoBarras = @"Data\dados2.json";
+
+            Port.SalvarDados(arquivoBarras, Data.barras);
+            MessageBox.Show("Feito");
+        }
+
+        private void deCarregar_Click(object sender, EventArgs e)
+        {
+            string arquivoBarras = @"Data\dados2.json";
+
+            Port.CarregarDados(arquivoBarras, ref Data.barras);
+
+            telaPrincipal.Redesenhar(new object(), new EventArgs());
         }
     }
 }

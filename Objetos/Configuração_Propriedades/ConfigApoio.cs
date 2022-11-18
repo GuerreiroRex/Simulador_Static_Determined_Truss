@@ -1,32 +1,35 @@
 ﻿using CalculoTre.Calculos;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CalculoTre.Objetos.Configuração_Propriedades
 {
-    internal class ConfigApoio: ConfigBase
+    internal class ConfigApoio : ConfigBase
     {
         protected Knot noEscolhido;
-        
-        public ConfigApoio(Tela tela, Knot no, TabPage pagina) :base(tela)
+
+        public ConfigApoio(Tela tela, Knot no, TabPage pagina) : base(tela)
         {
             noEscolhido = no;
 
             pagina.Controls.Add(Controle);
 
-            Trigger.DesenhoAlterado += tela.Redesenhar;
+            Trigger.DesenhoAlterado += (s, e) => teste(tela, s, e);
 
             PainelValoresPos("Posição em X:", 'X');
             PainelValoresPos("Posição em Y:", 'Y');
             PainelValoresForce();
+        }
+
+        private void teste(Tela tela, object sender, EventArgs e)
+        {
+            tela.Limpar();
+
+            tela.Desenhar();
+
+            tela.Esquematizar(noEscolhido, false);
         }
 
         private FlowLayoutPanel Agrupar()
@@ -63,7 +66,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                 lista.Items.Add(force);
 
             lista.Items.Add(new CreateForcePlaceholder());
-            
+
             lista.SelectedIndex = i;
         }
 
@@ -90,7 +93,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
                 adicionar.Click += (sd, ev) =>
                 {
-                    
+
                     double vetor = 0;
                     double angulo = 0;
 
@@ -106,7 +109,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                                 case "Angulo":
                                     angulo = (double)numeric.Value;
                                     break;
-                            }                                
+                            }
                         }
 
                     noEscolhido.forcas.Add(new Force(vetor, angulo));
@@ -114,7 +117,8 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                 };
 
                 lista.Parent.Controls.Add(adicionar);
-            } else
+            }
+            else
             {
                 foreach (object item in lista.Parent.Controls)
                     if (item is NumericUpDown)
@@ -154,7 +158,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                             }
                         }
 
-                    
+
 
                     atualizarLista(lista);
                 };
@@ -171,6 +175,8 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
                 lista.Parent.Controls.Add(modificar);
                 lista.Parent.Controls.Add(apagar);
+
+
             }
         }
 
@@ -186,7 +192,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             switch (tipo)
             {
                 case 'X':
-                    numero.Maximum = Data.EscalaHorizontal;
+                    numero.Maximum = Resolution.EscalaHorizontal;
                     numero.Value = noEscolhido.ValorX;
 
                     numero.ValueChanged += (s, e) =>
@@ -196,7 +202,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                     };
                     break;
                 case 'Y':
-                    numero.Maximum = Data.EscalaVertical;
+                    numero.Maximum = Resolution.EscalaVertical;
                     numero.Value = noEscolhido.ValorY;
 
                     numero.ValueChanged += (s, e) =>
@@ -209,7 +215,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                     break;
             }
 
-            
+
             agrupado.Controls.Add(numero);
 
             agrupado.Padding = new Padding(0);
@@ -238,13 +244,13 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
             Label textoAngulo = Letreiro("Angulo");
             agrupado.Controls.Add(textoAngulo);
-            
+
             NumericUpDown angulo = CriarValores(textoAngulo);
             agrupado.Controls.Add(angulo);
             angulo.Maximum = 360;
             #endregion
 
-            
+
             //agrupado.Controls.Add(botao);
 
             agrupado.Padding = new Padding(0);
@@ -275,7 +281,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             label.AutoSize = true;
             label.MaximumSize = new Size(0, 24);
 
-            label.Location = new Point(0 ,0);
+            label.Location = new Point(0, 0);
 
             Controle.SetFlowBreak(label, true);
 

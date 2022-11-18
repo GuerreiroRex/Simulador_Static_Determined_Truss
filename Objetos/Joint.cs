@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CalculoTre.Objetos
@@ -17,15 +15,6 @@ namespace CalculoTre.Objetos
 
         public static Knot Apoio;
 
-
-
-
-
-
-
-
-
-
         //Atualiza os nós
         public static void AtualizarNos()
         {
@@ -34,23 +23,16 @@ namespace CalculoTre.Objetos
 
             //Para cada valor da barra, adicione os que ainda não forem adicionados
             foreach (var barra in Data.barras.Values)
-            {
-                if (!tempNos.Contains(barra.knots[0]))
-                {
-                    Data.nos.Add(barra.knots[0].ID, barra.knots[0]);
-                    tempNos.Add(barra.knots[0]);
-                }
-                if (!tempNos.Contains(barra.knots[1]))
-                {
-                    Data.nos.Add(barra.knots[1].ID, barra.knots[1]);
-                    tempNos.Add(barra.knots[1]);
-                }
-            }
+                foreach (Knot no in barra.knots)
+                    if (!Data.nos.ContainsKey(no.ID))
+                    {
+                        Data.nos.Add(no.ID, no);
+                        tempNos.Add(no);
+                    }
+
+            if (tempNos.Count > 0)
+                Knot.Quantidade = (byte)(1 + tempNos.OrderByDescending(x => x.ID).First().ID);
         }
-
-
-
-
 
 
         //Cria o primeiro nó e desenha ele na tela
@@ -103,7 +85,7 @@ namespace CalculoTre.Objetos
                 {
                     tempKnot[1] = new Knot();
                     tempKnot[1].AtualizarValores(Data.telas[0], e.X, e.Y);
-                }                
+                }
 
                 Data.telas[0].Pontuar(tempKnot[1], true);
 

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace CalculoTre.Objetos
 {
@@ -24,7 +16,7 @@ namespace CalculoTre.Objetos
         private delegate void PrepararLetras();
         private delegate void PrepararEsquema();
 
-        public Tela (Panel painel)
+        public Tela(Panel painel)
         {
             tela = painel;
 
@@ -37,8 +29,8 @@ namespace CalculoTre.Objetos
             b = tela.Height - a;
             c = tela.Width - a;
 
-            unidade_CorteX = (double)(c - a) / Data.Resolucao[0];
-            unidade_CorteY = (double)(b - a) / Data.Resolucao[1];
+            unidade_CorteX = (double)(c - a) / Resolution.Resolucao[0];
+            unidade_CorteY = (double)(b - a) / Resolution.Resolucao[1];
         }
 
         public Panel Painel
@@ -49,25 +41,25 @@ namespace CalculoTre.Objetos
         #region Conversao
         public int ValorParaPosX(int valor)
         {
-            double ajuste = (double)(tela.Width - 2 * a) / (double)tela.Width * (double)tela.Width * valor / Data.EscalaHorizontal;
+            double ajuste = (double)(tela.Width - 2 * a) / (double)tela.Width * (double)tela.Width * valor / Resolution.EscalaHorizontal;
             return (int)(ajuste + a);
         }
 
         public int ValorParaPosY(int valor)
         {
-            double ajuste = (double)(tela.Height - 2 * a) / (double)tela.Height * (double)tela.Height * (Data.EscalaVertical - valor) / Data.EscalaVertical;
+            double ajuste = (double)(tela.Height - 2 * a) / (double)tela.Height * (double)tela.Height * (Resolution.EscalaVertical - valor) / Resolution.EscalaVertical;
             return (int)(ajuste + a);
         }
 
         public int PosParaValorX(int pos)
         {
-            double valor = (double)(pos - a) * Data.EscalaHorizontal / (tela.Width - 2 * a);
+            double valor = (double)(pos - a) * Resolution.EscalaHorizontal / (tela.Width - 2 * a);
             return (int)valor;
         }
 
         public int PosParaValorY(int pos)
         {
-            double valor = (double)((tela.Height - pos) - a) * Data.EscalaVertical / (tela.Height - 2 * a);
+            double valor = (double)((tela.Height - pos) - a) * Resolution.EscalaVertical / (tela.Height - 2 * a);
             return (int)valor;
         }
         #endregion

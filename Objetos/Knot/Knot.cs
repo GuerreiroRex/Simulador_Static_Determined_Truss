@@ -1,14 +1,5 @@
 ﻿using CalculoTre.Calculos;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CalculoTre.Objetos
 {
@@ -19,7 +10,6 @@ namespace CalculoTre.Objetos
         public byte id;
         public string nome;
 
-        public Button botao;
         public static int tamanho = 24;
 
         public int valorX;
@@ -57,7 +47,7 @@ namespace CalculoTre.Objetos
 
         public byte ID { get => id; }
 
-        public string Nome { get => nome; set => nome = value; }    
+        public string Nome { get => nome; set => nome = value; }
 
         public static int Tamanho { get => tamanho; set => tamanho = value; }
 

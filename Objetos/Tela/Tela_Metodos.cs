@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CalculoTre.Objetos
 {
@@ -34,7 +30,7 @@ namespace CalculoTre.Objetos
             using (Graphics g = tela.CreateGraphics())
             {
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                
+
                 //Desenha cada linha da borda do quadro
                 g.DrawLine(caneta, superiorEsquerdo, superiorDireito);
                 g.DrawLine(caneta, superiorEsquerdo, inferiorEsquerdo);
@@ -42,12 +38,12 @@ namespace CalculoTre.Objetos
                 g.DrawLine(caneta, inferiorDireito, superiorDireito);
 
                 //Posiciona as linahs em X dos quadriculados
-                for (int i = 1; i < Data.Resolucao[0]; i++)
-                    g.DrawLine(caneta, ValorParaPosX(i * Data.EscalaHorizontal / Data.Resolucao[0]), a, ValorParaPosX(i * Data.EscalaHorizontal / Data.Resolucao[0]), b);
+                for (int i = 1; i < Resolution.Resolucao[0]; i++)
+                    g.DrawLine(caneta, ValorParaPosX(i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]), a, ValorParaPosX(i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]), b);
 
                 //Posiciona as linahs em Y dos quadriculados
-                for (int i = 1; i < Data.Resolucao[1]; i++)
-                    g.DrawLine(caneta, a, ValorParaPosY(i * Data.EscalaVertical / Data.Resolucao[1]), c, ValorParaPosY(i * Data.EscalaVertical / Data.Resolucao[1]));
+                for (int i = 1; i < Resolution.Resolucao[1]; i++)
+                    g.DrawLine(caneta, a, ValorParaPosY(i * Resolution.EscalaVertical / Resolution.Resolucao[1]), c, ValorParaPosY(i * Resolution.EscalaVertical / Resolution.Resolucao[1]));
 
                 /*
                 PrepararLetras prepararLetras = new PrepararLetras(Letreiro);
@@ -86,12 +82,12 @@ namespace CalculoTre.Objetos
                 g.DrawLine(caneta, inferiorEsquerdo, inferiorDireito);
                 g.DrawLine(caneta, inferiorDireito, superiorDireito);
 
-                for (int i = 1; i < Data.Resolucao[0]; i++)
-                    g.DrawLine(caneta, ValorParaPosX(i * Data.EscalaHorizontal / Data.Resolucao[0]), a, ValorParaPosX(i * Data.EscalaHorizontal / Data.Resolucao[0]), b);
+                for (int i = 1; i < Resolution.Resolucao[0]; i++)
+                    g.DrawLine(caneta, ValorParaPosX(i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]), a, ValorParaPosX(i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]), b);
 
                 //Posiciona as linahs em Y dos quadriculados
-                for (int i = 1; i < Data.Resolucao[1]; i++)
-                    g.DrawLine(caneta, a, ValorParaPosY(i * Data.EscalaVertical / Data.Resolucao[1]), c, ValorParaPosY(i * Data.EscalaVertical / Data.Resolucao[1]));
+                for (int i = 1; i < Resolution.Resolucao[1]; i++)
+                    g.DrawLine(caneta, a, ValorParaPosY(i * Resolution.EscalaVertical / Resolution.Resolucao[1]), c, ValorParaPosY(i * Resolution.EscalaVertical / Resolution.Resolucao[1]));
 
                 Letreiro();
             }
@@ -104,23 +100,23 @@ namespace CalculoTre.Objetos
                 int tamanhoFonte = 6;
                 Font fonte = new Font("Arial", tamanhoFonte);
 
-                //for (int i = 0; i <= Data.Resolucao[0]; i++)
-                for (int i = Data.Resolucao[0]; i > 0; i--)
+                //for (int i = 0; i <= Resolution.Resolucao[0]; i++)
+                for (int i = Resolution.Resolucao[0]; i > 0; i--)
                 {
-                    string temp = (i * Data.EscalaHorizontal / Data.Resolucao[0]).ToString();
-                    
+                    string temp = (i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]).ToString();
+
                     int size = g.MeasureString(temp, fonte).ToSize().Width;
 
-                    g.DrawString(   temp,
+                    g.DrawString(temp,
                                     fonte,
                                     new SolidBrush(Color.Black),
                                     new Point((int)(unidade_CorteX * i + a - size / 2), Painel.Height - tamanhoFonte * 2));
 
                 }
 
-                for (int i = 0; i < Data.Resolucao[1]; i++)
+                for (int i = 0; i < Resolution.Resolucao[1]; i++)
                 {
-                    g.DrawString(   ((Data.Resolucao[1] - i) * Data.EscalaVertical / Data.Resolucao[1]).ToString(),
+                    g.DrawString(((Resolution.Resolucao[1] - i) * Resolution.EscalaVertical / Resolution.Resolucao[1]).ToString(),
                                      new Font("Arial", 6),
                                      new SolidBrush(Color.Black),
                                      new Point(0, (int)unidade_CorteY * i + a));
@@ -202,7 +198,10 @@ namespace CalculoTre.Objetos
 
         public void Esquematizar(Knot no, bool gatilho = false)
         {
-            var temp = Data.barras.Values.Where (x => x.knots.Contains(no)).ToList();
+            var a = no.ID;
+
+            //Data.nos.Values.ToList().Where<Knot>(x => x.ID == barra.knots[0].ID).First();
+            var temp = Data.barras.Values.Where(x => x.knots.Where(y => y.ID == no.ID) != null).ToList();
 
             foreach (Bar barra in temp)
             {
@@ -219,8 +218,11 @@ namespace CalculoTre.Objetos
             Pen caneta = new Pen(Color.Blue);
             caneta.Width = (float)2;
 
-            Point ponto1 = new Point(ValorParaPosX(barra.knots[0].ValorX), ValorParaPosY(barra.knots[0].ValorY));
-            Point ponto2 = new Point(ValorParaPosX(barra.knots[1].ValorX),ValorParaPosY(barra.knots[1].ValorY));
+            var a = Data.nos.Values.ToList().Where<Knot>(x => x.ID == barra.knots[0].ID).First();
+            var b = Data.nos.Values.ToList().Where<Knot>(x => x.ID == barra.knots[1].ID).First();
+
+            Point ponto1 = new Point(ValorParaPosX(a.ValorX), ValorParaPosY(a.ValorY));
+            Point ponto2 = new Point(ValorParaPosX(b.ValorX), ValorParaPosY(b.ValorY));
 
             using (Graphics g = tela.CreateGraphics())
             {
@@ -233,35 +235,41 @@ namespace CalculoTre.Objetos
         public void Pontuar(Knot no, bool gatilho)
         {
             //Cria o botão
-            no.botao = new Button();
+            //botao
+            Button botao = new Button();
 
             //Aplica-lhe um nome
-            no.botao.Name = $"B{no.id}";
+            botao.Name = $"B{no.id}";
+
+            if (tela.Controls.OfType<Button>().ToList().Where(x => x.Text == "5").Count() > 0)
+                return;
+
+            if (tela.Controls.OfType<Button>().ToList().Where(x => x.Name == botao.Name).Count() > 0)
+                return;
 
             //Coloca seu fundo preto, letra branca e escreve uma letra
-            no.botao.BackColor = System.Drawing.Color.Black;
-            no.botao.ForeColor = Color.White;
+            botao.BackColor = System.Drawing.Color.Black;
+            botao.ForeColor = Color.White;
 
             //botao.Text = nome;
-            no.botao.Text = no.id.ToString();
+            botao.Text = no.id.ToString();
 
             //Define o tamanho do botão
-            no.botao.Height = Knot.tamanho;
-            no.botao.Width = Knot.tamanho;
+            botao.Height = Knot.tamanho;
+            botao.Width = Knot.tamanho;
 
             //Define a posição do botão e retira sua borda
             var dv = Knot.tamanho / 2;
-            no.botao.FlatAppearance.BorderSize = 0;
-            no.botao.Location = new System.Drawing.Point(ValorParaPosX(no.valorX) - dv, ValorParaPosY(no.valorY) - dv);
+            botao.FlatAppearance.BorderSize = 0;
+            botao.Location = new System.Drawing.Point(ValorParaPosX(no.valorX) - dv, ValorParaPosY(no.valorY) - dv);
 
-            no.botao.AutoSize = true;
-            no.botao.AutoSizeMode = AutoSizeMode.GrowOnly;
-
+            botao.AutoSize = true;
+            botao.AutoSizeMode = AutoSizeMode.GrowOnly;
 
             if (gatilho)
             {
                 //Se o botão for apertado
-                no.botao.MouseDown += (s, e) =>
+                botao.MouseDown += (s, e) =>
                 {
                     switch (e.Button)
                     {
@@ -298,10 +306,10 @@ namespace CalculoTre.Objetos
                     }
                 };
             }
-            
-            
 
-            tela.Controls.Add(no.botao);
+
+
+            tela.Controls.Add(botao);
         }
 
         public void Limpar()

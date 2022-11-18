@@ -1,12 +1,5 @@
-﻿using CalculoTre.Objetos.Configuração_Propriedades;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CalculoTre.Objetos.Pages
 {
@@ -16,9 +9,9 @@ namespace CalculoTre.Objetos.Pages
 
         public PaginaBarra(TabControl tab, Bar barra) : base(tab)
         {
-            barraEscolhida = barra; 
+            barraEscolhida = barra;
 
-            pagina.Text = barraEscolhida.ToString();
+            pagina.Text = barraEscolhida.ID;
 
             tab.Controls.Add(pagina);
 

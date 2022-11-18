@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace CalculoTre.Objetos.Configuração_Propriedades
@@ -13,10 +8,10 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
         protected FlowLayoutPanel Controle;
         protected const int largura = 90;
         protected const int altura = 320;
-        
+
         protected Font fonte = new Font("Arial", 8);
 
-        public ConfigBase (Tela tela)
+        public ConfigBase(Tela tela)
         {
             Controle = new FlowLayoutPanel();
             //Controle.BackColor = Color.LightGreen;

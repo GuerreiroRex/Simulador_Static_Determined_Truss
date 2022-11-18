@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using Newtonsoft.Json;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CalculoTre.Objetos
 {
@@ -12,24 +7,34 @@ namespace CalculoTre.Objetos
     {
         private string id;
 
-        public  Knot[] knots = new Knot[2];
-        private double força;
+        private double force;
 
+        public Knot[] knots = new Knot[2];
+
+        // Esse construtor padrão existe por motivos de Json
+        public Bar() { }
+        
         public Bar(Knot primario, Knot secundario)
         {
             knots[0] = primario;
             knots[1] = secundario;
 
-            var temp = knots.ToList().OrderBy(x => x.ID).ToArray(); ;
+            var temp = knots.ToList().OrderBy(x => x.ID).ToArray();
 
-            id = $"({temp[0].ID})({temp[1].ID})";
+            id = $"({knots[0].ID})({knots[1].ID})";
         }
 
         #region Variaveis
         public string ID
         {
-            get => id;
+            get
+            {
+                id = $"({knots[0].ID})({knots[1].ID})";
+                return $"Barra {id}";
+            }
         }
+
+        public double Force { get => force; }
         #endregion
     }
 }

@@ -1,10 +1,5 @@
 ﻿using CalculoTre.Objetos.Configuração_Propriedades;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CalculoTre.Objetos.Pages
@@ -13,7 +8,7 @@ namespace CalculoTre.Objetos.Pages
     {
         protected Knot noEscolhido;
 
-        public PaginaApoio (TabControl tab, Knot no) : base(tab)
+        public PaginaApoio(TabControl tab, Knot no) : base(tab)
         {
             noEscolhido = no;
 

@@ -34,6 +34,8 @@
             this.deObjeto = new System.Windows.Forms.ComboBox();
             this.deProp = new System.Windows.Forms.Button();
             this.deConfigurarTela = new System.Windows.Forms.Button();
+            this.deSalvar = new System.Windows.Forms.Button();
+            this.deCarregar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // deLimpar
@@ -98,11 +100,35 @@
             this.deConfigurarTela.UseVisualStyleBackColor = true;
             this.deConfigurarTela.Click += new System.EventHandler(this.deConfigurarTela_Click);
             // 
+            // deSalvar
+            // 
+            this.deSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deSalvar.Location = new System.Drawing.Point(18, 361);
+            this.deSalvar.Name = "deSalvar";
+            this.deSalvar.Size = new System.Drawing.Size(112, 61);
+            this.deSalvar.TabIndex = 5;
+            this.deSalvar.Text = "Salvar";
+            this.deSalvar.UseVisualStyleBackColor = true;
+            this.deSalvar.Click += new System.EventHandler(this.deSalvar_Click);
+            // 
+            // deCarregar
+            // 
+            this.deCarregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deCarregar.Location = new System.Drawing.Point(18, 428);
+            this.deCarregar.Name = "deCarregar";
+            this.deCarregar.Size = new System.Drawing.Size(112, 61);
+            this.deCarregar.TabIndex = 6;
+            this.deCarregar.Text = "Carregar";
+            this.deCarregar.UseVisualStyleBackColor = true;
+            this.deCarregar.Click += new System.EventHandler(this.deCarregar_Click);
+            // 
             // deSimular
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(901, 501);
+            this.Controls.Add(this.deCarregar);
+            this.Controls.Add(this.deSalvar);
             this.Controls.Add(this.deConfigurarTela);
             this.Controls.Add(this.deProp);
             this.Controls.Add(this.deObjeto);
@@ -124,6 +150,8 @@
         private System.Windows.Forms.ComboBox deObjeto;
         private System.Windows.Forms.Button deProp;
         private System.Windows.Forms.Button deConfigurarTela;
+        private System.Windows.Forms.Button deSalvar;
+        private System.Windows.Forms.Button deCarregar;
     }
 }
 

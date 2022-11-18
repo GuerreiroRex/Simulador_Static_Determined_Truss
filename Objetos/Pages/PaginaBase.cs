@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CalculoTre.Objetos.Pages
@@ -14,7 +10,7 @@ namespace CalculoTre.Objetos.Pages
         protected TabPage pagina = new TabPage();
         protected Tela tela;
 
-        public PaginaBase (TabControl tabControl)
+        public PaginaBase(TabControl tabControl)
         {
             tab = tabControl;
 
@@ -42,6 +38,6 @@ namespace CalculoTre.Objetos.Pages
 
         public TabPage Valor { get => pagina; }
 
-        public Tela Tela { get => tela;  }
+        public Tela Tela { get => tela; }
     }
 }
