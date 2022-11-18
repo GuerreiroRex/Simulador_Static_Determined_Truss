@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalculoTre.Objetos;
+using System;
 using System.Windows.Forms;
 
 namespace CalculoTre.Calculos
@@ -13,12 +14,19 @@ namespace CalculoTre.Calculos
         public double valorX;
         public double valorY;
 
+        public double posX;
+        public double posY;
+
+
         public Force () { }
 
-        public Force(double Newton, double Graus)
+        public Force(double Newton, double Graus, Knot pai)
         {
             vetor = Newton;
             angulo = Graus;
+
+            posX = pai.valorX;
+            posY = pai.valorY;
 
             Decompor();
         }

@@ -124,7 +124,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                             }
                         }
 
-                    noEscolhido.forcas.Add(new Force(vetor, angulo));
+                    noEscolhido.forcas.Add(new Force(vetor, angulo, noEscolhido));
                     atualizarListaForce(lista);
                 };
 

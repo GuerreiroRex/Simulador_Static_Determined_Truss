@@ -1,4 +1,5 @@
 ﻿using CalculoTre.Objetos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,7 +11,6 @@ namespace CalculoTre.Calculos
         public static void CalcReaction()
         {
             Knot noDuplo = IdentificarApoio();
-            double reactNoDuplo;
 
             List<Knot> nosLigados = IdetificarAdemais(noDuplo);
 
@@ -46,10 +46,46 @@ namespace CalculoTre.Calculos
 
         private static void CalcularMomento(Knot principal, List<Knot> ademais)
         {
-            double momento;
             List<Force> incognitas = IdentificarIncognitas(ademais);
 
-            
+            List<Knot> nosHorarios = ademais.Where(x => IdentificarHorario(principal, x)).ToList();
+
+            List<Knot> nosAntihorario = ademais.Where(x => IdentificarAntiHorario(principal, x)).ToList();
+
+            /*      HORARIO         -        ANTIHORARIO 
+             * (Distância_H * Força_H)  =   (Distância_AH * Força_AH)
+             * 
+             * Sempre considerar incognita horaria
+             * 
+             *           HORARIO                 -        ANTIHORARIO 
+             * (Distância_In * Incognita) + (Distância_H * Força_H)   =   (Distância_AH * Força_AH)
+             * 
+             *           HORARIO                 -        ANTIHORARIO 
+             * (Distância_In * Incognita) + (Distância_H * Força_H)   =   (Distância_AH * Força_AH)
+             * 
+             *
+             * Incognita = { (Distância_AH * Força_AH) - (Distância_H * Força_H) } / Distância_In
+             */
+
+            double distancia_HA = Math.Abs(nosHorarios.Sum(x => CalcularDistanciaX(principal, x) * Math.Round(x.ForceY, 6)));
+            double distancia_HB = Math.Abs(nosHorarios.Sum(x => CalcularDistanciaY(principal, x) * Math.Round(x.ForceX, 6)));
+
+
+            double distancia_AHA = Math.Abs(nosAntihorario.Sum(x => CalcularDistanciaX(principal, x) * Math.Round(x.ForceY, 6)));
+            double distancia_AHB = Math.Abs(nosAntihorario.Sum(x => CalcularDistanciaY(principal, x) * Math.Round(x.ForceX, 6)));
+
+
+            //incognitas[0].vetor = ((distancia_HA + distancia_HB) - (distancia_AHA + distancia_AHB)) / CalcularDistanciaX(principal, incognitas[0]);
+        }
+
+        private static int CalcularDistanciaX(Knot principal, Knot secundario)
+        {
+            return Math.Abs(principal.valorX - secundario.valorX);
+        }
+
+        private static int CalcularDistanciaY(Knot principal, Knot secundario)
+        {
+            return Math.Abs(principal.valorY - secundario.valorY);
         }
 
         private static bool IdentificarHorario(Knot principal, Knot secundario)
@@ -58,6 +94,17 @@ namespace CalculoTre.Calculos
                 (secundario.ForceY < 0 && secundario.valorX >= principal.valorX) ||
                 (secundario.ForceX < 0 && secundario.valorY <= principal.valorY) ||
                 (secundario.ForceY > 0 && secundario.valorX <= principal.valorX))
+                return true;
+            else
+                return false;
+        }
+
+        private static bool IdentificarAntiHorario(Knot principal, Knot secundario)
+        {
+            if ((secundario.ForceX < 0 && secundario.valorY >= principal.valorY) ||
+                (secundario.ForceY > 0 && secundario.valorX >= principal.valorX) ||
+                (secundario.ForceX > 0 && secundario.valorY <= principal.valorY) ||
+                (secundario.ForceY < 0 && secundario.valorX <= principal.valorX))
                 return true;
             else
                 return false;
@@ -73,12 +120,14 @@ namespace CalculoTre.Calculos
                 {
                     Force temp = new Force();
                     temp.Nome = $"iV_{no.ToString()}";
+                    temp.angulo = 90;
                     incognitas.Add(temp);
                 }
                 if (no.travas[1])
                 {
                     Force temp = new Force();
                     temp.Nome = $"iH_{no.ToString()}";
+                    temp.angulo = 0;
                     incognitas.Add(temp);
                 }
             }
