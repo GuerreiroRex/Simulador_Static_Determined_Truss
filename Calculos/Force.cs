@@ -31,7 +31,7 @@ namespace CalculoTre.Calculos
             Decompor();
         }
 
-        private void Decompor()
+        public void Decompor()
         {
             double rad = angulo * (Math.PI / 180);
 

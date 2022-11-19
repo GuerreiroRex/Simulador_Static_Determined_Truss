@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -238,11 +239,6 @@ namespace CalculoTre.Objetos
             //Aplica-lhe um nome
             botao.Name = $"B{no.id}";
 
-            if (tela.Controls.OfType<Button>().ToList().Where(x => x.Text == "5").Count() > 0)
-                return;
-
-            if (tela.Controls.OfType<Button>().ToList().Where(x => x.Name == botao.Name).Count() > 0)
-                return;
 
             //Coloca seu fundo preto, letra branca e escreve uma letra
             botao.BackColor = System.Drawing.Color.Black;
@@ -302,6 +298,32 @@ namespace CalculoTre.Objetos
                             break;
                     }
                 };
+            }
+            else
+            {
+                using (Graphics g = tela.CreateGraphics())
+                {
+                    if (no.ForceX != 0 || no.ForceY != 0)
+                    {
+                        AdjustableArrowCap bigArrow = new AdjustableArrowCap(5, 5);
+                        Pen p = new Pen(Color.Orange, (float)2.5);
+                        p.CustomEndCap = bigArrow;
+
+                        Point p1 = new Point(botao.Location.X + dv, botao.Location.Y + dv);
+
+                        byte vetor = 10;
+
+                        double rad = no.Angulo * (Math.PI / 180);
+
+                        double valorX = Math.Cos(rad) * vetor;
+
+                        double valorY = Math.Sin(rad) * vetor;
+
+                        Point p2 = new Point((int)(botao.Location.X + dv + valorX), (int)(botao.Location.Y + dv + valorY));
+
+                        g.DrawLine(p, botao.Location, p2);
+                    }
+                }
             }
 
 

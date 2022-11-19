@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace CalculoTre.Calculos
 {
@@ -94,13 +95,15 @@ namespace CalculoTre.Calculos
             double Baixo = Math.Abs(ademais.Where(x => x.ForceY < 0).Sum(x => x.ForceY));
 
             fixoV.Vetor = (Baixo - Cima) - incognitas[0].vetor;
+            fixoV.Decompor();
 
 
 
             double Esquerda = Math.Abs(ademais.Where(x => x.ForceX > 0).Sum(x => x.ForceX));
             double Direita = Math.Abs(ademais.Where(x => x.ForceX < 0).Sum(x => x.ForceX));
 
-            fixoV.Vetor = (Esquerda - Direita);
+            fixoH.Vetor = (Esquerda - Direita);
+            fixoH.Decompor();
 
             principal.forcas.Add(fixoH);
             principal.forcas.Add(fixoV);
@@ -112,38 +115,72 @@ namespace CalculoTre.Calculos
 
         private static void CalcularForcaBarras(Knot principal, List<Knot> ademais)
         {
-            double vertical = principal.ForceY;
-            double horizontal = principal.ForceX;
-
-            var barrasConectadas = Data.barras.Values.Where(x => x.knots.Contains(principal)).Select(x => x.knots).ToList();
-
-
-            foreach (Knot[] k in barrasConectadas)
+            do
             {
-                CalcularAnguloHip(principal, DevolverDiferente(principal, k));
+                foreach (Bar barra in Data.barras.Values)
+                {
+                    CalcularEmBarra(barra);
+                }
+            } while (Data.barras.Values.Any(x => !x.forceCalc));
 
-
-                /*
-                 * CONTINUAR DAQUI
-                 * 
-                 * 
-                 */
-            }
-                
-                
-
-            //fixoV.Vetor = (Baixo - Cima) - incognitas[0].vetor;
-
-
-            foreach (Knot no in ademais)
+            string valor = null;
+            foreach (Bar barra in Data.barras.Values)
             {
-                //List<Bar> barrasConectadas = new List<Bar>();
-
-                //barrasConectadas = Data.barras.Values.Where(x => x.knots.Contains(no)).ToList();
-
-                //....
+                valor += $"{barra.ID}:\t{barra.Force}\n";
             }
 
+            MessageBox.Show(valor);
+
+        }
+
+        private static void CalcularEmBarra(Bar barra)
+        {
+            Knot no = barra.knots[0];
+
+            if (barra.ID == "Barra (1)(2)")
+            {
+                bool a = false;
+            }
+
+            double fVertical = no.ForceY;
+            double fHorizontal = no.ForceX;
+
+            List<Bar> barrasConectadas = Data.barras.Values.Where(x => x.knots.Contains(no)).ToList();
+
+            List<Bar> barrasVerticais = barrasConectadas.Where(b => 
+            CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 0 && 
+            CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 180).ToList();
+            
+            List<Bar> barrasHorizontais = barrasConectadas.Where(b => 
+            CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 90 && 
+            CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 270).ToList();
+
+            int verticaisInc = barrasVerticais.Where(x => x.forceCalc == false).Count();
+            foreach (Bar vertical in barrasVerticais)
+            {
+                if (vertical.forceCalc || verticaisInc != 1)
+                    continue;
+
+                vertical.Angulo = CalcularAnguloHip(no, DevolverDiferente(no, vertical.knots)) / (180 / Math.PI);
+                var seno = Math.Sin(vertical.Angulo);
+
+                var test = barrasVerticais.Where(x => x.forceCalc == true && x != vertical);
+
+                vertical.Force = ((fVertical * -1) + (test.Sum(x => x.Force * Math.Sin(x.Angulo)))) / seno;
+                vertical.forceCalc = true;
+            }
+            
+            int horizontaisInc = barrasHorizontais.Where(x => x.forceCalc == false).Count();
+            foreach (Bar horizontal in barrasHorizontais)
+            {
+                if (horizontal.forceCalc || horizontaisInc != 1)
+                    continue;
+
+                double angulo = CalcularAnguloHip(no, DevolverDiferente(no, horizontal.knots)) / (180 / Math.PI);
+
+                horizontal.Force = fHorizontal - barrasVerticais.Sum(x => x.Force * Math.Cos(x.Angulo));
+                horizontal.forceCalc = true;
+            }
         }
 
         private static double CalcularAnguloHip(Knot principal, Knot secundario)
@@ -161,7 +198,6 @@ namespace CalculoTre.Calculos
                 return vetor[0];
             else
                 return vetor[1];
-
         }
 
         private static int CalcularDistanciaX(Knot principal, Knot secundario)

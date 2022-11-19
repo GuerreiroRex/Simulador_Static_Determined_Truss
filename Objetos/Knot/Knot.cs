@@ -87,6 +87,15 @@ namespace CalculoTre.Objetos
                 return valor;
             }
         }
+
+        public double Angulo
+        {
+            get
+            {
+                double angulo = Math.Atan(ForceX / ForceY);
+                return (180 / Math.PI) * angulo;
+            }
+        }
         #endregion
     }
 }

@@ -8,6 +8,9 @@ namespace CalculoTre.Objetos
         private string id;
 
         private double force;
+        public bool forceCalc = false;
+            
+        private double angulo;
 
         public Knot[] knots = new Knot[2];
 
@@ -34,7 +37,9 @@ namespace CalculoTre.Objetos
             }
         }
 
-        public double Force { get => force; }
+        public double Force { get => force; set => force = value; }
+
+        public double Angulo { get => angulo; set => angulo = value; }
         #endregion
     }
 }
