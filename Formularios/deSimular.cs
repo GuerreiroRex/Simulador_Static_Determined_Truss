@@ -121,17 +121,13 @@ namespace CalculoTre
 
         private void deSalvar_Click(object sender, EventArgs e)
         {
-            string arquivoBarras = @"Data\dados2.json";
-
-            Port.SalvarDados(arquivoBarras, Data.barras);
+            Port.SalvarDados(Data.barras);
             MessageBox.Show("Feito");
         }
 
         private void deCarregar_Click(object sender, EventArgs e)
         {
-            string arquivoBarras = @"Data\dados2.json";
-
-            Port.CarregarDados(arquivoBarras, ref Data.barras);
+            Port.CarregarDados(ref Data.barras);
 
             telaPrincipal.Redesenhar(new object(), new EventArgs());
         }

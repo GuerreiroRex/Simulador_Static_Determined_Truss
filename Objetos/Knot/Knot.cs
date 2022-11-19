@@ -44,6 +44,11 @@ namespace CalculoTre.Objetos
             return this;
         }
 
+        public void Decompor()
+        {
+
+        }
+
         #region Propriedades
 
         public byte ID { get => id; }
@@ -88,13 +93,11 @@ namespace CalculoTre.Objetos
             }
         }
 
-        public double Angulo
+        public double CalcularAngulo(int vetor)
         {
-            get
-            {
-                double angulo = Math.Atan(ForceX / ForceY);
-                return (180 / Math.PI) * angulo;
-            }
+            double angulo = Math.Atan2(ForceY, ForceX);
+
+            return (180 / Math.PI) * angulo;
         }
         #endregion
     }

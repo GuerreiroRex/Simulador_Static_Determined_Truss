@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalculoTre.Calculos;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -299,30 +300,52 @@ namespace CalculoTre.Objetos
                     }
                 };
             }
-            else
+
+            using (Graphics g = tela.CreateGraphics())
             {
-                using (Graphics g = tela.CreateGraphics())
+                int posX = botao.Location.X + dv;
+                int posY = botao.Location.Y + dv;
+
+                #region Seta de Força
+                if (no.ForceX != 0 || no.ForceY != 0)
                 {
-                    if (no.ForceX != 0 || no.ForceY != 0)
-                    {
-                        AdjustableArrowCap bigArrow = new AdjustableArrowCap(5, 5);
-                        Pen p = new Pen(Color.Orange, (float)2.5);
-                        p.CustomEndCap = bigArrow;
+                    AdjustableArrowCap bigArrow = new AdjustableArrowCap(5, 5);
+                    Pen p = new Pen(Color.Orange, (float)2.5);
+                    p.CustomEndCap = bigArrow;
 
-                        Point p1 = new Point(botao.Location.X + dv, botao.Location.Y + dv);
+                    const byte vetor = 50;
 
-                        byte vetor = 10;
+                    double deg = no.CalcularAngulo(vetor);
+                    double rad = deg * (Math.PI / 180);
 
-                        double rad = no.Angulo * (Math.PI / 180);
+                    var seno = Math.Sin(rad) * vetor;
+                    var cos = Math.Cos(rad) * vetor;
 
-                        double valorX = Math.Cos(rad) * vetor;
 
-                        double valorY = Math.Sin(rad) * vetor;
+                    int valorX = (int)(posX + cos);
+                    int valorY = (int)(posY - seno);
 
-                        Point p2 = new Point((int)(botao.Location.X + dv + valorX), (int)(botao.Location.Y + dv + valorY));
+                    Point p1 = new Point(posX, posY);
+                    Point p2 = new Point(valorX, valorY);
 
-                        g.DrawLine(p, botao.Location, p2);
-                    }
+                    g.DrawLine(p, p1, p2);
+                }
+                #endregion
+
+                if (no.travas[0])
+                {
+                    Pen pq = new Pen(Color.Green, 5);
+                    Point pq1 = new Point(posX, posY - dv * 2);
+                    Point pq2 = new Point(posX, posY + dv * 2);
+                    g.DrawLine(pq, pq1, pq2);
+                }
+
+                if (no.travas[1])
+                {
+                    Pen pq = new Pen(Color.Green, 5);
+                    Point pq1 = new Point(posX - dv * 2, posY);
+                    Point pq2 = new Point(posX + dv * 2, posY);
+                    g.DrawLine(pq, pq1, pq2);
                 }
             }
 

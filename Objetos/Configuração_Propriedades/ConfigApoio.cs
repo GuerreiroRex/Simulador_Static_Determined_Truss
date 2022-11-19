@@ -126,6 +126,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
                     noEscolhido.forcas.Add(new Force(vetor, angulo, noEscolhido));
                     atualizarListaForce(lista);
+                    Trigger.ForçarRedesenho(e);
                 };
 
                 lista.Parent.Controls.Add(adicionar);
@@ -170,9 +171,8 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                             }
                         }
 
-
-
                     atualizarListaForce(lista);
+                    Trigger.ForçarRedesenho(e);
                 };
 
                 Button apagar = new Button();
@@ -183,6 +183,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                 {
                     noEscolhido.forcas.Remove(lista.SelectedItem as Force);
                     atualizarListaForce(lista);
+                    Trigger.ForçarRedesenho(e);
                 };
 
                 lista.Parent.Controls.Add(modificar);

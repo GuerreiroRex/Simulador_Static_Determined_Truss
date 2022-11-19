@@ -56,9 +56,23 @@ namespace CalculoTre.Calculos
 
         public string Nome { get => nome; set => nome = value; }    
 
-        public double ForcaX { get => valorX; }
+        public double ForcaX
+        {
+            get
+            {
+                Decompor();
+                return valorX;
+            }
+        }
 
-        public double ForcaY { get => valorY; }
+        public double ForcaY
+        {
+            get
+            {
+                Decompor();
+                return valorY;
+            }
+        }
 
         public double Vetor { get => vetor; set => vetor = value; }
 
