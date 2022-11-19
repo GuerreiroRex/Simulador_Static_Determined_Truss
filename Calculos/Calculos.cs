@@ -49,7 +49,6 @@ namespace CalculoTre.Calculos
             List<Force> incognitas = IdentificarIncognitas(ademais);
 
             List<Knot> nosHorarios = ademais.Where(x => IdentificarHorario(principal, x)).ToList();
-
             List<Knot> nosAntihorario = ademais.Where(x => IdentificarAntiHorario(principal, x)).ToList();
 
             /*      HORARIO         -        ANTIHORARIO 
@@ -67,15 +66,102 @@ namespace CalculoTre.Calculos
              * Incognita = { (Distância_AH * Força_AH) - (Distância_H * Força_H) } / Distância_In
              */
 
-            double distancia_HA = Math.Abs(nosHorarios.Sum(x => CalcularDistanciaX(principal, x) * Math.Round(x.ForceY, 6)));
-            double distancia_HB = Math.Abs(nosHorarios.Sum(x => CalcularDistanciaY(principal, x) * Math.Round(x.ForceX, 6)));
+            double distancia_HA = Math.Abs(nosHorarios.Sum(x => CalcularDistanciaX(principal, x) * x.ForceY));
+            double distancia_HB = Math.Abs(nosHorarios.Sum(x => CalcularDistanciaY(principal, x) * x.ForceX));
 
 
-            double distancia_AHA = Math.Abs(nosAntihorario.Sum(x => CalcularDistanciaX(principal, x) * Math.Round(x.ForceY, 6)));
-            double distancia_AHB = Math.Abs(nosAntihorario.Sum(x => CalcularDistanciaY(principal, x) * Math.Round(x.ForceX, 6)));
+            double distancia_AHA = Math.Abs(nosAntihorario.Sum(x => CalcularDistanciaX(principal, x) * x.ForceY));
+            double distancia_AHB = Math.Abs(nosAntihorario.Sum(x => CalcularDistanciaY(principal, x) * x.ForceX));
+
+            Force fixoV = new Force(0, 90, principal);
+            Force fixoH = new Force(0, 0, principal);
 
 
-            //incognitas[0].vetor = ((distancia_HA + distancia_HB) - (distancia_AHA + distancia_AHB)) / CalcularDistanciaX(principal, incognitas[0]);
+            if (incognitas[0].posX != 0)
+            {
+                incognitas[0].vetor = ((distancia_HA + distancia_HB) - (distancia_AHA + distancia_AHB)) / incognitas[0].posX;
+            }
+            else
+            {
+                incognitas[0].vetor = ((distancia_HA + distancia_HB) - (distancia_AHA + distancia_AHB)) / incognitas[0].posY;
+            }
+
+
+
+
+
+            double Cima = Math.Abs(ademais.Where(x => x.ForceY > 0).Sum(x => x.ForceY));
+            double Baixo = Math.Abs(ademais.Where(x => x.ForceY < 0).Sum(x => x.ForceY));
+
+            fixoV.Vetor = (Baixo - Cima) - incognitas[0].vetor;
+
+
+
+            double Esquerda = Math.Abs(ademais.Where(x => x.ForceX > 0).Sum(x => x.ForceX));
+            double Direita = Math.Abs(ademais.Where(x => x.ForceX < 0).Sum(x => x.ForceX));
+
+            fixoV.Vetor = (Esquerda - Direita);
+
+            principal.forcas.Add(fixoH);
+            principal.forcas.Add(fixoV);
+
+            //------------------------------------------------------------------------------------------------------------------
+
+            CalcularForcaBarras(principal, ademais);
+        }
+
+        private static void CalcularForcaBarras(Knot principal, List<Knot> ademais)
+        {
+            double vertical = principal.ForceY;
+            double horizontal = principal.ForceX;
+
+            var barrasConectadas = Data.barras.Values.Where(x => x.knots.Contains(principal)).Select(x => x.knots).ToList();
+
+
+            foreach (Knot[] k in barrasConectadas)
+            {
+                CalcularAnguloHip(principal, DevolverDiferente(principal, k));
+
+
+                /*
+                 * CONTINUAR DAQUI
+                 * 
+                 * 
+                 */
+            }
+                
+                
+
+            //fixoV.Vetor = (Baixo - Cima) - incognitas[0].vetor;
+
+
+            foreach (Knot no in ademais)
+            {
+                //List<Bar> barrasConectadas = new List<Bar>();
+
+                //barrasConectadas = Data.barras.Values.Where(x => x.knots.Contains(no)).ToList();
+
+                //....
+            }
+
+        }
+
+        private static double CalcularAnguloHip(Knot principal, Knot secundario)
+        {
+            double cateteA = CalcularDistanciaX(principal, secundario);
+            double cateteO = CalcularDistanciaY(principal, secundario);
+
+            double angulo = Math.Atan(cateteO/cateteA);
+            return (180 / Math.PI) * angulo;
+        }
+
+        private static Knot DevolverDiferente(Knot alvo, Knot[]vetor)
+        {
+            if (vetor[0] != alvo)
+                return vetor[0];
+            else
+                return vetor[1];
+
         }
 
         private static int CalcularDistanciaX(Knot principal, Knot secundario)
@@ -121,14 +207,18 @@ namespace CalculoTre.Calculos
                     Force temp = new Force();
                     temp.Nome = $"iV_{no.ToString()}";
                     temp.angulo = 90;
+                    temp.posX = no.valorX;
                     incognitas.Add(temp);
+                    no.forcas.Add(temp);
                 }
                 if (no.travas[1])
                 {
                     Force temp = new Force();
                     temp.Nome = $"iH_{no.ToString()}";
                     temp.angulo = 0;
+                    temp.posX = no.valorY;
                     incognitas.Add(temp);
+                    no.forcas.Add(temp);
                 }
             }
 
