@@ -315,7 +315,7 @@ namespace CalculoTre.Objetos
 
                     const byte vetor = 50;
 
-                    double deg = no.CalcularAngulo(vetor);
+                    double deg = no.CalcularAngulo();
                     double rad = deg * (Math.PI / 180);
 
                     var seno = Math.Sin(rad) * vetor;

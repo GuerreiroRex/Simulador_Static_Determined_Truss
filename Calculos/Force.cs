@@ -17,7 +17,7 @@ namespace CalculoTre.Calculos
         public double posX;
         public double posY;
 
-
+        public bool calculado = true;
         public Force () { }
 
         public Force(double Newton, double Graus, Knot pai)
@@ -39,14 +39,13 @@ namespace CalculoTre.Calculos
              * cossesno = cateto adjacente / hip
              * cateto adjacente = cosseno * hip
              */
-            valorX = Math.Cos(rad) * vetor;
-
+            valorX = Math.Round( Math.Cos(rad) * vetor, 7);
 
             /* Y
              * seno = cateto oposto / hip
              * cateto oposto = seno * hip
              */
-            valorY = Math.Sin(rad) * vetor;
+            valorY = Math.Round( Math.Sin(rad) * vetor, 7);
         }
 
         public override string ToString()

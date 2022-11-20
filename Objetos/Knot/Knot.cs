@@ -44,9 +44,17 @@ namespace CalculoTre.Objetos
             return this;
         }
 
-        public void Decompor()
+        public double CalcularAngulo(bool calculo = true)
         {
-
+            if (calculo)
+            {
+                double angulo = Math.Atan2(ForceY, ForceX);
+                return (180 / Math.PI) * angulo;
+            }
+             else
+            {
+                return forcas.Sum(x => x.angulo);
+            }
         }
 
         #region Propriedades
@@ -91,13 +99,6 @@ namespace CalculoTre.Objetos
 
                 return valor;
             }
-        }
-
-        public double CalcularAngulo(int vetor)
-        {
-            double angulo = Math.Atan2(ForceY, ForceX);
-
-            return (180 / Math.PI) * angulo;
         }
         #endregion
     }
