@@ -18,6 +18,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
             Trigger.DesenhoAlterado += (s, e) => teste(tela, s, e);
 
+            PainelRenomear("Nome do apoio:");
             PainelValoresPos("Posição em X:", 'X');
             PainelValoresPos("Posição em Y:", 'Y');
             PainelValoresForce();
@@ -216,6 +217,32 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             botoesApoiosAtulizar(sender, e);
         }
 
+        private void AlterarNome(object sender, EventArgs e, string texto)
+        {
+            noEscolhido.Nome = texto;
+        }
+
+        private void PainelRenomear(string texto)
+        {
+            FlowLayoutPanel agrupado = Agrupar();
+
+            var letras = Letreiro(texto);
+            agrupado.Controls.Add(letras);
+
+            var caixa = CriarNome(letras);
+
+            caixa.Text = noEscolhido.Nome;
+            caixa.TextAlign = HorizontalAlignment.Center;
+
+            caixa.TextChanged += (s, e) => AlterarNome(s, e, caixa.Text);
+
+            agrupado.Controls.Add(caixa);
+
+            agrupado.Padding = new Padding(0);
+
+            Controle.Controls.Add(agrupado);
+        }
+
         private void botoesApoiosAtulizar(object sender, EventArgs e)
         {
             ComboBox lista = sender as ComboBox;
@@ -341,6 +368,20 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             numero.BorderStyle = BorderStyle.FixedSingle;
 
             return numero;
+        }
+
+        private TextBox CriarNome(Label letreiro)
+        {
+            TextBox caixa = new TextBox();
+            caixa.Name = letreiro.Text;
+
+            caixa.TextAlign = HorizontalAlignment.Right;
+
+            caixa.Width = largura - 10;
+
+            caixa.BorderStyle = BorderStyle.FixedSingle;
+
+            return caixa;
         }
 
         private Label Letreiro(string texto)

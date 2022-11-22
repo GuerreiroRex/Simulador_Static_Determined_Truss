@@ -50,7 +50,7 @@ namespace CalculoTre.Calculos
 
         public override string ToString()
         {
-            return $"{Math.Round(vetor, 2)}N \t{angulo}º";
+            return $"{angulo}º | {Math.Round(vetor, 2)}KN";
         }
 
         public string Nome { get => nome; set => nome = value; }    

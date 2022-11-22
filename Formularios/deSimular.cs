@@ -17,6 +17,7 @@ namespace CalculoTre
             Inicializar();
 
             this.Shown += telaPrincipal.Desenhar;
+            //telaPrincipal.Refazer(true);
         }
 
         public void Inicializar()

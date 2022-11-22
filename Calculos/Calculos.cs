@@ -11,6 +11,9 @@ namespace CalculoTre.Calculos
     {
         public static void InicioCalculo()
         {
+            MetodoStiffEmBarra();
+
+
             Knot noDuplo = IdentificarApoio();
 
             List<Knot> nosLigados = IdetificarAdemais(noDuplo);
@@ -18,6 +21,7 @@ namespace CalculoTre.Calculos
             CalcularMomento(noDuplo, nosLigados);
         }
 
+        #region Metodo antigo
         #region Pacote
         private static Knot IdentificarApoio()
         {
@@ -98,7 +102,8 @@ namespace CalculoTre.Calculos
             double Cima = Math.Abs(ademais.Where(x => x.ForceY > 0).Sum(x => x.ForceY));
             double Baixo = Math.Abs(ademais.Where(x => x.ForceY < 0).Sum(x => x.ForceY));
 
-            fixoV.vetor = Cima - Baixo;
+            fixoV.vetor = Math.Abs ( Cima - Baixo );
+            
 
             /* Lógica do equilibrio Esquerda/Diereita
              * 
@@ -109,7 +114,8 @@ namespace CalculoTre.Calculos
             double Esquerda = Math.Abs(ademais.Where(x => x.ForceX < 0).Sum(x => x.ForceX));
             double Direita = Math.Abs(ademais.Where(x => x.ForceX > 0).Sum(x => x.ForceX));
 
-            fixoH.vetor = Direita - Esquerda;
+            fixoH.vetor = Math.Abs ( Direita - Esquerda );
+            
 
             principal.forcas.Add(fixoH);
             principal.forcas.Add(fixoV);
@@ -127,13 +133,28 @@ namespace CalculoTre.Calculos
              * 
              */
 
+            CalcularEmNo(principal);
+
+            int quantidade = 0;
+
             do
             {
+                /*
                 foreach (Bar barra in Data.barras.Values)
                 {
-                    CalcularEmBarra(barra);
-                        
+                    CalcularEmBarra(barra);  
                 }
+                 */
+
+                foreach (Knot n in Data.nos.Values)
+                    CalcularEmNo(n);
+
+                if (quantidade++ >= Math.Pow(Data.nos.Values.Count, 2))
+                {
+                    MessageBox.Show("Não foi possível");
+                    break;
+                }
+
             } while (Data.barras.Values.Any(x => !x.forceCalc));
 
             string valor = null;
@@ -150,6 +171,11 @@ namespace CalculoTre.Calculos
         {
             foreach (Knot no in barra.knots)
             {
+                if (no.id == 3)
+                {
+                    bool a = false;
+                }
+
                 double fVertical = no.ForceY;
                 double fHorizontal = no.ForceX;
 
@@ -163,28 +189,21 @@ namespace CalculoTre.Calculos
                 CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 90 &&
                 CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 270).ToList();
 
-
-
-                // Data.nos.Values.Where(x => x.forcas.(x.forcas.Where(y => !y.calculado))).ToList();
-
-                //var abcd = no.forcas.Where(x => x.calculado == false).Count;
-
-                int verticaisInc = barrasVerticais.Where(x => x.forceCalc == false).Count();
-                foreach (Bar vertical in barrasVerticais)
+                List<Bar> verticaisInc = barrasVerticais.Where(x => x.forceCalc == false).ToList();
+                if (verticaisInc.Count == 1)
                 {
-                    if (vertical.forceCalc || verticaisInc != 1 || 
-                        vertical.knots.Any(x => x.forcas.Any(y => !y.calculado)))
-                        continue;
+                    Bar vertical = verticaisInc.First();
+                    
+                    double angulo = CalcularAnguloHip(no, DevolverDiferente(no, vertical.knots));
 
-                    double angul = CalcularAnguloHip(no, DevolverDiferente(no, vertical.knots));
-                    vertical.Angulo = angul / (180 / Math.PI);
+                    vertical.Angulo = angulo / (180 / Math.PI);
                     var seno = Math.Sin(vertical.Angulo);
 
 
                     List<Bar> barrasCalculadas = barrasVerticais.Where(x => x.forceCalc == true && x != vertical).ToList();
+
                     double fInfluenciaC = barrasCalculadas.Where(x => x.Force > 0).Sum(y => y.Force * Math.Sin(y.Angulo));
                     double fInfluenciaB = barrasCalculadas.Where(x => x.Force < 0).Sum(y => y.Force * Math.Sin(y.Angulo));
-
 
                     /*
                      * Cima = Baixo
@@ -192,27 +211,103 @@ namespace CalculoTre.Calculos
                      *  fInfluenciaC = Fbarra + FInfluenciaB
                      * 
                      */
-                    vertical.Force = fVertical + (fInfluenciaC - fInfluenciaB) / seno;
+                    vertical.Force = Math.Round( (fVertical + fInfluenciaC - fInfluenciaB) / seno, 2);
                     vertical.forceCalc = true;
                 }
 
-                int horizontaisInc = barrasHorizontais.Where(x => x.forceCalc == false).Count();
-                foreach (Bar horizontal in barrasHorizontais)
+                List<Bar> horizontaisInc = barrasHorizontais.Where(x => x.forceCalc == false).ToList();
+                if (horizontaisInc.Count == 1)
                 {
-                    if (horizontal.forceCalc || horizontaisInc != 1)
-                        continue;
+                    Bar horizontal = horizontaisInc.First();
 
                     double angulo = CalcularAnguloHip(no, DevolverDiferente(no, horizontal.knots)) / (180 / Math.PI);
+
+                    horizontal.Angulo = angulo / (180 / Math.PI);
+                    var cos = Math.Sin(horizontal.Angulo);
 
                     double fInfluenciaE = barrasVerticais.Where(x => x.Force < 0).Sum(y => y.Force * Math.Cos(y.Angulo));
                     double fInfluenciaD = barrasVerticais.Where(x => x.Force > 0).Sum(y => y.Force * Math.Cos(y.Angulo));
 
-                    horizontal.Force = fHorizontal + fInfluenciaE - fInfluenciaD;
+
+                    horizontal.Force = Math.Round( fHorizontal + fInfluenciaE - fInfluenciaD, 2 );
                     horizontal.forceCalc = true;
                 }
             }
 
             
+        }
+
+        private static void CalcularEmNo(Knot no)
+        {
+            List<Bar> barrasConectadas = Data.barras.Values.Where(x => x.knots.Contains(no)).ToList();
+
+            List<Bar> barrasVerticais = barrasConectadas.Where(b =>
+            CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 0 &&
+            CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 180).ToList();
+
+            List<Bar> barrasHorizontais = barrasConectadas.Where(b =>
+            CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 90 &&
+            CalcularAnguloHip(no, DevolverDiferente(no, b.knots)) != 270).ToList();
+
+            /* Continuar daqui
+             * 
+             * Nenhum calculo vai ser feito porque nenhuma barra tem apenas uma variável
+             * 
+             * Pedir resolução para um colega
+             * 
+             */
+
+            foreach (Bar barra in barrasConectadas)
+            {
+                double fVertical = no.ForceY;
+                double fHorizontal = no.ForceX;
+
+                List<Bar> verticaisInc = barrasVerticais.Where(x => x.forceCalc == false).ToList();
+                if (verticaisInc.Count == 1)
+                {
+                    Bar vertical = verticaisInc.First();
+
+                    double angulo = CalcularAnguloHip(no, DevolverDiferente(no, vertical.knots));
+
+                    vertical.Angulo = angulo / (180 / Math.PI);
+                    var seno = Math.Sin(vertical.Angulo);
+
+
+                    List<Bar> barrasCalculadas = barrasVerticais.Where(x => x.forceCalc == true && x != vertical).ToList();
+
+                    double fInfluenciaC = barrasCalculadas.Where(x => x.Force > 0).Sum(y => y.Force * Math.Sin(y.Angulo));
+                    double fInfluenciaB = barrasCalculadas.Where(x => x.Force < 0).Sum(y => y.Force * Math.Sin(y.Angulo));
+
+                    /*
+                     * Cima = Baixo
+                     * 
+                     *  fInfluenciaC = Fbarra + FInfluenciaB
+                     * 
+                     */
+                    vertical.Force = Math.Round((fVertical + fInfluenciaC - fInfluenciaB) / seno, 2);
+                    vertical.forceCalc = true;
+                }
+
+                List<Bar> horizontaisInc = barrasHorizontais.Where(x => x.forceCalc == false).ToList();
+                if (horizontaisInc.Count == 1)
+                {
+                    Bar horizontal = horizontaisInc.First();
+
+                    double angulo = CalcularAnguloHip(no, DevolverDiferente(no, horizontal.knots)) / (180 / Math.PI);
+
+                    horizontal.Angulo = angulo / (180 / Math.PI);
+                    var cos = Math.Sin(horizontal.Angulo);
+
+                    double fInfluenciaE = barrasVerticais.Where(x => x.Force < 0).Sum(y => y.Force * Math.Cos(y.Angulo));
+                    double fInfluenciaD = barrasVerticais.Where(x => x.Force > 0).Sum(y => y.Force * Math.Cos(y.Angulo));
+
+
+                    horizontal.Force = Math.Round(fHorizontal + fInfluenciaE - fInfluenciaD, 2) * -1;
+                    horizontal.forceCalc = true;
+                }
+            }
+
+
         }
 
         private static double CalcularAnguloHip(Knot principal, Knot secundario)
@@ -319,6 +414,72 @@ namespace CalculoTre.Calculos
         }
         #endregion
 
-        
+
+        #endregion
+
+        private static double CalcularHip(Bar barra)
+        {
+            double hip = Math.Sqrt(Math.Pow(CalcularDistanciaX(barra.knots[0], barra.knots[1]), 2) + Math.Pow(CalcularDistanciaY(barra.knots[0], barra.knots[1]), 2));
+            return hip;
+        }
+
+
+        private static void AcharTravas()
+        {
+            List<Knot> travas = new List<Knot>();
+
+            foreach (Knot no in Data.nos.Values)
+            {
+                if (no.travas[0])
+                {
+
+                }
+                if (no.travas[1])
+                {
+
+                }
+            }
+        }
+
+        private static void MetodoStiffEmBarra()
+        {
+            int q = Data.barras.Values.Count;
+            
+            double[,] matrizN = new double[q, q];
+            double[] matrizF = new double[q];
+
+            foreach (Knot no in Data.nos.Values)
+            {
+                List<Bar> barrasConectadas = Data.barras.Values.Where(x => x.knots.Contains(no)).ToList();
+
+                List<double> colunaX = new List<double>();
+                List<double> colunaY = new List<double>();
+
+                foreach (Bar barra in Data.barras.Values)
+                {
+                    if (barrasConectadas.Contains(barra))
+                    {
+                        double vertical = (barra.knots[0].valorY - barra.knots[1].valorY) / CalcularHip(barra);
+                        double horizontal = (barra.knots[0].valorX - barra.knots[1].valorX) / CalcularHip(barra);
+
+                        colunaY.Add(vertical);
+                        colunaX.Add(horizontal);
+                    }
+                    else
+                    {
+                        colunaX.Add(0);
+                        colunaY.Add(0);
+                    }
+                }
+
+                double fAplicadaX = no.ForceX * -1;
+                double fAplicadaY = no.ForceY * -1;
+            }
+
+            
+        }
+
+
+
     }
 }

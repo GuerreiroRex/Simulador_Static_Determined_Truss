@@ -15,7 +15,7 @@ namespace CalculoTre.Objetos.Pages
             tab = tabControl;
 
             Panel painel = new Panel();
-            painel.Size = new Size(450, 300);
+            painel.Size = new Size(550, 350);
             painel.BorderStyle = BorderStyle.FixedSingle;
 
             //painel.Visible = false;
@@ -24,7 +24,7 @@ namespace CalculoTre.Objetos.Pages
             tela = new Tela(painel);
 
             tab.Selected += PrepararTela;
-            //tab.Selected += tela.Redesenhar;
+            //tela.Refazer(false);
         }
 
         public virtual void PrepararTela(object sender, EventArgs e)

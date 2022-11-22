@@ -246,7 +246,7 @@ namespace CalculoTre.Objetos
             botao.ForeColor = Color.White;
 
             //botao.Text = nome;
-            botao.Text = no.id.ToString();
+            botao.Text = no.Nome;
 
             //Define o tamanho do botão
             botao.Height = Knot.tamanho;
@@ -353,6 +353,24 @@ namespace CalculoTre.Objetos
 
             tela.Controls.Add(botao);
         }
+
+        /*
+        public async void Refazer(bool valor)
+        {
+            await Task.Yield();
+
+            do
+            {
+                await Task.Delay(10000);
+
+                if (valor)
+                    Redesenhar();
+                else
+                    Redesenhar(new object(), new EventArgs());
+
+            } while (tela.Enabled);
+        }
+        */
 
         public void Limpar()
         {

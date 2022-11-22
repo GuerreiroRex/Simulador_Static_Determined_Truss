@@ -32,7 +32,7 @@ namespace CalculoTre.Objetos
         {
             get
             {
-                id = $"({knots[0].ID})({knots[1].ID})";
+                id = $"({knots[0].nome})({knots[1].nome})";
                 return $"Barra {id}";
             }
         }
