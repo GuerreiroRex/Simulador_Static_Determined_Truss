@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -52,15 +53,7 @@ namespace CalculoTre.Calculos
             Thread calculo = new Thread(MetodoStiffEmBarra);
             calculo.Start();
 
-            //MetodoStiffEmBarra();
-
-            /*
-            Knot noDuplo = IdentificarApoio();
-
-            List<Knot> nosLigados = IdetificarAdemais(noDuplo);
-
-            CalcularMomento(noDuplo, nosLigados);
-            */
+            MessageBox.Show("Concluido");
         }
 
         #region Metodo antigo
@@ -540,23 +533,47 @@ namespace CalculoTre.Calculos
                 matrizF.Add(no.ForceY * -1);
             }
 
+            EscreverMatriz(matrizN, "0 - Matriz Principal");
 
-            EscreverMatriz(matrizN, "Matriz Principal");
+
 
             var det = CalcularDeterminante(matrizN);
-
+                       
             List<List<double>> invertida = CalcularMatrizInversa(matrizN);
 
-            EscreverMatriz(invertida, "Matriz Invertida");
+            EscreverMatriz(invertida, "1 - Matriz Invertida");
 
-            MessageBox.Show("Concluido");
+            List<List<double>> transposta = TransporMatriz(invertida);
+
+            EscreverMatriz(transposta, "2 - Matriz Transposta");
+
+
+        }
+
+        private static List<List<double>> TransporMatriz(List<List<double>> matriz)
+        {
+            List<List<double>> transposta = new List<List<double>>();
+
+            //Pega o tamanho da matriz
+            int q0 = matriz.Count;
+            int q1 = matriz[0].Count;
+
+            for (int linha = 0; linha < q0; linha++)
+            {
+                List<double> linha_transposta = new List<double>();
+                for (int coluna = 0; coluna < q1; coluna++)
+                {
+                    linha_transposta.Add(matriz[coluna][linha]);
+                }
+                transposta.Add(linha_transposta);
+            }
+
+            return transposta;
         }
 
         private static bool VerificarMatriz(List<List<double>> matriz)
         {
             int quantidade = matriz[0].Count;
-
-            EscreverMatriz(matriz, "dadinhos");
 
             foreach (List<double> linha in matriz)
                 if (linha.Count != quantidade)
@@ -573,7 +590,6 @@ namespace CalculoTre.Calculos
             if (!VerificarMatriz(matriz))
                 throw new Exception("Matriz não é exata");
             */
-            EscreverMatriz(matriz, "Matriz Recebida para Calcular a Determinante");
 
             //Pega o tamanho da matriz
             int q0 = matriz.Count;
