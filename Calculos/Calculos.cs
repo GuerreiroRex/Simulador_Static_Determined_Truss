@@ -1,9 +1,13 @@
 ﻿using CalculoTre.Objetos;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using static System.Windows.Forms.LinkLabel;
 
 namespace CalculoTre.Calculos
 {
@@ -11,6 +15,54 @@ namespace CalculoTre.Calculos
     {
         public static void InicioCalculo()
         {
+            if (Data.barras.Values.Count == 0)
+            {
+                MessageBox.Show("Sem barras");
+                return;
+            }
+
+            #region Matrizes de teste
+            double[,] matriz = new double[3, 3]
+            {
+                { 5, 8, +4 },
+                { 6, 9, -5 },
+                { 4, 7, -2 }
+            };
+
+            List<double> linha1 = new List<double>();
+            linha1.Add(5);
+            linha1.Add(8);
+            linha1.Add(4);
+
+            List<double> linha2 = new List<double>();
+            linha2.Add(6);
+            linha2.Add(9);
+            linha2.Add(-5);
+
+            List<double> linha3 = new List<double>();
+            linha3.Add(4);
+            linha3.Add(7);
+            linha3.Add(-2);
+
+
+            List<List<double>> matrizL = new List<List<double>>();
+            matrizL.Add(linha1);
+            matrizL.Add(linha2);
+            matrizL.Add(linha3);
+
+            double[,] matriz2 = new double[4, 4]
+            {
+                { 5, 8, +4, 2 },
+                { 6, 9, -5, 7 },
+                { 4, 7, -2, 4 },
+                { 7, -3, 1, 9 }
+            };
+
+            //double det = CalcularDeterminante(matrizL);
+            #endregion
+
+
+
             MetodoStiffEmBarra();
 
 
@@ -360,9 +412,6 @@ namespace CalculoTre.Calculos
                 }
             }
 
-            if (incognitas.Count != 1)
-                throw new Exception("Apoios inválidos");
-
             return incognitas;
         }
         #endregion
@@ -423,31 +472,17 @@ namespace CalculoTre.Calculos
             return hip;
         }
 
-
-        private static void AcharTravas()
-        {
-            List<Knot> travas = new List<Knot>();
-
-            foreach (Knot no in Data.nos.Values)
-            {
-                if (no.travas[0])
-                {
-
-                }
-                if (no.travas[1])
-                {
-
-                }
-            }
-        }
-
         private static void MetodoStiffEmBarra()
         {
-            int q = Data.barras.Values.Count;
-            
-            double[,] matrizN = new double[q, q];
-            double[] matrizF = new double[q];
+            List<Knot> incognitas = IdentificarIncognitas(Data.nos.Values.ToList());
 
+            //Veja quantas barras conectadas
+            int q = Data.barras.Values.Count;
+
+            List<List<double>> matrizN = new List<List<double>>(); //Matriz N para Nós
+            List<double> matrizF = new List<double>(); //Matriz F para Forças   
+
+            // Monta a matriz de valores
             foreach (Knot no in Data.nos.Values)
             {
                 List<Bar> barrasConectadas = Data.barras.Values.Where(x => x.knots.Contains(no)).ToList();
@@ -462,8 +497,8 @@ namespace CalculoTre.Calculos
                         double vertical = (barra.knots[0].valorY - barra.knots[1].valorY) / CalcularHip(barra);
                         double horizontal = (barra.knots[0].valorX - barra.knots[1].valorX) / CalcularHip(barra);
 
-                        colunaY.Add(vertical);
                         colunaX.Add(horizontal);
+                        colunaY.Add(vertical);
                     }
                     else
                     {
@@ -472,14 +507,223 @@ namespace CalculoTre.Calculos
                     }
                 }
 
-                double fAplicadaX = no.ForceX * -1;
-                double fAplicadaY = no.ForceY * -1;
+                foreach (Knot inco in incognitas)
+                {
+                    if (inco == no)
+                    {
+                        if (inco.travas[0])
+                        {
+                            //colunaY.Add(-1);
+                            //colunaX.Add(0);
+
+                            colunaY.Add(-1);
+                            colunaX.Add(0);
+                        }
+                        if (inco.travas[1])
+                        {
+                            //colunaY.Add(0);
+                            //colunaX.Add(-1);
+
+                            colunaY.Add(0);
+                            colunaX.Add(-1);
+                        }
+                    }
+                    else
+                    {
+                        if (inco.travas[0])
+                        {
+                            colunaY.Add(0);
+                            colunaX.Add(0);
+                        }
+                        if (inco.travas[1])
+                        {
+                            colunaY.Add(0);
+                            colunaX.Add(0);
+                        }
+                    }
+                }
+
+                matrizN.Add(colunaX);
+                matrizN.Add(colunaY);
+
+                matrizF.Add(no.ForceX * -1);
+                matrizF.Add(no.ForceY * -1);
             }
 
-            
+
+            EscreverMatriz(matrizN, "Matriz Principal");
+
+            var det = CalcularDeterminante(matrizN);
+
+            List<List<double>> invertida = CalcularMatrizInversa(matrizN);
+
+
         }
 
+        private static bool VerificarMatriz(List<List<double>> matriz)
+        {
+            int quantidade = matriz[0].Count;
 
+            EscreverMatriz(matriz, "dadinhos");
 
+            foreach (List<double> linha in matriz)
+                if (linha.Count != quantidade)
+                    return false;
+
+            return true;
+
+        }
+
+        //private static double CalcularDeterminante(double[,] matriz)
+        private static double CalcularDeterminante(List<List<double>> matriz)
+        {
+            /*
+            if (!VerificarMatriz(matriz))
+                throw new Exception("Matriz não é exata");
+            */
+            EscreverMatriz(matriz, "Matriz Recebida para Calcular a Determinante");
+
+            //Pega o tamanho da matriz
+            int q0 = matriz.Count;
+            int q1 = matriz[0].Count;
+
+            #region Matriz de calculo
+            //Cria uma matriz separada, para não macular a original
+            List<List<double>> calculo = new List<List<double>>();
+
+            /* Isso é necessário porque o Add Range normal copiaria o endereço das tabelas, não nova
+             * não novas cópias
+             */
+            foreach (List<double> lista in matriz)
+            {
+                List<double> copy = new List<double>();
+                copy.AddRange(lista);
+
+                calculo.Add(copy);
+            }
+            #endregion
+
+            double valor = 0;
+
+            List<double> determinantes = new List<double>();
+            if (q0 > 2 || q1 > 2)
+            {
+                for (int j = 0; j < q1; j++)
+                {
+                    double pivo = calculo[0][j];
+                    List<List<double>> reduzida = new List<List<double>>();
+
+                    for (int ri = 1; ri < q0; ri++)
+                    {
+                        List<double> linha = new List<double>();
+
+                        for (int rj = 0; rj < q0; rj++)
+                            if (rj != j)
+                                linha.Add(calculo[ri][rj]);
+
+                        reduzida.Add(linha);
+                    }
+
+                    double calc2 = CalcularDeterminante(reduzida);
+                    double calc = pivo * calc2 * Math.Pow(-1, 2 + j);
+
+                    determinantes.Add(calc);
+                }
+            }
+            else
+            {
+                valor = (calculo[0][0] * calculo[1][1]) - (calculo[1][0] * calculo[0][1]);
+                return valor;
+            }
+
+            valor = determinantes.Sum();
+            return valor;
+        }
+
+        //private static double[,] CalcularMatrizInversa(double[,] matriz)
+        private static List<List<double>> CalcularMatrizInversa(List<List<double>> matriz)
+        {
+            /* método de Matriz Adjunta
+             * 
+             */
+
+            //int q0 = matriz.GetLength(0);
+            int q0 = matriz.Count;
+
+            //int q1 = matriz.GetLength(1);
+            int q1 = matriz[0].Count;
+
+            //double[,] calculo = new double[q0 - 1, q1 - 1];
+            List<List<double>> calculo = new List<List<double>>();
+
+            //double[,] inversa = new double[q0, q1];
+            List<List<double>> inversa = new List<List<double>>();
+
+            double determinante = CalcularDeterminante(matriz);
+
+            for (int j = 0; j < q0; j++)
+            {
+                List<double> linhaInversa = new List<double>();
+                
+                for (int i = 0; i < q1; i++)
+                {
+                    linhaInversa.Clear();
+
+                    int posC = 0;
+                    int posL = 0;
+                    calculo.Clear();
+                    for (int linhaM = 0; linhaM < q0; linhaM++)
+                    {
+                        if (linhaM == j)
+                            continue;
+
+                        List<double> listaLinha = new List<double>();
+
+                        for (int colunaM = 0; colunaM < q1; colunaM++)
+                        {
+                            if (colunaM == i)
+                                continue;
+
+                            //calculo[posL, posC] = matriz[linhaM, colunaM];
+                            listaLinha.Add(matriz[linhaM][colunaM]);
+                            posC++;
+                        }
+                        posC = 0;
+                        posL++;
+
+                        calculo.Add(listaLinha);
+                    }
+
+                    var a = CalcularDeterminante(calculo);
+                    var b = Math.Pow(-1, j + i);
+
+                    double valor = a * b;
+                    linhaInversa.Add(valor / determinante);
+                }
+
+                //inversa[i, j] = valor / determinante;
+                inversa.Add(linhaInversa);
+            }
+                
+
+            return inversa;
+        }
+
+        private static void EscreverMatriz(List<List<double>> matriz, string nome)
+        {
+            string texto = null;
+
+            for (int linha = 0; linha < matriz.Count; linha++)
+            {
+                for (int coluna = 0; coluna < matriz[linha].Count; coluna++)
+                    texto += $"{matriz[linha][coluna]};";
+
+                texto += Environment.NewLine;
+            }
+
+            string caminho = @"C:\Users\User\Desktop\dados\" + $"{nome}.csv";
+            File.WriteAllText(caminho, texto);
+
+        }
     }
 }
