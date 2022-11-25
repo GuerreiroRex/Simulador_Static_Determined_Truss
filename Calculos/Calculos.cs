@@ -543,11 +543,33 @@ namespace CalculoTre.Calculos
 
             EscreverMatriz(invertida, "1 - Matriz Invertida");
 
-            List<List<double>> transposta = TransporMatriz(invertida);
 
-            EscreverMatriz(transposta, "2 - Matriz Transposta");
+            EscreverMatriz(matrizF, "2 - Matriz de Forças");
 
+            List<double> resultado = CalcularProdutoMatrizes(invertida, matrizF);
 
+            EscreverMatriz(resultado, "3 - Matriz Multiplicada");
+        }
+
+        private static List<double> CalcularProdutoMatrizes(List<List<double>> matriz, List<double> forcas)
+        {
+            List<double> multipla = new List<double>();
+
+            //Pega o tamanho da matriz
+            int q0 = matriz.Count;
+            int q1 = matriz[0].Count;
+
+            for (int linha = 0; linha < q0; linha++)
+            {
+                double linha_for = 0;
+                for (int coluna = 0; coluna < q1; coluna++)
+                {
+                    linha_for += matriz[linha][coluna] * forcas[coluna];
+                }
+                multipla.Add(linha_for);
+            }
+
+            return multipla;
         }
 
         private static List<List<double>> TransporMatriz(List<List<double>> matriz)
@@ -709,6 +731,22 @@ namespace CalculoTre.Calculos
             {
                 for (int coluna = 0; coluna < matriz[linha].Count; coluna++)
                     texto += $"{matriz[linha][coluna]};";
+
+                texto += Environment.NewLine;
+            }
+
+            string caminho = @"C:\Users\User\Desktop\dados\" + $"{nome}.csv";
+            File.WriteAllText(caminho, texto);
+
+        }
+
+        private static void EscreverMatriz(List<double> matriz, string nome)
+        {
+            string texto = null;
+
+            for (int linha = 0; linha < matriz.Count; linha++)
+            {
+                texto += $"{matriz[linha]};";
 
                 texto += Environment.NewLine;
             }
