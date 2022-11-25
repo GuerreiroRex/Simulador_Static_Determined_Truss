@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.LinkLabel;
 
@@ -21,56 +23,44 @@ namespace CalculoTre.Calculos
                 return;
             }
 
-            #region Matrizes de teste
-            double[,] matriz = new double[3, 3]
-            {
-                { 5, 8, +4 },
-                { 6, 9, -5 },
-                { 4, 7, -2 }
-            };
-
+            #region Matrizes de testes
             List<double> linha1 = new List<double>();
-            linha1.Add(5);
-            linha1.Add(8);
-            linha1.Add(4);
+            linha1.Add(1);
+            linha1.Add(0);
+            linha1.Add(1);
 
             List<double> linha2 = new List<double>();
-            linha2.Add(6);
-            linha2.Add(9);
-            linha2.Add(-5);
+            linha2.Add(2);
+            linha2.Add(-2);
+            linha2.Add(-1);
 
             List<double> linha3 = new List<double>();
-            linha3.Add(4);
-            linha3.Add(7);
-            linha3.Add(-2);
+            linha3.Add(3);
+            linha3.Add(0);
+            linha3.Add(0);
 
 
             List<List<double>> matrizL = new List<List<double>>();
             matrizL.Add(linha1);
             matrizL.Add(linha2);
             matrizL.Add(linha3);
-
-            double[,] matriz2 = new double[4, 4]
-            {
-                { 5, 8, +4, 2 },
-                { 6, 9, -5, 7 },
-                { 4, 7, -2, 4 },
-                { 7, -3, 1, 9 }
-            };
-
             //double det = CalcularDeterminante(matrizL);
             #endregion
 
+            //var a = CalcularMatrizInversa(matrizL);
 
+            Thread calculo = new Thread(MetodoStiffEmBarra);
+            calculo.Start();
 
-            MetodoStiffEmBarra();
+            //MetodoStiffEmBarra();
 
-
+            /*
             Knot noDuplo = IdentificarApoio();
 
             List<Knot> nosLigados = IdetificarAdemais(noDuplo);
 
             CalcularMomento(noDuplo, nosLigados);
+            */
         }
 
         #region Metodo antigo
@@ -557,7 +547,9 @@ namespace CalculoTre.Calculos
 
             List<List<double>> invertida = CalcularMatrizInversa(matrizN);
 
+            EscreverMatriz(invertida, "Matriz Invertida");
 
+            MessageBox.Show("Concluido");
         }
 
         private static bool VerificarMatriz(List<List<double>> matriz)
@@ -643,70 +635,54 @@ namespace CalculoTre.Calculos
         //private static double[,] CalcularMatrizInversa(double[,] matriz)
         private static List<List<double>> CalcularMatrizInversa(List<List<double>> matriz)
         {
-            /* método de Matriz Adjunta
-             * 
-             */
+            List<List<double>> basica = new List<List<double>>();
+            List<List<double>> invertida = new List<List<double>>();
+            double det = CalcularDeterminante(matriz);
 
-            //int q0 = matriz.GetLength(0);
+            //Pega o tamanho da matriz
             int q0 = matriz.Count;
-
-            //int q1 = matriz.GetLength(1);
             int q1 = matriz[0].Count;
 
-            //double[,] calculo = new double[q0 - 1, q1 - 1];
-            List<List<double>> calculo = new List<List<double>>();
-
-            //double[,] inversa = new double[q0, q1];
-            List<List<double>> inversa = new List<List<double>>();
-
-            double determinante = CalcularDeterminante(matriz);
-
-            for (int j = 0; j < q0; j++)
+            for (int linha = 0; linha < q0; linha++)
             {
-                List<double> linhaInversa = new List<double>();
-                
-                for (int i = 0; i < q1; i++)
+                List<double> linha_basica = new List<double>();
+                for (int coluna = 0; coluna < q1; coluna++)
                 {
-                    linhaInversa.Clear();
+                    List<List<double>> calculo = new List<List<double>>();
 
-                    int posC = 0;
-                    int posL = 0;
-                    calculo.Clear();
-                    for (int linhaM = 0; linhaM < q0; linhaM++)
+                    for (int i = 0; i < q0; i++)
                     {
-                        if (linhaM == j)
+
+                        if (i == linha)
                             continue;
-
-                        List<double> listaLinha = new List<double>();
-
-                        for (int colunaM = 0; colunaM < q1; colunaM++)
+                        
+                        List<double> linha_valores = new List<double>();
+                        for (int j = 0; j < q1; j++)
                         {
-                            if (colunaM == i)
+                            if (j == coluna)
                                 continue;
-
-                            //calculo[posL, posC] = matriz[linhaM, colunaM];
-                            listaLinha.Add(matriz[linhaM][colunaM]);
-                            posC++;
+                            
+                            linha_valores.Add(matriz[i][j]);
                         }
-                        posC = 0;
-                        posL++;
-
-                        calculo.Add(listaLinha);
+                        calculo.Add(linha_valores);
                     }
 
-                    var a = CalcularDeterminante(calculo);
-                    var b = Math.Pow(-1, j + i);
-
-                    double valor = a * b;
-                    linhaInversa.Add(valor / determinante);
+                    linha_basica.Add(CalcularDeterminante(calculo) * Math.Pow(-1, linha + coluna));
                 }
-
-                //inversa[i, j] = valor / determinante;
-                inversa.Add(linhaInversa);
+                basica.Add(linha_basica);
             }
-                
 
-            return inversa;
+            for (int linha = 0; linha < q0; linha++)
+            {
+                List<double> linha_invertida = new List<double>();
+                for (int coluna = 0; coluna < q1; coluna++)
+                {
+                    linha_invertida.Add(basica[coluna][linha] / det);
+                }
+                invertida.Add(linha_invertida);
+            }
+
+            return invertida;
         }
 
         private static void EscreverMatriz(List<List<double>> matriz, string nome)
