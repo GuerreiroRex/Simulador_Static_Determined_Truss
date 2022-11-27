@@ -214,7 +214,8 @@ namespace CalculoTre.Objetos
         {
             await Task.Yield();
 
-            Pen caneta = new Pen(Color.Blue);
+            Pen caneta = new Pen(Color.Blue);   
+
             caneta.Width = (float)2;
 
             var a = Data.nos.Values.ToList().Where<Knot>(x => x.ID == barra.knots[0].ID).First();
@@ -227,6 +228,58 @@ namespace CalculoTre.Objetos
             {
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 g.DrawLine(caneta, ponto1, ponto2);
+
+                if (Port.CompararCalculos(Data.nos))
+                {
+                    AdjustableArrowCap bigArrow = new AdjustableArrowCap(5, 5);
+                    Pen caneta_vermelha = new Pen(Color.FromArgb(150, Color.Red), (float)4);
+                    caneta_vermelha.CustomEndCap = bigArrow;
+                    
+                    double cateto_adjacente = (b.valorX - a.valorX);
+                    double cateto_oposto = (b.valorY - a.valorY);
+                    double angulo = Math.Atan(cateto_oposto / cateto_adjacente);
+
+                    Point prim_inicio = new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente * 2 / 8)), ValorParaPosY((int)(a.valorY + cateto_oposto * 2 / 8)));
+                    Point prim_fim = new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente / 2)), ValorParaPosY((int)(a.valorY + cateto_oposto / 2)));
+
+                    Point prim_inicio2 = new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente * 6 / 8)), ValorParaPosY((int)(a.valorY + cateto_oposto * 6 / 8)));
+                    Point prim_fim2 = new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente / 2)), ValorParaPosY((int)(a.valorY + cateto_oposto / 2)));
+
+                    if (barra.Force < 0)
+                    {
+                        g.DrawLine(caneta_vermelha, prim_inicio, prim_fim);
+                        g.DrawLine(caneta_vermelha, prim_inicio2, prim_fim2);
+                    }
+                    else if (barra.Force > 0)
+                    {
+                        g.DrawLine(caneta_vermelha, prim_fim, prim_inicio);
+                        g.DrawLine(caneta_vermelha, prim_fim2, prim_inicio2);
+                    }
+
+
+                    int displace_X = (int)(3 * Math.Cos(angulo));
+                    int displace_Y = (int)(3 * Math.Sin(angulo));
+
+
+
+                    int tamanhoFonte = 10;
+                    Font fonte = new Font("Arial", tamanhoFonte);
+
+                    string valor = $"{barra.ID}: {Math.Round(barra.Force, 4)} Kn";
+
+                    int size = g.MeasureString(valor, fonte).ToSize().Width;
+
+                    /* Continuar daqui,
+                     * 
+                     * ajustar posicionamento do texto
+                     */
+
+                    g.DrawString(valor, 
+                                    fonte,
+                                    new SolidBrush(Color.FromArgb(200, Color.DarkViolet)),
+                                    new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente / 2) + 3  ), ValorParaPosY((int)(a.valorY + cateto_oposto / 2) + fonte.Height + 3)));
+
+                }
             }
 
         }

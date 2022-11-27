@@ -134,8 +134,8 @@ namespace CalculoTre
         }
 
         private void deCalcular_Click(object sender, EventArgs e)
-        {
-            Calcular.InicioCalculo();
+        { 
+            Calcular.InicioCalculo(telaPrincipal);
         }
     }
 }

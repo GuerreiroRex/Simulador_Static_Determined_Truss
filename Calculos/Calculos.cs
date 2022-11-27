@@ -1,6 +1,7 @@
 ﻿using CalculoTre.Objetos;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace CalculoTre.Calculos
 {
     internal static class Calcular
     {
-        public static void InicioCalculo()
-        {
+        public static void InicioCalculo(Tela tela)
+        {   
             if (Data.barras.Values.Count == 0)
             {
                 MessageBox.Show("Sem barras");
@@ -29,29 +30,43 @@ namespace CalculoTre.Calculos
             linha1.Add(1);
             linha1.Add(0);
             linha1.Add(1);
+            linha1.Add(3);
 
             List<double> linha2 = new List<double>();
             linha2.Add(2);
             linha2.Add(-2);
             linha2.Add(-1);
+            linha2.Add(6);
 
             List<double> linha3 = new List<double>();
             linha3.Add(3);
             linha3.Add(0);
             linha3.Add(0);
+            linha3.Add(15);
 
+            List<double> linha4 = new List<double>();
+            linha4.Add(14);
+            linha4.Add(4);
+            linha4.Add(3);
+            linha4.Add(6);
 
             List<List<double>> matrizL = new List<List<double>>();
             matrizL.Add(linha1);
             matrizL.Add(linha2);
             matrizL.Add(linha3);
-            //double det = CalcularDeterminante(matrizL);
+            matrizL.Add(linha4);
             #endregion
 
-            //var a = CalcularMatrizInversa(matrizL);
+            //var a = CalcularDeterminante(matrizL);
 
             Thread calculo = new Thread(MetodoStiffEmBarra);
             calculo.Start();
+
+            calculo.Join();
+
+            tela.Redesenhar();
+
+
         }
 
         private static List<Knot> IdentificarIncognitas(List<Knot> nos)
@@ -62,24 +77,28 @@ namespace CalculoTre.Calculos
             {
                 if (no.travas[0])
                 {
+                    /*
                     Force temp = new Force();
                     temp.Nome = $"iV_{no.ToString()}";
                     temp.angulo = 270;
                     temp.posX = no.valorX;
                     temp.calculado = false;
                     no.forcas.Add(temp);
+                    */
 
                     if (!incognitas.Contains(no))
                         incognitas.Add(no);
                 }
                 if (no.travas[1])
                 {
+                    /*
                     Force temp = new Force();
                     temp.Nome = $"iH_{no.ToString()}";
                     temp.angulo = 180;
                     temp.posX = no.valorY;
                     temp.calculado = false;
                     no.forcas.Add(temp);
+                    */
 
                     if (!incognitas.Contains(no))
                         incognitas.Add(no);
@@ -100,7 +119,7 @@ namespace CalculoTre.Calculos
             return Math.Abs(principal.valorY - secundario.valorY);
         }
 
-        private static double CalcularHip(Bar barra)
+        public static double CalcularHip(Bar barra)
         {
             double hip = Math.Sqrt(Math.Pow(CalcularDistanciaX(barra.knots[0], barra.knots[1]), 2) + Math.Pow(CalcularDistanciaY(barra.knots[0], barra.knots[1]), 2));
             return hip;
@@ -120,16 +139,20 @@ namespace CalculoTre.Calculos
              */
             List<double> matrizF = MontarMatrizForcas(Data.nos); //Matriz F para Forças
 
-            EscreverMatriz(matrizN, matrizF, "0 - Matriz Principal");
+            EscreverMatriz(matrizN, "0 - Matriz Principal");
 
             List<List<double>> invertida = CalcularMatrizInversa(matrizN);
 
-            EscreverMatriz(invertida, matrizF, "1 - Matriz Invertida");
+            EscreverMatriz(invertida, "1 - Matriz Invertida");
 
             List<double> resultado = CalcularProdutoMatrizes(invertida, matrizF);
             EscreverMatriz(resultado, "2 - Matriz Multiplicada");
 
-            MessageBox.Show("Concluido");
+            int i = 0;
+            foreach (Bar barra in Data.barras.Values)
+                barra.Force = resultado[i++];
+
+            Port.ImportarCalculos();
         }
 
         private static List<List<double>> MontarMatrizNos(Dictionary<string, Bar> dictB, Dictionary<byte, Knot> dictN)
@@ -231,22 +254,9 @@ namespace CalculoTre.Calculos
 
         private static double CalcularDeterminante(List<List<double>> matriz)
         {
-            /*
-            if (!VerificarMatriz(matriz))
-                throw new Exception("Matriz não é exata");
-            */
-
-            //Pega o tamanho da matriz
-            int q0 = matriz.Count;
-            int q1 = matriz[0].Count;
-
-            #region Matriz de calculo
-            //Cria uma matriz separada, para não macular a original
             List<List<double>> calculo = new List<List<double>>();
 
-            /* Isso é necessário porque o Add Range normal copiaria o endereço das tabelas, não nova
-             * não novas cópias
-             */
+            //Copia a matriz, para não macular a original
             foreach (List<double> lista in matriz)
             {
                 List<double> copy = new List<double>();
@@ -254,41 +264,57 @@ namespace CalculoTre.Calculos
 
                 calculo.Add(copy);
             }
-            #endregion
 
-            double valor = 0;
+            //Pega o tamanho da matriz
+            int q0 = calculo.Count;
+            int q1 = calculo[0].Count;
 
-            List<double> determinantes = new List<double>();
-            if (q0 > 2 || q1 > 2)
+            //Para cada linha da matriz
+            for (int i = 0; i < q0 - 1; i++)
             {
-                for (int j = 0; j < q1; j++)
+                //Pega o pivo
+                double pivo = calculo[i][i];
+
+                //Se o pivo for zero, troca ele por outra linha
+                if (pivo == 0)
+                    for (int linha = i + 1; linha < q0; linha++)
+                        if (calculo[linha][i] != 0)
+                        {
+                            List<double> linha_original = new List<double>();
+                            linha_original.AddRange(calculo[i]);
+
+                            List<double> linha_nova = new List<double>();
+                            linha_nova.AddRange(calculo[linha]);
+
+                            for (int num = 0; num < linha_nova.Count; num++)
+                                linha_nova[num] *= -1;
+
+                            calculo[i] = linha_nova;
+                            calculo[linha] = linha_original;
+
+                            pivo = calculo[i][i];
+
+                            break;
+                        }
+
+                for (int linha = i + 1; linha < q0; linha++)
                 {
-                    double pivo = calculo[0][j];
-                    List<List<double>> reduzida = new List<List<double>>();
-                    for (int ri = 1; ri < q0; ri++)
-                    {
-                        List<double> linha = new List<double>();
+                    if (calculo[linha][i] == 0)
+                        continue;
 
-                        for (int rj = 0; rj < q0; rj++)
-                            if (rj != j)
-                                linha.Add(calculo[ri][rj]);
+                    double divisor = calculo[linha][i] / pivo;
 
-                        reduzida.Add(linha);
-                        
-                    }
-                    double calc2 = CalcularDeterminante(reduzida);
-                    double calc = pivo * calc2 * Math.Pow(-1, 2 + j);
-
-                    determinantes.Add(calc);
+                    for (int coluna = 0; coluna < q1; coluna++)
+                        calculo[linha][coluna] -= divisor * calculo[i][coluna];
                 }
             }
-            else
-            {
-                valor = (calculo[0][0] * calculo[1][1]) - (calculo[1][0] * calculo[0][1]);
-                return valor;
-            }
 
-            valor = determinantes.Sum();
+            double valor = 1;
+            for (int i = 0; i < q0; i++)
+                valor *= calculo[i][i];
+
+            EscreverMatriz(calculo, "Teste - Determinante");
+
             return valor;
         }
 
@@ -371,7 +397,7 @@ namespace CalculoTre.Calculos
         }
 
         #region Escrita
-        private static void EscreverMatriz(List<List<double>> matriz, List<double> matrizF, string nome)
+        private static void EscreverMatriz(List<List<double>> matriz, string nome)
         {
             string texto = ";";
 
@@ -401,8 +427,6 @@ namespace CalculoTre.Calculos
 
                 for (int coluna = 0; coluna < matriz[linha].Count; coluna++)
                     texto += $"{matriz[linha][coluna]};";
-
-                texto += $";{matrizF[linha]};";
 
                 texto += Environment.NewLine;
             }

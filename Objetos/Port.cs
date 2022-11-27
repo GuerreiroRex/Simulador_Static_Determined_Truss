@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -72,6 +73,28 @@ namespace CalculoTre.Objetos
                     barra.knots[1] = Data.nos.Values.Where(x => x.ID == barra.knots[1].ID).First();
                 }
             }
+        }
+
+        public static bool CompararCalculos(Dictionary<byte, Knot> dict)
+        {
+            string dicionario_original = JsonConvert.SerializeObject(dict);
+            string caminho = @"C:\Users\User\Desktop\dados\" + $"dicionario_original.txt";
+            File.WriteAllText(caminho, dicionario_original);
+
+            string dicionario_calculos = JsonConvert.SerializeObject(Data.calculo_Nos);
+            string caminho2 = @"C:\Users\User\Desktop\dados\" + $"dicionario_calculos.txt";
+            File.WriteAllText(caminho2, dicionario_calculos);
+
+            return dicionario_original == dicionario_calculos;
+        }
+
+        public static void ImportarCalculos()
+        {
+            string dicionario_barra = JsonConvert.SerializeObject(Data.barras);
+            string dicionario_nos = JsonConvert.SerializeObject(Data.nos);
+
+            Data.calculo_Barras = JsonConvert.DeserializeObject<Dictionary<string, Bar>>(dicionario_barra);
+            Data.calculo_Nos = JsonConvert.DeserializeObject<Dictionary<byte, Knot>>(dicionario_nos);
         }
         #endregion
     }
