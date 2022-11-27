@@ -60,6 +60,8 @@ namespace CalculoTre
                 paginaApoio = new PaginaApoio(tab, no);
 
             this.Controls.Add(tab);
+
+            this.Shown += pagina.PrepararTela;
         }
         #endregion
 

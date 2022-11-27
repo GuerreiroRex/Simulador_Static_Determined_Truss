@@ -265,9 +265,8 @@ namespace CalculoTre.Objetos
                     int tamanhoFonte = 10;
                     Font fonte = new Font("Arial", tamanhoFonte);
 
-                    string valor = $"{barra.ID}: {Math.Round(barra.Force, 4)} Kn";
-
-                    int size = g.MeasureString(valor, fonte).ToSize().Width;
+                    //string valor = $"{barra.ID}: {Math.Round(barra.Force, 4)} Kn";
+                    string valor = $"{Math.Round(barra.Force, 4)} Kn";
 
                     /* Continuar daqui,
                      * 
@@ -277,7 +276,8 @@ namespace CalculoTre.Objetos
                     g.DrawString(valor, 
                                     fonte,
                                     new SolidBrush(Color.FromArgb(200, Color.DarkViolet)),
-                                    new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente / 2) + 3  ), ValorParaPosY((int)(a.valorY + cateto_oposto / 2) + fonte.Height + 3)));
+                                    prim_fim);
+                    //new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente / 2) + 3  ), ValorParaPosY((int)(a.valorY + cateto_oposto / 2) + fonte.Height + 3))
 
                 }
             }
@@ -401,7 +401,6 @@ namespace CalculoTre.Objetos
                     g.DrawLine(pq, pq1, pq2);
                 }
             }
-
 
 
             tela.Controls.Add(botao);

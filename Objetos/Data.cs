@@ -16,6 +16,7 @@ namespace CalculoTre.Objetos
 
         public static ComboBox deTipo;
         public static ComboBox deObjeto;
+        public static int deObjecto_Index = -1;
 
         public static void Reiniciar()
         {

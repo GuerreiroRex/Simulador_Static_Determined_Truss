@@ -86,12 +86,14 @@ namespace CalculoTre
             switch (deTipo.SelectedIndex)
             {
                 case 0:
-                    var apoioTemp = ((KeyValuePair<byte, Knot>)deObjeto.SelectedItem).Value;
+                    //var apoioTemp = ((KeyValuePair<byte, Knot>)deObjeto.SelectedItem).Value;
+                    var apoioTemp = deObjeto.SelectedValue as Knot;
                     dePropriedades = new dePropriedades(apoioTemp);
                     dePropriedades.ShowDialog();
                     break;
                 case 1:
-                    var barraTemp = ((KeyValuePair<string, Bar>)deObjeto.SelectedItem).Value;
+                    //var barraTemp = ((KeyValuePair<string, Bar>)deObjeto.SelectedItem).Value;
+                    var barraTemp = deObjeto.SelectedValue as Bar;
                     dePropriedades = new dePropriedades(barraTemp);
                     dePropriedades.ShowDialog();
                     break;

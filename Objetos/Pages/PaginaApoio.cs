@@ -14,18 +14,16 @@ namespace CalculoTre.Objetos.Pages
 
             pagina.Text = noEscolhido.ToString();
 
-            ConfigApoio configBarra = new ConfigApoio(tela, noEscolhido, pagina);
+            ConfigApoio configApoio = new ConfigApoio(tela, noEscolhido, pagina);
 
             tab.Controls.Add(pagina);
-
-            //PrepararTela(new object(), new EventArgs());
         }
 
         public override void PrepararTela(object sender, EventArgs e)
         {
             base.PrepararTela(sender, e);
 
-            tela.Esquematizar(noEscolhido, false);
+            tela.Esquematizar(noEscolhido);
         }
     }
 }

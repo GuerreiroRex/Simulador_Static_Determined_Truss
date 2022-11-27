@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace CalculoTre.Objetos
@@ -19,6 +21,8 @@ namespace CalculoTre.Objetos
         //Ativa quando tiver que atualizar os objetos
         public static void AtualizarObjeto(ComboBox deTipo, ComboBox deObjeto)
         {
+            object objeto = deObjeto.SelectedValue;
+
             //Dependendo do tipo selecionado no indice, adiciona cada dicionário em um combo box
             switch (deTipo.SelectedIndex)
             {
@@ -26,19 +30,25 @@ namespace CalculoTre.Objetos
                     if (Data.nos.Count <= 0)
                         break;
 
-                    deObjeto.DataSource = new BindingSource(Data.nos, null);
+                    List<Knot> lista_nos = Data.nos.Values.OrderBy(x => x.nome).ToList();
+                    deObjeto.DataSource = lista_nos; //new BindingSource(Data.nos, null);
                     deObjeto.DisplayMember = "Value";
-                    deObjeto.ValueMember = "Key";
                     break;
                 case 1:
                     if (Data.barras.Count <= 0)
                         break;
 
-                    deObjeto.DataSource = new BindingSource(Data.barras, null);
+                    List<Bar> lista_barras = Data.barras.Values.OrderBy(x => x.ID).ToList();
+                    deObjeto.DataSource = lista_barras;
                     deObjeto.DisplayMember = "Value";
-                    deObjeto.ValueMember = "Key";
+
+                    if (Data.deObjecto_Index >= lista_barras.Count)
+                        Data.deObjecto_Index = lista_barras.Count - 1;
                     break;
             }
+
+            if (objeto != null)
+                deObjeto.SelectedIndex = deObjeto.Items.IndexOf(objeto);
         }
     }
 }

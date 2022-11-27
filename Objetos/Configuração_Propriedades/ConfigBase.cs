@@ -14,7 +14,6 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
         public ConfigBase(Tela tela)
         {
             Controle = new FlowLayoutPanel();
-            //Controle.BackColor = Color.LightGreen;
 
             Controle.Location = new Point(5, 10);
             Controle.Width = largura;

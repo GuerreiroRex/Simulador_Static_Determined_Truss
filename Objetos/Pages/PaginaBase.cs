@@ -15,7 +15,8 @@ namespace CalculoTre.Objetos.Pages
             tab = tabControl;
 
             Panel painel = new Panel();
-            painel.Size = new Size(550, 350);
+            //painel.Size = new Size(550, 350);
+            painel.Size = new Size(711, 400);
             painel.BorderStyle = BorderStyle.FixedSingle;
 
             //painel.Visible = false;
@@ -35,9 +36,5 @@ namespace CalculoTre.Objetos.Pages
 
             tela.Desenhar();
         }
-
-        public TabPage Valor { get => pagina; }
-
-        public Tela Tela { get => tela; }
     }
 }

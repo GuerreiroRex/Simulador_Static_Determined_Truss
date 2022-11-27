@@ -16,7 +16,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
             pagina.Controls.Add(Controle);
 
-            Trigger.DesenhoAlterado += (s, e) => teste(tela, s, e);
+            Trigger.DesenhoAlterado += (s, e) => Remodelagem(tela, s, e);
 
             PainelRenomear("Nome do apoio:");
             PainelValoresPos("Posição em X:", 'X');
@@ -25,7 +25,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             PainelApoios();
         }
 
-        private void teste(Tela tela, object sender, EventArgs e)
+        private void Remodelagem(Tela tela, object sender, EventArgs e)
         {
             tela.Limpar();
 
