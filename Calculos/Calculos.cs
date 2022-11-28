@@ -409,10 +409,10 @@ namespace CalculoTre.Calculos
             foreach (Knot no in IdentificarIncognitas(Data.nos.Values.ToList()))
             {
                 if (no.travas[0])
-                    texto += no.ID + "_Y;";
+                    texto += no.Nome + "_Y;";
 
                 if (no.travas[1])
-                    texto += no.ID + "_X;";
+                    texto += no.Nome + "_X;";
             }
 
             texto += Environment.NewLine;

@@ -41,12 +41,12 @@ namespace CalculoTre.Objetos
 
                 //Posiciona as linahs em X dos quadriculados
                 for (int i = 1; i < Resolucao[0]; i++)
-                    g.DrawLine(caneta, ValorParaPosX((float)i * MaximoHorizontal / Resolucao[0]), a, ValorParaPosX((float)i * MaximoHorizontal / Resolucao[0]), b);
+                    g.DrawLine(caneta, ValorParaPosX((float)i * EscalaHorizontal / Resolucao[0]), a, ValorParaPosX((float)i * EscalaHorizontal / Resolucao[0]), b);
                 //g.DrawLine(caneta, ValorParaPosX((float)i * EscalaHorizontal / Resolucao[0]), a, ValorParaPosX((float)i * EscalaHorizontal / Resolucao[0]), b);
 
                 //Posiciona as linahs em Y dos quadriculados
                 for (int i = 1; i < Resolucao[1]; i++)
-                    g.DrawLine(caneta, a, ValorParaPosY((float)i * MaximoVertical / Resolucao[1]), c, ValorParaPosY((float)i * MaximoVertical / Resolucao[1]));
+                    g.DrawLine(caneta, a, ValorParaPosY((float)i * EscalaVertical / Resolucao[1]), c, ValorParaPosY((float)i * EscalaVertical / Resolucao[1]));
                 //g.DrawLine(caneta, a, ValorParaPosY((float)i * EscalaVertical / Resolucao[1]), c, ValorParaPosY((float)i * EscalaVertical / Resolucao[1]));
 
                 /*
@@ -87,11 +87,11 @@ namespace CalculoTre.Objetos
                 g.DrawLine(caneta, inferiorDireito, superiorDireito);
 
                 for (int i = 1; i < Resolucao[0]; i++)
-                    g.DrawLine(caneta, ValorParaPosX((float)i * MaximoHorizontal / Resolucao[0]), a, ValorParaPosX((float)i * MaximoHorizontal / Resolucao[0]), b);
+                    g.DrawLine(caneta, ValorParaPosX((float)i * EscalaHorizontal / Resolucao[0]), a, ValorParaPosX((float)i * EscalaHorizontal / Resolucao[0]), b);
 
                 //Posiciona as linahs em Y dos quadriculados
                 for (int i = 1; i < Resolucao[1]; i++)
-                    g.DrawLine(caneta, a, ValorParaPosY((float)i * MaximoVertical / Resolucao[1]), c, ValorParaPosY((float)i * MaximoVertical / Resolucao[1]));
+                    g.DrawLine(caneta, a, ValorParaPosY((float)i * EscalaVertical / Resolucao[1]), c, ValorParaPosY((float)i * EscalaVertical / Resolucao[1]));
 
                 Letreiro();
             }
@@ -107,23 +107,23 @@ namespace CalculoTre.Objetos
                 //for (int i = 0; i <= Resolucao[0]; i++)
                 for (int i = Resolucao[0]; i > 0; i--)
                 {
-                    string temp = (i * MaximoHorizontal / Resolucao[0]).ToString();
+                    string temp = (i * EscalaHorizontal / Resolucao[0]).ToString();
 
                     int size = g.MeasureString(temp, fonte).ToSize().Width;
 
                     g.DrawString(temp,
                                     fonte,
                                     new SolidBrush(Color.Black),
-                                    new Point((int)(unidade_CorteX * i + a - size / 2), Painel.Height - tamanhoFonte * 2));
+                                    new PointF((float)(unidade_CorteX * i + a - size / 2), Painel.Height - tamanhoFonte * 2));
 
                 }
 
                 for (int i = 0; i < Resolucao[1]; i++)
                 {
-                    g.DrawString(((Resolucao[1] - i) * MaximoVertical / Resolucao[1]).ToString(),
-                                     new Font("Arial", 6),
+                    g.DrawString(((Resolucao[1] - i) * EscalaVertical / Resolucao[1]).ToString(),
+                                     fonte,
                                      new SolidBrush(Color.Black),
-                                     new Point(0, (int)unidade_CorteY * i + a));
+                                     new PointF(0, (float)unidade_CorteY * i + a - fonte.Height / 2));
                 }
 
                 g.DrawString("0", fonte, new SolidBrush(Color.Black), new Point(0, tela.Height - tamanhoFonte * 2));
@@ -367,6 +367,22 @@ namespace CalculoTre.Objetos
                     }
                 };
             }
+            else
+            {
+                //Se o botão for apertado
+                botao.MouseDown += (s, e) =>
+                {
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        dePropriedades pai = tab.Parent as dePropriedades;
+
+                        tab.Controls.Clear();
+                        pai.TabApoios(no, true);
+                    }
+                };
+            }
+
+            //tab.Controls.Clear();
 
             using (Graphics g = tela.CreateGraphics())
             {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CalculoTre
@@ -40,6 +41,8 @@ namespace CalculoTre
         {
             tab = new TabControl();
 
+            Tela.tab = tab;
+
             tab.SizeMode = TabSizeMode.Fixed;
             tab.ItemSize = new Size(80, 20);
 
@@ -66,7 +69,7 @@ namespace CalculoTre
         #endregion
 
         #region Apoios
-        private void TabApoios(Knot noEscolhido)
+        public void TabApoios(Knot noEscolhido, bool gatilho = false)
         {
             List<TabPage> lista = new List<TabPage>();
 
@@ -80,9 +83,14 @@ namespace CalculoTre
                     paginaBarra = new PaginaBarra(tab, barra);
             }
 
-            this.Controls.Add(tab);
+            if (!this.Controls.Contains(tab))
+                this.Controls.Add(tab);
 
             this.Shown += pagina.PrepararTela;
+
+            if (gatilho)
+                pagina.PrepararTela(new object(), new EventArgs());
+            
         }
         #endregion
     }

@@ -5,6 +5,7 @@ namespace CalculoTre.Objetos
     public partial class Tela
     {
         private Panel tela;
+        public static TabControl tab;
 
         public static int[] Resolucao = new int[2] { 1, 1 };
         public const double proporcionalidade = (1280 / 720);
@@ -15,6 +16,7 @@ namespace CalculoTre.Objetos
         public int MinimoVertical = 0;
         public int MinimoHorizontal = 0;
 
+
         private int a;
         private int b;
         private int c;
@@ -24,6 +26,10 @@ namespace CalculoTre.Objetos
 
         private delegate void PrepararLetras();
         private delegate void PrepararEsquema();
+
+        public int EscalaVertical { get => MaximoVertical - MinimoVertical; }
+
+        public int EscalaHorizontal { get => MaximoHorizontal - MinimoHorizontal; }
 
         public Tela(Panel painel)
         {
@@ -50,39 +56,39 @@ namespace CalculoTre.Objetos
         #region Conversao
         public float ValorParaPosX(int valor)
         {
-            double ajuste = (double)(tela.Width - 2 * a) / (double)tela.Width * (double)tela.Width * valor / MaximoHorizontal;
+            double ajuste = (double)(tela.Width - 2 * a) / (double)tela.Width * (double)tela.Width * valor / EscalaHorizontal;
             return (float)(ajuste + a);
             //return (int)(ajuste + a);
         }
 
         public float ValorParaPosY(int valor)
         {
-            double ajuste = (double)(tela.Height - 2 * a) / (double)tela.Height * (double)tela.Height * (MaximoVertical - valor) / MaximoVertical;
+            double ajuste = (double)(tela.Height - 2 * a) / (double)tela.Height * (double)tela.Height * (EscalaVertical - valor) / EscalaVertical;
             return (float)(ajuste + a);
         }
 
         public float ValorParaPosX(float valor)
         {
-            double ajuste = (double)(tela.Width - 2 * a) / (double)tela.Width * (double)tela.Width * valor / MaximoHorizontal;
+            double ajuste = (double)(tela.Width - 2 * a) / (double)tela.Width * (double)tela.Width * valor / EscalaHorizontal;
             return (float)(ajuste + a);
             //return (int)(ajuste + a);
         }
 
         public float ValorParaPosY(float valor)
         {
-            double ajuste = (double)(tela.Height - 2 * a) / (double)tela.Height * (double)tela.Height * (MaximoVertical - valor) / MaximoVertical;
+            double ajuste = (double)(tela.Height - 2 * a) / (double)tela.Height * (double)tela.Height * (EscalaVertical - valor) / EscalaVertical;
             return (float)(ajuste + a);
         }
 
         public int PosParaValorX(int pos)
         {
-            double valor = (double)(pos - a) * MaximoHorizontal / (tela.Width - 2 * a);
+            double valor = (double)(pos - a) * EscalaHorizontal / (tela.Width - 2 * a);
             return (int)valor;
         }
 
         public int PosParaValorY(int pos)
         {
-            double valor = (double)((tela.Height - pos) - a) * MaximoVertical / (tela.Height - 2 * a);
+            double valor = (double)((tela.Height - pos) - a) * EscalaVertical / (tela.Height - 2 * a);
             return (int)valor;
         }
         #endregion

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CalculoTre.Objetos.Pages
@@ -30,7 +31,7 @@ namespace CalculoTre.Objetos.Pages
                 maior = maior_y;
 
 
-            valor_tela = (int)(maior_x * Tela.proporcionalidade);
+            valor_tela = (int)(maior * Tela.proporcionalidade);
             //int min_x = barrasConectadas.Max(x => x.knots.Min(y => y.ValorX));
             //int min_y = barrasConectadas.Max(x => x.knots.Min(y => y.ValorY));
 
@@ -42,8 +43,9 @@ namespace CalculoTre.Objetos.Pages
             tab.Controls.Add(pagina);
         }
 
-        public override void PrepararTela(object sender, EventArgs e)
+        public override async void PrepararTela(object sender, EventArgs e)
         {
+            await Task.Delay(500);
             base.PrepararTela(sender, e);
 
             tela.Esquematizar(noEscolhido);
