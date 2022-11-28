@@ -104,7 +104,7 @@ namespace CalculoTre
 
         private void deConfigurarTela_Click(object sender, EventArgs e)
         {
-            deQuantidadeGrade grade = new deQuantidadeGrade();
+            deQuantidadeGrade grade = new deQuantidadeGrade(telaPrincipal);
             grade.ShowDialog();
             telaPrincipal.Redesenhar();
         }
@@ -124,13 +124,13 @@ namespace CalculoTre
 
         private void deSalvar_Click(object sender, EventArgs e)
         {
-            Port.SalvarDados(Data.barras);
+            Port.SalvarDados(Data.barras, telaPrincipal);
             MessageBox.Show("Feito");
         }
 
         private void deCarregar_Click(object sender, EventArgs e)
         {
-            Port.CarregarDados(ref Data.barras);
+            Port.CarregarDados(ref Data.barras, telaPrincipal);
 
             telaPrincipal.Redesenhar(new object(), new EventArgs());
         }

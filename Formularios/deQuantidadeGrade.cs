@@ -6,24 +6,26 @@ namespace CalculoTre.Telas
 {
     public partial class deQuantidadeGrade : Form
     {
-        public deQuantidadeGrade()
+        protected Tela tela;
+        public deQuantidadeGrade(Tela tela_recebida)
         {
+            tela = tela_recebida;
             InitializeComponent();
 
-            deHorizontal.Value = Resolution.Resolucao[0];
-            deVertical.Value = Resolution.Resolucao[1];
+            deHorizontal.Value = Tela.Resolucao[0];
+            deVertical.Value = Tela.Resolucao[1];
 
-            deValorHorizontal.Value = Resolution.EscalaHorizontal;
-            deValorVertical.Value = Resolution.EscalaVertical;
+            deValorHorizontal.Value = tela.MaximoHorizontal;
+            deValorVertical.Value = tela.MaximoVertical;
         }
 
         private void deConfirmar_Click(object sender, EventArgs e)
         {
-            Resolution.Resolucao[0] = (int)deHorizontal.Value;
-            Resolution.Resolucao[1] = (int)deVertical.Value;
+            Tela.Resolucao[0] = (int)deHorizontal.Value;
+            Tela.Resolucao[1] = (int)deVertical.Value;
 
-            Resolution.EscalaVertical = (int)deValorVertical.Value;
-            Resolution.EscalaHorizontal = (int)deValorHorizontal.Value;
+            tela.MaximoVertical = (int)deValorVertical.Value;
+            tela.MaximoHorizontal = (int)deValorHorizontal.Value;
 
             this.Close();
         }

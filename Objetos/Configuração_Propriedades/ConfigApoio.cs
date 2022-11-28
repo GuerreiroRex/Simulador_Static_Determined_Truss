@@ -8,10 +8,12 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 {
     internal class ConfigApoio : ConfigBase
     {
+        protected Tela tela;
         protected Knot noEscolhido;
 
-        public ConfigApoio(Tela tela, Knot no, TabPage pagina) : base(tela)
+        public ConfigApoio(Tela tela_recebida, Knot no, TabPage pagina) : base(tela_recebida)
         {
+            tela = tela_recebida;
             noEscolhido = no;
 
             pagina.Controls.Add(Controle);
@@ -269,7 +271,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             switch (tipo)
             {
                 case 'X':
-                    numero.Maximum = Resolution.EscalaHorizontal;
+                    numero.Maximum = tela.MaximoHorizontal;
                     numero.Value = noEscolhido.ValorX;
 
                     numero.ValueChanged += (s, e) =>
@@ -279,7 +281,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                     };
                     break;
                 case 'Y':
-                    numero.Maximum = Resolution.EscalaVertical;
+                    numero.Maximum = tela.MaximoVertical;
                     numero.Value = noEscolhido.ValorY;
 
                     numero.ValueChanged += (s, e) =>

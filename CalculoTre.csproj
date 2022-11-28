@@ -82,7 +82,6 @@
     <Compile Include="Objetos\Pages\PaginaBarras.cs" />
     <Compile Include="Objetos\Pages\PaginaBase.cs" />
     <Compile Include="Objetos\Port.cs" />
-    <Compile Include="Objetos\Tela\Resolution.cs" />
     <Compile Include="Objetos\Tela\Tela.cs" />
     <Compile Include="Formularios\deQuantidadeGrade.cs">
       <SubType>Form</SubType>

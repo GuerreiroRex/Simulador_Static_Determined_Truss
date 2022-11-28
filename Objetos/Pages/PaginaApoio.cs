@@ -1,5 +1,7 @@
 ﻿using CalculoTre.Objetos.Configuração_Propriedades;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace CalculoTre.Objetos.Pages
@@ -13,6 +15,27 @@ namespace CalculoTre.Objetos.Pages
             noEscolhido = no;
 
             pagina.Text = noEscolhido.ToString();
+
+            int maior;
+            int valor_tela;
+
+            List<Bar> barrasConectadas = Data.barras.Values.Where(x => x.knots.Contains(no)).ToList();
+
+            int maior_x = barrasConectadas.Max(x => x.knots.Max(y => y.ValorX));
+            int maior_y = barrasConectadas.Max(x => x.knots.Max(y => y.ValorY));
+
+            if (maior_x > maior_y)
+                maior = maior_x;
+            else
+                maior = maior_y;
+
+
+            valor_tela = (int)(maior_x * Tela.proporcionalidade);
+            //int min_x = barrasConectadas.Max(x => x.knots.Min(y => y.ValorX));
+            //int min_y = barrasConectadas.Max(x => x.knots.Min(y => y.ValorY));
+
+            tela.MaximoHorizontal = maior + (maior / Tela.Resolucao[0]);
+            tela.MaximoVertical = valor_tela + (valor_tela / Tela.Resolucao[1]);
 
             ConfigApoio configApoio = new ConfigApoio(tela, noEscolhido, pagina);
 

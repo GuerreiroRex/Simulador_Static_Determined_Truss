@@ -35,6 +35,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(838, 441);
+            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "dePropriedades";
             this.Text = "Propriedades";

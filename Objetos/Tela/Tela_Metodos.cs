@@ -40,12 +40,14 @@ namespace CalculoTre.Objetos
                 g.DrawLine(caneta, inferiorDireito, superiorDireito);
 
                 //Posiciona as linahs em X dos quadriculados
-                for (int i = 1; i < Resolution.Resolucao[0]; i++)
-                    g.DrawLine(caneta, ValorParaPosX(i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]), a, ValorParaPosX(i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]), b);
+                for (int i = 1; i < Resolucao[0]; i++)
+                    g.DrawLine(caneta, ValorParaPosX((float)i * MaximoHorizontal / Resolucao[0]), a, ValorParaPosX((float)i * MaximoHorizontal / Resolucao[0]), b);
+                //g.DrawLine(caneta, ValorParaPosX((float)i * EscalaHorizontal / Resolucao[0]), a, ValorParaPosX((float)i * EscalaHorizontal / Resolucao[0]), b);
 
                 //Posiciona as linahs em Y dos quadriculados
-                for (int i = 1; i < Resolution.Resolucao[1]; i++)
-                    g.DrawLine(caneta, a, ValorParaPosY(i * Resolution.EscalaVertical / Resolution.Resolucao[1]), c, ValorParaPosY(i * Resolution.EscalaVertical / Resolution.Resolucao[1]));
+                for (int i = 1; i < Resolucao[1]; i++)
+                    g.DrawLine(caneta, a, ValorParaPosY((float)i * MaximoVertical / Resolucao[1]), c, ValorParaPosY((float)i * MaximoVertical / Resolucao[1]));
+                //g.DrawLine(caneta, a, ValorParaPosY((float)i * EscalaVertical / Resolucao[1]), c, ValorParaPosY((float)i * EscalaVertical / Resolucao[1]));
 
                 /*
                 PrepararLetras prepararLetras = new PrepararLetras(Letreiro);
@@ -84,12 +86,12 @@ namespace CalculoTre.Objetos
                 g.DrawLine(caneta, inferiorEsquerdo, inferiorDireito);
                 g.DrawLine(caneta, inferiorDireito, superiorDireito);
 
-                for (int i = 1; i < Resolution.Resolucao[0]; i++)
-                    g.DrawLine(caneta, ValorParaPosX(i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]), a, ValorParaPosX(i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]), b);
+                for (int i = 1; i < Resolucao[0]; i++)
+                    g.DrawLine(caneta, ValorParaPosX((float)i * MaximoHorizontal / Resolucao[0]), a, ValorParaPosX((float)i * MaximoHorizontal / Resolucao[0]), b);
 
                 //Posiciona as linahs em Y dos quadriculados
-                for (int i = 1; i < Resolution.Resolucao[1]; i++)
-                    g.DrawLine(caneta, a, ValorParaPosY(i * Resolution.EscalaVertical / Resolution.Resolucao[1]), c, ValorParaPosY(i * Resolution.EscalaVertical / Resolution.Resolucao[1]));
+                for (int i = 1; i < Resolucao[1]; i++)
+                    g.DrawLine(caneta, a, ValorParaPosY((float)i * MaximoVertical / Resolucao[1]), c, ValorParaPosY((float)i * MaximoVertical / Resolucao[1]));
 
                 Letreiro();
             }
@@ -102,10 +104,10 @@ namespace CalculoTre.Objetos
                 int tamanhoFonte = 6;
                 Font fonte = new Font("Arial", tamanhoFonte);
 
-                //for (int i = 0; i <= Resolution.Resolucao[0]; i++)
-                for (int i = Resolution.Resolucao[0]; i > 0; i--)
+                //for (int i = 0; i <= Resolucao[0]; i++)
+                for (int i = Resolucao[0]; i > 0; i--)
                 {
-                    string temp = (i * Resolution.EscalaHorizontal / Resolution.Resolucao[0]).ToString();
+                    string temp = (i * MaximoHorizontal / Resolucao[0]).ToString();
 
                     int size = g.MeasureString(temp, fonte).ToSize().Width;
 
@@ -116,9 +118,9 @@ namespace CalculoTre.Objetos
 
                 }
 
-                for (int i = 0; i < Resolution.Resolucao[1]; i++)
+                for (int i = 0; i < Resolucao[1]; i++)
                 {
-                    g.DrawString(((Resolution.Resolucao[1] - i) * Resolution.EscalaVertical / Resolution.Resolucao[1]).ToString(),
+                    g.DrawString(((Resolucao[1] - i) * MaximoVertical / Resolucao[1]).ToString(),
                                      new Font("Arial", 6),
                                      new SolidBrush(Color.Black),
                                      new Point(0, (int)unidade_CorteY * i + a));
@@ -157,6 +159,7 @@ namespace CalculoTre.Objetos
             Trigger.AtualizarObjeto(Data.deTipo, Data.deObjeto);
 
             Desenhar();
+            //EscalaHorizontal, EscalaVertical, Resolucao
             Esquematizar();
         }
 
@@ -221,8 +224,8 @@ namespace CalculoTre.Objetos
             var a = Data.nos.Values.ToList().Where<Knot>(x => x.ID == barra.knots[0].ID).First();
             var b = Data.nos.Values.ToList().Where<Knot>(x => x.ID == barra.knots[1].ID).First();
 
-            Point ponto1 = new Point(ValorParaPosX(a.ValorX), ValorParaPosY(a.ValorY));
-            Point ponto2 = new Point(ValorParaPosX(b.ValorX), ValorParaPosY(b.ValorY));
+            PointF ponto1 = new PointF(ValorParaPosX(a.ValorX), ValorParaPosY(a.ValorY));
+            PointF ponto2 = new PointF(ValorParaPosX(b.ValorX), ValorParaPosY(b.ValorY));
 
             using (Graphics g = tela.CreateGraphics())
             {
@@ -239,11 +242,11 @@ namespace CalculoTre.Objetos
                     double cateto_oposto = (b.valorY - a.valorY);
                     double angulo = Math.Atan(cateto_oposto / cateto_adjacente);
 
-                    Point prim_inicio = new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente * 2 / 8)), ValorParaPosY((int)(a.valorY + cateto_oposto * 2 / 8)));
-                    Point prim_fim = new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente / 2)), ValorParaPosY((int)(a.valorY + cateto_oposto / 2)));
+                    PointF prim_inicio = new PointF(ValorParaPosX((float)(a.valorX + cateto_adjacente * 2 / 8)), ValorParaPosY((float)(a.valorY + cateto_oposto * 2 / 8)));
+                    PointF prim_fim = new PointF(ValorParaPosX((float)(a.valorX + cateto_adjacente * 5/12)), ValorParaPosY((float)(a.valorY + cateto_oposto * 5/12)));
 
-                    Point prim_inicio2 = new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente * 6 / 8)), ValorParaPosY((int)(a.valorY + cateto_oposto * 6 / 8)));
-                    Point prim_fim2 = new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente / 2)), ValorParaPosY((int)(a.valorY + cateto_oposto / 2)));
+                    PointF prim_inicio2 = new PointF(ValorParaPosX((float)(a.valorX + cateto_adjacente * 6 / 8)), ValorParaPosY((float)(a.valorY + cateto_oposto * 6 / 8)));
+                    PointF prim_fim2 = new PointF(ValorParaPosX((float)(a.valorX + cateto_adjacente * 7/12)), ValorParaPosY((float)(a.valorY + cateto_oposto * 7/12)));
 
                     if (barra.Force < 0)
                     {
@@ -265,8 +268,18 @@ namespace CalculoTre.Objetos
                     int tamanhoFonte = 10;
                     Font fonte = new Font("Arial", tamanhoFonte);
 
+                    
+                    
+
                     //string valor = $"{barra.ID}: {Math.Round(barra.Force, 4)} Kn";
-                    string valor = $"{Math.Round(barra.Force, 4)} Kn";
+                    string valor = $"{Math.Round(Math.Abs(barra.Force), 2)}";
+
+                    var pos_x = ValorParaPosX((int)(a.valorX + cateto_adjacente / 2)) - TextRenderer.MeasureText(valor, fonte).Width / 2;
+                    var pos_y = ValorParaPosY((int)(a.valorY + cateto_oposto / 2)) - TextRenderer.MeasureText(valor, fonte).Height / 2;
+                    PointF centro = new PointF((float)pos_x, (float)pos_y);
+
+                    RectangleF rect = new RectangleF(centro, g.MeasureString(valor, fonte));
+                    g.FillRectangle(Brushes.White, rect);
 
                     /* Continuar daqui,
                      * 
@@ -275,9 +288,10 @@ namespace CalculoTre.Objetos
 
                     g.DrawString(valor, 
                                     fonte,
-                                    new SolidBrush(Color.FromArgb(200, Color.DarkViolet)),
-                                    prim_fim);
+                                    new SolidBrush(Color.FromArgb(250, Color.DarkViolet)),
+                                    rect);
                     //new Point(ValorParaPosX((int)(a.valorX + cateto_adjacente / 2) + 3  ), ValorParaPosY((int)(a.valorY + cateto_oposto / 2) + fonte.Height + 3))
+                    //Color.FromArgb(200, Color.DarkViolet)
 
                 }
             }
@@ -308,7 +322,7 @@ namespace CalculoTre.Objetos
             //Define a posição do botão e retira sua borda
             var dv = Knot.tamanho / 2;
             botao.FlatAppearance.BorderSize = 0;
-            botao.Location = new System.Drawing.Point(ValorParaPosX(no.valorX) - dv, ValorParaPosY(no.valorY) - dv);
+            botao.Location = new System.Drawing.Point((int)ValorParaPosX(no.valorX) - dv, (int)ValorParaPosY(no.valorY) - dv);
 
             botao.AutoSize = true;
             botao.AutoSizeMode = AutoSizeMode.GrowOnly;

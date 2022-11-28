@@ -11,7 +11,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
 
         protected Font fonte = new Font("Arial", 8);
 
-        public ConfigBase(Tela tela)
+        public ConfigBase(Tela tela_recebida)
         {
             Controle = new FlowLayoutPanel();
 

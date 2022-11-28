@@ -14,7 +14,7 @@ namespace CalculoTre.Objetos
         private static string dir = Environment.CurrentDirectory;
 
         #region Barras
-        public static void SalvarDados(Dictionary<string, Bar> dict)
+        public static void SalvarDados(Dictionary<string, Bar> dict, Tela tela)
         {
             SaveFileDialog sf = new SaveFileDialog();
             sf.Filter = "Json files (*.json)|*.json";
@@ -28,9 +28,9 @@ namespace CalculoTre.Objetos
                 List<object> lista = new List<object>();
 
                 lista.Add(dict);
-                lista.Add(Resolution.Resolucao);
-                lista.Add(Resolution.EscalaVertical);
-                lista.Add(Resolution.EscalaHorizontal);
+                lista.Add(Tela.Resolucao);
+                lista.Add(tela.MaximoVertical);
+                lista.Add(tela.MaximoHorizontal);
 
                 string valores = JsonConvert.SerializeObject(lista);
 
@@ -38,7 +38,7 @@ namespace CalculoTre.Objetos
             }
         }
 
-        public static void CarregarDados(ref Dictionary<string, Bar> dict)
+        public static void CarregarDados(ref Dictionary<string, Bar> dict, Tela tela)
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Filter = "Json files (*.json)|*.json";
@@ -61,9 +61,9 @@ namespace CalculoTre.Objetos
                 }
 
                 dict = JsonConvert.DeserializeObject<Dictionary<string, Bar>>(lista[0].ToString());
-                Resolution.Resolucao = JsonConvert.DeserializeObject<int[]>(lista[1].ToString());
-                Resolution.EscalaVertical = Convert.ToInt16(lista[2]);
-                Resolution.EscalaHorizontal = Convert.ToInt16(lista[3]);
+                Tela.Resolucao = JsonConvert.DeserializeObject<int[]>(lista[1].ToString());
+                tela.MaximoVertical = Convert.ToInt16(lista[2]);
+                tela.MaximoHorizontal = Convert.ToInt16(lista[3]);
 
                 Joint.AtualizarNos();
 
