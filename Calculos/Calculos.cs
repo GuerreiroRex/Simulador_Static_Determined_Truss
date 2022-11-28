@@ -130,23 +130,16 @@ namespace CalculoTre.Calculos
         {
             List<List<double>> matrizN = MontarMatrizNos(Data.barras, Data.nos); // Matriz N para Nós
 
-            /* Continuar daqui
-             * 
-             * Entender porque não está dando errado
-             * 
-             * Tentar método usando K, calculando por barra
-             * 
-             */
             List<double> matrizF = MontarMatrizForcas(Data.nos); //Matriz F para Forças
 
-            EscreverMatriz(matrizN, "0 - Matriz Principal");
+            //EscreverMatriz(matrizN, "0 - Matriz Principal");
 
             List<List<double>> invertida = CalcularMatrizInversa(matrizN);
 
-            EscreverMatriz(invertida, "1 - Matriz Invertida");
+            //EscreverMatriz(invertida, "1 - Matriz Invertida");
 
             List<double> resultado = CalcularProdutoMatrizes(invertida, matrizF);
-            EscreverMatriz(resultado, "2 - Matriz Multiplicada");
+            //EscreverMatriz(resultado, "2 - Matriz Multiplicada");
 
             int i = 0;
             foreach (Bar barra in Data.barras.Values)
@@ -256,6 +249,9 @@ namespace CalculoTre.Calculos
         {
             List<List<double>> calculo = new List<List<double>>();
 
+            /* Eliminação de Gauss-Jordan
+             */
+
             //Copia a matriz, para não macular a original
             foreach (List<double> lista in matriz)
             {
@@ -313,13 +309,17 @@ namespace CalculoTre.Calculos
             for (int i = 0; i < q0; i++)
                 valor *= calculo[i][i];
 
-            EscreverMatriz(calculo, "Teste - Determinante");
+            //EscreverMatriz(calculo, "Teste - Determinante");
 
             return valor;
         }
 
         private static List<List<double>> CalcularMatrizInversa(List<List<double>> matriz)
         {
+            /* 
+             * 
+             */
+
             List<List<double>> basica = new List<List<double>>();
             List<List<double>> invertida = new List<List<double>>();
             
@@ -333,16 +333,18 @@ namespace CalculoTre.Calculos
             int q0 = matriz.Count;
             int q1 = matriz[0].Count;
 
+
+            //Para cada linha da tabela
             for (int linha = 0; linha < q0; linha++)
             {
+                //Para cada coluna
                 List<double> linha_basica = new List<double>();
                 for (int coluna = 0; coluna < q1; coluna++)
                 {
+                    //
                     List<List<double>> calculo = new List<List<double>>();
-
                     for (int i = 0; i < q0; i++)
                     {
-
                         if (i == linha)
                             continue;
                         
