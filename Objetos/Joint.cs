@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 
 namespace CalculoTre.Objetos
@@ -86,6 +88,9 @@ namespace CalculoTre.Objetos
                     tempKnot[1] = new Knot();
                     tempKnot[1].AtualizarValores(Data.telas[0], e.X, e.Y);
                 }
+
+                if (Data.barras.Values.Any(x => x.knots.Contains(tempKnot[0]) && x.knots.Contains(tempKnot[1])))
+                    return;
 
                 Data.telas[0].Pontuar(tempKnot[1], true);
 

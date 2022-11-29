@@ -25,48 +25,16 @@ namespace CalculoTre.Calculos
                 return;
             }
 
-            #region Matrizes de testes
-            List<double> linha1 = new List<double>();
-            linha1.Add(1);
-            linha1.Add(0);
-            linha1.Add(1);
-            linha1.Add(3);
-
-            List<double> linha2 = new List<double>();
-            linha2.Add(2);
-            linha2.Add(-2);
-            linha2.Add(-1);
-            linha2.Add(6);
-
-            List<double> linha3 = new List<double>();
-            linha3.Add(3);
-            linha3.Add(0);
-            linha3.Add(0);
-            linha3.Add(15);
-
-            List<double> linha4 = new List<double>();
-            linha4.Add(14);
-            linha4.Add(4);
-            linha4.Add(3);
-            linha4.Add(6);
-
-            List<List<double>> matrizL = new List<List<double>>();
-            matrizL.Add(linha1);
-            matrizL.Add(linha2);
-            matrizL.Add(linha3);
-            matrizL.Add(linha4);
-            #endregion
-
-            //var a = CalcularDeterminante(matrizL);
-
+            /*
             Thread calculo = new Thread(MetodoStiffEmBarra);
             calculo.Start();
 
             calculo.Join();
+            */
+
+            MetodoStiffEmBarra();
 
             tela.Redesenhar();
-
-
         }
 
         private static List<Knot> IdentificarIncognitas(List<Knot> nos)

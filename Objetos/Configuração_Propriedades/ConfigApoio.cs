@@ -205,10 +205,10 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
                 case "Nenhum":
                     noEscolhido.travas = new bool[2] { false, false };
                     break;
-                case "Simples vertical":
+                case "Vertical":
                     noEscolhido.travas = new bool[2] { true, false };
                     break;
-                case "Simples horizontal":
+                case "Horizontal":
                     noEscolhido.travas = new bool[2] { false, true };
                     break;
                 case "Duplo":
@@ -349,8 +349,8 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             agrupado.Controls.Add(lista);
 
             lista.Items.Add("Nenhum");
-            lista.Items.Add("Simples vertical");
-            lista.Items.Add("Simples horizontal");
+            lista.Items.Add("Vertical");
+            lista.Items.Add("Horizontal");
             lista.Items.Add("Duplo");
 
             botoesApoiosAtulizar(lista, new EventArgs());

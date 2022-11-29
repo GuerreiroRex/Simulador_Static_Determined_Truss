@@ -1,6 +1,7 @@
 ﻿using CalculoTre.Calculos;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -300,6 +301,8 @@ namespace CalculoTre.Objetos
 
         public void Pontuar(Knot no, bool gatilho)
         {
+            
+
             //Cria o botão
             //botao
             Button botao = new Button();
@@ -307,25 +310,24 @@ namespace CalculoTre.Objetos
             //Aplica-lhe um nome
             botao.Name = $"B{no.id}";
 
-
             //Coloca seu fundo preto, letra branca e escreve uma letra
             botao.BackColor = System.Drawing.Color.Black;
             botao.ForeColor = Color.White;
-
-            //botao.Text = nome;
-            botao.Text = no.Nome;
 
             //Define o tamanho do botão
             botao.Height = Knot.tamanho;
             botao.Width = Knot.tamanho;
 
+            botao.AutoSize = true;
+            botao.AutoSizeMode = AutoSizeMode.GrowOnly;
+
+            //botao.Text = nome;
+            botao.Text = no.Nome;
+
             //Define a posição do botão e retira sua borda
             var dv = Knot.tamanho / 2;
             botao.FlatAppearance.BorderSize = 0;
-            botao.Location = new System.Drawing.Point((int)ValorParaPosX(no.valorX) - dv, (int)ValorParaPosY(no.valorY) - dv);
-
-            botao.AutoSize = true;
-            botao.AutoSizeMode = AutoSizeMode.GrowOnly;
+            botao.Location = new System.Drawing.Point((int)(ValorParaPosX(no.valorX) - (dv)), (int)ValorParaPosY(no.valorY) - dv);
 
             if (gatilho)
             {
