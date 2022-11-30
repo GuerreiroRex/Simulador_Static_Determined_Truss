@@ -25,9 +25,18 @@ namespace CalculoTre.Calculos
                 return;
             }
 
-            if (Data.nos.Values.Count(x => x.travas.Any(y => y == true)) != 2)
+            int conta = 0;
+
+            foreach (Knot no in Data.nos.Values)
+                foreach (bool trava in no.travas)
+                    if (trava)
+                        conta++;
+
+            if (conta + Data.barras.Values.Count != 2 * Data.nos.Count)
             {
-                MessageBox.Show("Apoios incorretos");
+                MessageBox.Show("\tEsta treliça é indeterminada estaticamente, e o algoritmo utilizado é projetado para calcular apenas treliças estaticamente determinadas. Para ser estaticamente determinada a treliça deve obedecer o seguinte critéio:" +
+                    "\n\n(Qtd. de Barras) + (Qtd. de Reações de Apoio) = 2 * (Qtd. de Nós)" +
+                    $"\n\nEsta treliça tem: \n{Data.barras.Values.Count} Barras\n{Data.nos.Values.Count(x => x.travas.Any(y => y == true))} Reações de apoio\n{Data.nos.Count} Nós");
                 return;
             }
 
