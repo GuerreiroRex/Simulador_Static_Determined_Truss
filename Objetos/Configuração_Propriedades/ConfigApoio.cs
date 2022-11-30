@@ -217,6 +217,7 @@ namespace CalculoTre.Objetos.Configuração_Propriedades
             }
 
             botoesApoiosAtulizar(sender, e);
+            Trigger.ForçarRedesenho(new EventArgs());
         }
 
         private void AlterarNome(object sender, EventArgs e, string texto)

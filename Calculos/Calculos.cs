@@ -18,10 +18,16 @@ namespace CalculoTre.Calculos
     internal static class Calcular
     {
         public static void InicioCalculo(Tela tela)
-        {   
+        {
             if (Data.barras.Values.Count == 0)
             {
                 MessageBox.Show("Sem barras");
+                return;
+            }
+
+            if (Data.nos.Values.Count(x => x.travas.Any(y => y == true)) != 2)
+            {
+                MessageBox.Show("Apoios incorretos");
                 return;
             }
 

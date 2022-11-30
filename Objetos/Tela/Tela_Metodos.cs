@@ -310,6 +310,10 @@ namespace CalculoTre.Objetos
             //Aplica-lhe um nome
             botao.Name = $"B{no.id}";
 
+            foreach (Control controle in Painel.Controls)
+                if (controle is Button && controle.Name == botao.Name)
+                    return;
+
             //Coloca seu fundo preto, letra branca e escreve uma letra
             botao.BackColor = System.Drawing.Color.Black;
             botao.ForeColor = Color.White;
