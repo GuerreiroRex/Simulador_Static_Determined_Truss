@@ -305,8 +305,7 @@ namespace CalculoTre.Calculos
 
             List<List<double>> basica = new List<List<double>>();
             List<List<double>> invertida = new List<List<double>>();
-            
-            
+
             double det = CalcularDeterminante(matriz);
 
             if (det == 0)

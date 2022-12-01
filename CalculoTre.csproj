@@ -129,6 +129,12 @@
     <EmbeddedResource Include="Formularios\dePropriedades.resx">
       <DependentUpon>dePropriedades.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Arquivos\Apresentação - Simulador de Treliças Planas.pdf" />
+    <None Include="Arquivos\Exemplo 1 - 3 Barras.json" />
+    <None Include="Arquivos\Exemplo 2 - 5 Barras.json" />
+    <None Include="Arquivos\Exemplo 3 - 7 Barras.json" />
+    <None Include="Arquivos\Exemplo 4 - 7 Barras.json" />
+    <None Include="Arquivos\Exemplo 5 - 17 Barras.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -8,7 +8,6 @@ namespace CalculoTre.Objetos
         private string id;
 
         private double force;
-        public bool forceCalc = false;
             
         private double angulo;
 
