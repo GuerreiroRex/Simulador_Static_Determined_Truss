@@ -415,8 +415,7 @@ namespace CalculoTre.Calculos
                 texto += Environment.NewLine;
             }
 
-            string caminho = @"C:\Users\User\Desktop\dados\" + $"{nome}.csv";
-            File.WriteAllText(caminho, texto);
+            File.WriteAllText($"{nome}.csv", texto);
 
         }
 
@@ -437,8 +436,7 @@ namespace CalculoTre.Calculos
                 texto += Environment.NewLine;
             }
 
-            string caminho = @"C:\Users\User\Desktop\dados\" + $"{nome}.csv";
-            File.WriteAllText(caminho, texto);
+            File.WriteAllText($"{nome}.csv", texto);
 
         }
         #endregion
